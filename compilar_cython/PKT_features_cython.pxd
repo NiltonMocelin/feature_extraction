@@ -1,0 +1,1 @@
+cdef tuple calcular_tudo(list bloco_pacotes, str prefix, str proto)
