@@ -1,6 +1,7 @@
 ##################################################################
 ######################## TCPTRACE API #############################
 import ctypes
+import os
 # No Linux, dlclose remove a lib da memória se o refcount chegar a 0
 import _ctypes
 import gc
@@ -8,7 +9,7 @@ import gc
 class TCPTraceAPI():
     def __init__(self):
         # as variaveis nao estao sendo limpas infelizmente... por isso vou ter que recarregar a biblioteca cada vez
-        self.lib_tcptrace = ctypes.CDLL('./tcptrace_python_api/libtcptrace.so')
+        self.lib_tcptrace = ctypes.CDLL(f'{os.getcwd()}/libtcptrace.so')
         self.lib_tcptrace.main.restype = ctypes.c_char_p
         pass
 
@@ -63,7 +64,7 @@ class TCPTraceAPI():
         lib_handle = self.lib_tcptrace._handle
         _ctypes.dlclose(lib_handle) #destrutor
         #gc.collect() erro junto com o cython...
-        self.lib_tcptrace = ctypes.CDLL('./tcptrace_python_api/libtcptrace.so')
+        self.lib_tcptrace = ctypes.CDLL(f'{os.getcwd()}/libtcptrace.so')
         self.lib_tcptrace.main.restype = ctypes.c_char_p
         ##
 
