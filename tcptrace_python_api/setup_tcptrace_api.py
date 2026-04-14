@@ -21,8 +21,12 @@ ext = Extension(
     include_dirs=["."],
     define_macros=macros,      # <-- ISSO É O QUE FALTA
     libraries=["tcptrace"],
-    library_dirs=[os.path.abspath(".")],
-    runtime_library_dirs=[os.path.abspath(".")],
+    # library_dirs=[os.path.abspath(".")],
+    library_dirs=["."],
+    # runtime_library_dirs=[os.path.abspath(".")],
+    # O runtime_library_dirs com caminho absoluto é perigoso. 
+    # Use extra_link_args para definir o RPATH como a pasta atual relativa ao .so
+    extra_link_args=['-Wl,-rpath,$ORIGIN'] 
 )
 
 setup(

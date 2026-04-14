@@ -9,9 +9,11 @@ sudo apt update && sudo apt install libpcap-dev
 
 pip install pypcap cython filelock pyshark numpy pandas matplotlib pymongo
 
+sh clean.sh
+
 # compilar api tcptrace:
 cd tcptrace_python_api
-make clean && make
+make
 sh compilar.sh
 cd ..
 

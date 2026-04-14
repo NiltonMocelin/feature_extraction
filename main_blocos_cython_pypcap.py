@@ -295,10 +295,10 @@ if __name__ == '__main__':
     # 10 pacotes IAT 2s         ##################################################################
     # ab
 
-    # gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path=file_name, tabela_db=f'ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
+    gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path=file_name, tabela_db=f'ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
     # exit(0)
     # ba
-    #erar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
+    gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
     
     # proto = 'XX'
     # alem disso, criar as bases específicas para TCP
@@ -310,7 +310,7 @@ if __name__ == '__main__':
         #     gerar_blocos_processar_otimizado2(folder_name="", file_name= file_name, tabela_db='fluxo_total_two_ways', proto=proto, service_class = service_class, app_class= app_class)  #two_way= True, block_size =None, idle_timeout=None) # talvez utilizar esses depois
         print(f'\ncalculando ab_tcp_{tam_bloco}pkts_2s')
         gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'twoways_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2)  #two_way= True, block_size =None, idle_timeout=None) # talvez utilizar esses depois
-        exit(0)
+        # exit(0)
         # 10 pkts
         # ab
         gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_tcp_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
@@ -319,5 +319,5 @@ if __name__ == '__main__':
 
     print(f"[fim-{time.time()-ts}]: {file_name}")
 
-    removerArquivosTemporarios(file_name)
+    # removerArquivosTemporarios(file_name)
     print(f"---------------- [FIM-{time.time()-ts}] ----------------")

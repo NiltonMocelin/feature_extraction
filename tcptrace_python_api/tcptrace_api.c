@@ -40,6 +40,9 @@
         "depends": [
             "tcptrace.h"
         ],
+        "extra_link_args": [
+            "-Wl,-rpath,$ORIGIN"
+        ],
         "include_dirs": [
             "."
         ],
@@ -47,12 +50,9 @@
             "tcptrace"
         ],
         "library_dirs": [
-            "/media/nnmoc/Data/material_traffic_classification2/extracao_features/extrator_cython/tcptrace_python_api"
+            "."
         ],
         "name": "tcptrace_api",
-        "runtime_library_dirs": [
-            "/media/nnmoc/Data/material_traffic_classification2/extracao_features/extrator_cython/tcptrace_python_api"
-        ],
         "sources": [
             "tcptrace_api.pyx"
         ]
