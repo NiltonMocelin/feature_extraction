@@ -1,1 +1,1 @@
-cdef tuple calcular_tudo(list bloco_pacotes, str prefix, str proto)
+cpdef tuple calcular_estatisticas_raw(list lista_raw_pkts, str prefix, str proto_name, int offset)

@@ -768,8 +768,6 @@ extern timeval last_packet;
 
 #define MAX_NAME 20
 
-
-
 /* external routine decls */
 double sqrt(double x);
 void free(void *);
@@ -779,6 +777,14 @@ int finite(double);
    the prototype, so we'll include our own and change the name to avoid conflicts
    with local prototypes if they exist and differ */
 char *Ether_Ntoa(struct ether_addr *e);
+
+
+char *get_colunas();
+char *get_resultados();
+void escrever_resultados_str(char *coluna, char *valor);
+void escrever_resultados_int(char *coluna, long int valor);
+void escrever_resultados_float(char *coluna, float valor);
+char *extrair_features(char *argv);
 
 /* global routine decls */
 void *MallocZ(int);
@@ -1195,4 +1201,3 @@ struct ipaddr *IPV6ADDR2ADDR(struct in6_addr *addr6);
 #ifndef PPPOE_SIZE
 #define PPPOE_SIZE		22
 #endif /* PPPOE header size */
-

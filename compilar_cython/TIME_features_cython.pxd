@@ -1,2 +1,1 @@
-# Time_features_cython assinaturas
-cdef tuple calcular_tudo(list bloco_pacotes, str prefix, str proto)
+cpdef tuple calcular_estatisticas_raw(list bloco_raw_pkts, str prefix, str proto_str, int offset)

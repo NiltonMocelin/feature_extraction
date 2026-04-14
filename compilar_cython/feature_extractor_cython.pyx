@@ -17,124 +17,205 @@ from PKT_features_cython cimport calcular_tudo as calcular_pkt_features
 from tcptrace_python_api.tcptrace_api import TCPTraceAPI
 import cython
 
-cdef tuple _get_col_val_tcptrace(str saida_tcptrace):
-    cdef list linhas = saida_tcptrace.split("\n")
+# cdef tuple _get_col_val_tcptrace(str saida_tcptrace):
+#     cdef list linhas = saida_tcptrace.split("\n")
 
-    # tcptrace gera muitas linhas, encontrar quando comeca a falar sobre o cabecalho + quebra de linha+ dados
-    cdef int index_cabecalho = 0
-    for linha in linhas:
-        if 'conn_#' in linha:
-            break
-        index_cabecalho += 1
+#     # tcptrace gera muitas linhas, encontrar quando comeca a falar sobre o cabecalho + quebra de linha+ dados
+#     cdef int index_cabecalho = 0
+#     for linha in linhas:
+#         if 'conn_#' in linha:
+#             break
+#         index_cabecalho += 1
 
-    cdef list lista_cabecalho = linhas[index_cabecalho].replace(" ", "").split(',')
-    # ajustar valores numericos: N/Y por = 0/1 , NA por = 0 ,  N por = 0, Y por = 1
-    cdef list lista_resultados = linhas[index_cabecalho + 2].replace(" ", "").replace("NA", "0").replace("N",
-                                                                                                         "0").replace(
-        "Y", "1").split(',')
-    lista_cabecalho.pop(-1)  #remover o ultimo ,
-    lista_resultados.pop(-1)
-    return (lista_cabecalho, lista_resultados)
+#     cdef list lista_cabecalho = linhas[index_cabecalho].replace(" ", "").split(',')
+#     # ajustar valores numericos: N/Y por = 0/1 , NA por = 0 ,  N por = 0, Y por = 1
+#     cdef list lista_resultados = linhas[index_cabecalho + 2].replace(" ", "").replace("NA", "0").replace("N",
+#                                                                                                          "0").replace(
+#         "Y", "1").split(',')
+#     lista_cabecalho.pop(-1)  #remover o ultimo ,
+#     lista_resultados.pop(-1)
+#     return (lista_cabecalho, lista_resultados)
+
+# @cython.boundscheck(False)
+# @cython.wraparound(False)
+# cdef tuple tratar_tcptrace(str saida_tcptrace, str host_a, bint is_two_way= True, bint is_debug= False):
+#     """ Aqui tem que modifinar manualmente conforme quer o resultado:
+#     Entrada: tcptrace csv -> Separa a saída do tcptrace em uma lista de strings. Ajusta valores como N/Y e NA para numérico"""
+
+#     cdef tuple saida = _get_col_val_tcptrace(saida_tcptrace)
+#     cdef list lista_cabecalho = saida[0]
+#     cdef list lista_resultados = saida[1]
+#     cdef str remover_host
+#     cdef str tcptrace_host_a
+#     cdef str tcptrace_host_b
+#     cdef list aux
+#     cdef str val1
+#     cdef str val2
+
+#     if lista_resultados[2] == host_a: # se o host_b do tcptrace for igual ao host_a do extrator de features, entao precisamos trocar o host_b <-> host_a do tcptrace
+#         saida_tcptrace=saida_tcptrace.replace("a2b", "x2y")
+#         saida_tcptrace=saida_tcptrace.replace("b2a", "a2b")
+#         saida_tcptrace=saida_tcptrace.replace("x2y", "b2a")
+#         saida = _get_col_val_tcptrace(saida_tcptrace) # isso eh pq nao sabemos como o tcptrace escolhe o host a (na verdade eh por ordem, mas agora nao lembro pq deixei isso)
+#         lista_cabecalho = saida[0]
+#         lista_resultados = saida[1]
+
+#     #quero remover esses campos (sao os primeiros):: {'conn_#', 'host_a', 'host_b', 'port_a', 'port_b', first_packet, last_packet}
+#     lista_resultados.pop(0) # con
+#     tcptrace_host_a = lista_resultados.pop(0) # host_a
+#     tcptrace_host_b = lista_resultados.pop(0) # host_b
+#     lista_resultados.pop(0) # port_a
+#     lista_resultados.pop(0) # port_b
+#     lista_resultados.pop(0) # first_packet
+#     lista_resultados.pop(0) # last_packet
+
+#     lista_cabecalho.pop(0) # con
+#     lista_cabecalho.pop(0) # host_a
+#     lista_cabecalho.pop(0) # host_b
+#     lista_cabecalho.pop(0) # port_a
+#     lista_cabecalho.pop(0) # port_b
+#     lista_cabecalho.pop(0) # first_packet
+#     lista_cabecalho.pop(0) # last_packet
+
+#     lista_cabecalho.pop(32)
+#     aux = lista_resultados.pop(32).split("/")
+#     val1=aux[0]
+#     val2=aux[1]
+#     lista_cabecalho.append("SYN_pkts_sent_a2b")
+#     lista_cabecalho.append("FIN_pkts_sent_a2b")
+#     lista_resultados.append(val1)
+#     lista_resultados.append(val2)
+
+#     lista_cabecalho.pop(32)
+#     aux  = lista_resultados.pop(32).split("/") #SYN/FIN_pkts_sent_b2a
+#     val1=aux[0]
+#     val2=aux[1]
+#     lista_cabecalho.append("SYN_pkts_sent_b2a")
+#     lista_cabecalho.append("FIN_pkts_sent_b2a")
+#     lista_resultados.append(val1)
+#     lista_resultados.append(val2)
+
+#     lista_cabecalho.pop(32)
+#     aux = lista_resultados.pop(32).split("/") #req_1323_ws/ts_a2b
+#     val1=aux[0]
+#     val2=aux[1]
+#     lista_cabecalho.append("req_1323_ws_a2b")
+#     lista_cabecalho.append("req_1323_ts_a2b")
+#     lista_resultados.append(val1)
+#     lista_resultados.append(val2)
+
+#     lista_cabecalho.pop(32)
+#     aux = lista_resultados.pop(32).split("/") #req_1323_ws/ts_a2b
+#     val1=aux[0]
+#     val2=aux[1]
+#     lista_cabecalho.append("req_1323_ws_b2a")
+#     lista_cabecalho.append("req_1323_ts_b2a")
+#     lista_resultados.append(val1)
+#     lista_resultados.append(val2)
+
+#     # fim da separacao em 2
+
+#     # se for one-way, remover todos os b2a ou a2b, conforme arquivo de entrada;
+#     if is_two_way == False:
+#         remover_host='b2a'
+#         for i in range(len(lista_resultados)-1, -1, -1):
+#             if remover_host in lista_cabecalho[i]:
+#                 lista_cabecalho.pop(i)
+#                 lista_resultados.pop(i)
+
+#     # remover o ultimo valor q eh vazio, por causa da virgula após o último valor valido  0,123,3123,
+#     lista_cabecalho.pop()
+#     lista_resultados.pop()
+
+#     if is_debug:
+#         print(' -- tcptrace -- ')
+#         for i in range(0, len(lista_cabecalho)):
+#             print('[',i,'] ', lista_cabecalho[i] , ' = ',  lista_resultados[i])
+#         print('tcptrace lista_cabecalho: ', len(lista_cabecalho))
+#         print('tcptrace lista_resultados: ', len(lista_resultados))
+
+#     return (lista_resultados, lista_cabecalho)
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef tuple tratar_tcptrace(str saida_tcptrace, str host_a, bint is_two_way= True, bint is_debug= False):
-    """ Aqui tem que modifinar manualmente conforme quer o resultado:
-    Entrada: tcptrace csv -> Separa a saída do tcptrace em uma lista de strings. Ajusta valores como N/Y e NA para numérico"""
+cdef tuple tratar_tcptrace(str saida_tcptrace,str host_a, bint is_two_way):
 
-    cdef tuple saida = _get_col_val_tcptrace(saida_tcptrace)
-    cdef list lista_cabecalho = saida[0]
-    cdef list lista_resultados = saida[1]
-    cdef str remover_host
-    cdef str tcptrace_host_a
-    cdef str tcptrace_host_b
-    cdef list aux
-    cdef str val1
-    cdef str val2
+    cdef list lista_aux = saida_tcptrace.split(";")
+    if len(lista_aux) != 2:
+        print("Erro ao tratar saida tcptrace")
+        return ([],[])
 
-    if lista_resultados[2] == host_a: # se o host_b do tcptrace for igual ao host_a do extrator de features, entao precisamos trocar o host_b <-> host_a do tcptrace
-        saida_tcptrace=saida_tcptrace.replace("a2b", "x2y")
-        saida_tcptrace=saida_tcptrace.replace("b2a", "a2b")
-        saida_tcptrace=saida_tcptrace.replace("x2y", "b2a")
-        saida = _get_col_val_tcptrace(saida_tcptrace) # isso eh pq nao sabemos como o tcptrace escolhe o host a (na verdade eh por ordem, mas agora nao lembro pq deixei isso)
-        lista_cabecalho = saida[0]
-        lista_resultados = saida[1]
+    cdef list lista_cabecalhos = lista_aux[0].split(',')
+    cdef list lista_resultados = lista_aux[1].split(',')
+    # print(f"tcptrace: cab {len(lista_cabecalhos)} - res {len(lista_resultados)}")
+    # print(f"lista_cab{lista_cabecalhos}")
+    if len(lista_cabecalhos) != len(lista_resultados):
+        print(f"Erro - tcptrace tamanhos diferentes ! cab {len(lista_cabecalhos)} - res {len(lista_resultados)}")
+        return ([],[])
 
-    #quero remover esses campos (sao os primeiros):: {'conn_#', 'host_a', 'host_b', 'port_a', 'port_b', first_packet, last_packet}
-    lista_resultados.pop(0) # con
-    tcptrace_host_a = lista_resultados.pop(0) # host_a
-    tcptrace_host_b = lista_resultados.pop(0) # host_b
-    lista_resultados.pop(0) # port_a
-    lista_resultados.pop(0) # port_b
-    lista_resultados.pop(0) # first_packet
-    lista_resultados.pop(0) # last_packet
+    return (lista_cabecalhos, lista_resultados)
+    for col, val in zip(lista_cabecalhos, lista_resultados):
+        print(f"[{col}]={val}")
 
-    lista_cabecalho.pop(0) # con
-    lista_cabecalho.pop(0) # host_a
-    lista_cabecalho.pop(0) # host_b
-    lista_cabecalho.pop(0) # port_a
-    lista_cabecalho.pop(0) # port_b
-    lista_cabecalho.pop(0) # first_packet
-    lista_cabecalho.pop(0) # last_packet
+    cdef list nova_lista_resultados = []
+    cdef int indice 
+    cdef list valores
 
-    lista_cabecalho.pop(32)
-    aux = lista_resultados.pop(32).split("/")
-    val1=aux[0]
-    val2=aux[1]
-    lista_cabecalho.append("SYN_pkts_sent_a2b")
-    lista_cabecalho.append("FIN_pkts_sent_a2b")
-    lista_resultados.append(val1)
-    lista_resultados.append(val2)
+    lista_cabecalhos.pop(0)#host_a
+    lista_cabecalhos.pop(0)#host_b
+    lista_cabecalhos.pop(0)#port_a
+    lista_cabecalhos.pop(0)#port_b
+    lista_cabecalhos.pop(-1)#,nada
 
-    lista_cabecalho.pop(32)
-    aux  = lista_resultados.pop(32).split("/") #SYN/FIN_pkts_sent_b2a
-    val1=aux[0]
-    val2=aux[1]
-    lista_cabecalho.append("SYN_pkts_sent_b2a")
-    lista_cabecalho.append("FIN_pkts_sent_b2a")
-    lista_resultados.append(val1)
-    lista_resultados.append(val2)
+    lista_resultados.pop(0)#host_a
+    lista_resultados.pop(0)#host_b
+    lista_resultados.pop(0)#port_a
+    lista_resultados.pop(0)#port_b
+    lista_resultados.pop(-1)#,nada
 
-    lista_cabecalho.pop(32)
-    aux = lista_resultados.pop(32).split("/") #req_1323_ws/ts_a2b
-    val1=aux[0]
-    val2=aux[1]
-    lista_cabecalho.append("req_1323_ws_a2b")
-    lista_cabecalho.append("req_1323_ts_a2b")
-    lista_resultados.append(val1)
-    lista_resultados.append(val2)
+    cdef list lista_alterar_com_barra = [
+        "a2b_syn_fin_pkts_sent", "b2a_syn_fin_pkts_sent", "b2a_req_1323_ws_ts",
+        "a2b_req_1323_ws_ts" ]
+    cdef dict dict_alteracoes_com_barra = {"a2b_syn_fin_pkts_sent":["a2b_syn_pkts_sent", "a2b_fin_pkts_sent"],
+    "b2a_syn_fin_pkts_sent":["b2a_syn_pkts_sent", "b2a_fin_pkts_sent"],
+    "a2b_req_1323_ws_ts":["a2b_req_1323_ws", "a2b_req_1323_ts"],
+    "b2a_req_1323_ws_ts":["b2a_req_1323_ws", "b2a_req_1323_ts"]
+    }
 
-    lista_cabecalho.pop(32)
-    aux = lista_resultados.pop(32).split("/") #req_1323_ws/ts_a2b
-    val1=aux[0]
-    val2=aux[1]
-    lista_cabecalho.append("req_1323_ws_b2a")
-    lista_cabecalho.append("req_1323_ts_b2a")
-    lista_resultados.append(val1)
-    lista_resultados.append(val2)
+    for item in lista_alterar_com_barra:
 
-    # fim da separacao em 2
+        try:
+            indice = lista_cabecalhos.index(item)
+            valores = lista_resultados[indice].split("/")
+            lista_cabecalhos.pop(indice)
+            lista_cabecalhos += dict_alteracoes_com_barra[item]
+            lista_resultados.pop(indice)
+            lista_resultados.append(valores[0])
+            lista_resultados.append(valores[1])
+        except:
+            print(f"ERRO-f-extractor-cython: {item} nao encontrado em cabecalhos")
 
-    # se for one-way, remover todos os b2a ou a2b, conforme arquivo de entrada;
-    if is_two_way == False:
-        remover_host='b2a'
-        for i in range(len(lista_resultados)-1, -1, -1):
-            if remover_host in lista_cabecalho[i]:
-                lista_cabecalho.pop(i)
-                lista_resultados.pop(i)
+    print(f"cabecalhos: {lista_cabecalhos}")
+    print(f"result:{lista_resultados}")
 
-    # remover o ultimo valor q eh vazio, por causa da virgula após o último valor valido  0,123,3123,
-    lista_cabecalho.pop()
-    lista_resultados.pop()
+    for i,val in enumerate(lista_resultados):
+        print(f"fixing[{i}]={val}")
+        if 'N' in val:
+            nova_lista_resultados.append(0)
+            continue
+            # lista_resultados[i] = 0
+        elif 'Y' in val:
+            # lista_resultados[i] = 1
+            nova_lista_resultados.append(1)
+            continue
+        if '.' in val:
+            # lista_resultados[i] = float(lista_resultados[i])
+            nova_lista_resultados.append(float(lista_resultados[i]))
+        else:
+            # lista_resultados[i] = int(lista_resultados[i])
+            nova_lista_resultados.append(int(lista_resultados[i]))   
 
-    if is_debug:
-        print(' -- tcptrace -- ')
-        for i in range(0, len(lista_cabecalho)):
-            print('[',i,'] ', lista_cabecalho[i] , ' = ',  lista_resultados[i])
-        print('tcptrace lista_cabecalho: ', len(lista_cabecalho))
-        print('tcptrace lista_resultados: ', len(lista_resultados))
-
-    return (lista_resultados, lista_cabecalho)
+    return (lista_cabecalhos, lista_resultados)
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -204,6 +285,7 @@ cpdef tuple process_pcap(int id_bloco, str host_a, str proto, str service_class,
         
         # result = subprocess.run(["tcptrace", "-l", "-r", "-W", "-u", "--csv", entrada_arquivo_pcap], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         saida = tratar_tcptrace(result, host_a, is_two_way=is_two_way)
+        print(saida)
         resultados_tcptrace = saida[0]
         colunas_tcptrace = saida[1]
 

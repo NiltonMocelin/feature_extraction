@@ -16,11 +16,11 @@ ext_modules = [
         ["PKT_features_cython.pyx"],
         include_dirs=[np.get_include()],
     ),
-    Extension(
-        "feature_extractor_cython",
-        ["feature_extractor_cython.pyx"],
-        include_dirs=[np.get_include()],
-    ),
+    # Extension(
+    #     "feature_extractor_cython",
+    #     ["feature_extractor_cython.pyx"],
+    #     include_dirs=[np.get_include()],
+    # ),
 ]
 
 setup(

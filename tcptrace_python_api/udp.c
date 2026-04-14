@@ -321,7 +321,30 @@ udpdotrace(
     return(pup_save);
 }
 
+void tcptrace_cleanup_udp() {
+    // 1. Resetar a flag de inicialização (Você precisará lidar com o fato de ser static)
+    // Se puder alterar o source, mude para global ou use um ponteiro.
+    
+    // 2. Liberar memória
+    if (utp) {
+        // Ideal: liberar cada par dentro de utp[i] antes
+        free(utp);
+        utp = NULL;
+    }
+    if (ignore_pairs) {
+        free(ignore_pairs);
+        ignore_pairs = NULL;
+    }
 
+    // 3. Resetar contadores e limites
+    num_udp_pairs = -1;
+    udp_trace_count = 0;
+    max_udp_pairs = 100; // Ou o valor original definido no tcptrace.h
+    
+    // 4. Resetar variáveis de tempo e stats
+    search_count = 0;
+    packet_count = 0;
+}
 
 void
 udptrace_done(void)
@@ -385,6 +408,8 @@ udptrace_done(void)
 	      }
 	 }
     }
+
+    // tcptrace_cleanup_udp();
     
 }
 static void

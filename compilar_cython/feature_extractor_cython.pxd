@@ -1,1 +1,1 @@
-cpdef tuple process_pcap(int id_bloco, str host_a, str proto, str service_class, str app_class, str entrada_arquivo_pcap, list bloco_pacotes, bint is_two_way, bint is_tcptrace)
+cdef tuple process_bloco(str filename, int id_bloco, str host_a, str proto, str service_class, str app_class, list bloco_total, bint is_two_ways)

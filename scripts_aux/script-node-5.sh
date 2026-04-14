@@ -1,0 +1,88 @@
+listar_arquivos() {
+    local service="$1"
+    local app="$2"
+    local caminho="$3"
+
+    # Verifica se o diretório existe
+    if [ ! -d "$caminho" ]; then
+        echo "Erro: O diretório '$caminho' não existe."
+        return 1
+    fi
+
+    # Loop pelos itens do diretório
+    for arquivo in "$caminho"/*; do
+
+        for i in 10 30 50; do
+            # O [ -f ] garante que processamos apenas ARQUIVOS (pula pastas)
+            if [ -f "$arquivo" ]; then
+                echo "Processando: $(basename "$arquivo") tam_bloco $i"
+                python main_blocos_cython.py --block_size $i --service_class $service --app_class $app --file_name $arquivo
+            fi
+        done
+    done
+}
+
+listar_arquivos "qos" "gaming_chess" "/users/niltonm/chess_1" &
+listar_arquivos "qos" "gaming_chess" "/users/niltonm/chess_2" &
+listar_arquivos "qos" "gaming_cs2" "/users/niltonm/cs2" &
+
+wait
+
+listar_arquivos "qos" "gaming_cs2" "/users/niltonm/cs2-deathmatch-15ms" &
+listar_arquivos "qos" "gaming_cs2" "/users/niltonm/cs2-deathmatch2-15ms" &
+listar_arquivos "qos" "meeting_audio_real" "/users/niltonm/gmeeting_audio_real" &
+
+wait
+
+
+listar_arquivos "qos" "gaming_chess" "/users/niltonm/online-chess" &
+listar_arquivos "qos" "spotify_audio_estatico" "/users/niltonm/spotify_audio_estatico" &
+listar_arquivos "qos" "twitch_video_real" "/users/niltonm/teste_twitch_real_1080p60fps" &
+wait
+listar_arquivos "qos" "twitch_video_estatico" "/users/niltonm/teste_twitch_static_1080p60fps" &
+listar_arquivos "qos" "youtube_video_real" "/users/niltonm/teste_yt_real_480p_apenasudp" &
+listar_arquivos "qos" "youtube_video_real" "/users/niltonm/teste_yt_real_fullhd_ou_hd" &
+
+wait
+
+listar_arquivos "qos" "youtube_video_estatico" "/users/niltonm/teste_yt_static_1080p60fps" &
+listar_arquivos "qos" "youtube_video_estatico" "/users/niltonm/teste_yt_static_360p" &
+listar_arquivos "qos" "twitch_video_real" "/users/niltonm/twitch_real_1080p60_1" &
+
+wait
+listar_arquivos "qos" "twitch_video_real" "/users/niltonm/twitch_real_1080p60_2" &
+listar_arquivos "qos" "twitch_video_real" "/users/niltonm/twitch_real_480_1" &
+listar_arquivos "qos" "twitch_video_real" "/users/niltonm/twitch_real_480_2" &
+
+wait
+
+
+listar_arquivos "qos" "twitch_video_real" "/users/niltonm/twitch_real_720p60_1" &
+listar_arquivos "qos" "twitch_video_estatico" "/users/niltonm/twitch_static_1080p60_1" &
+listar_arquivos "qos" "twitch_video_estatico" "/users/niltonm/twitch_static_1080p60_2" &
+
+wait
+listar_arquivos "qos" "twitch_video_estatico" "/users/niltonm/twitch_static_480_1" &
+listar_arquivos "qos" "twitch_video_estatico" "/users/niltonm/twitch_static_480_2" &
+listar_arquivos "qos" "twitch_video_estatico" "/users/niltonm/twitch_static_720p60_1" &
+
+wait
+
+listar_arquivos "qos" "twitch_video_estatico" "/users/niltonm/twitch_static_720p60_2" &
+listar_arquivos "qos" "ufc_video_real" "/users/niltonm/ufc_streaming" &
+listar_arquivos "qos" "youtube_audio_estatico" "/users/niltonm/youtube_audio_estatico" &
+
+wait
+listar_arquivos "qos" "youtube_video_estatico" "/users/niltonm/youtube_static_1080p_1" &
+listar_arquivos "qos" "youtube_video_estatico" "/users/niltonm/youtube_static_1080p_2" &
+listar_arquivos "qos" "youtube_video_estatico" "/users/niltonm/youtube_static_480p_1" &
+
+wait
+
+
+listar_arquivos "qos" "youtube_video_estatico" "/users/niltonm/youtube_static_480p_2" &
+listar_arquivos "qos" "youtube_video_estatico" "/users/niltonm/youtube_static_720p_1" &
+listar_arquivos "qos" "youtube_video_estatico" "/users/niltonm/youtube_static_720p_2" &
+
+
+wait

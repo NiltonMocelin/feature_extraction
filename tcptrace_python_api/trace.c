@@ -2525,7 +2525,33 @@ dotrace(
     return(ptp_save);
 }
 
-
+void reset_tcptrace_globals() {
+    // 1. Resetar Flags Estáticas (Você terá que remover o 'static' do código original 
+    // ou criar um ponteiro para elas se quiser resetar via código)
+    // No caso de 'initted', o melhor é garantir que ela volte a ser FALSE.
+    
+    // 2. Resetar Contadores
+    num_tcp_pairs = -1;
+    tcp_trace_count = 0;
+    tcp_packet_count = 0;
+    search_count = 0;
+    ctrunc = 0;
+    
+    // 3. Limpar Memória (Se não estiver usando o modo Pool com maxtasksperchild=1)
+    if (ttp) {
+        // O ideal aqui seria percorrer o ttp e dar free em cada par
+        // antes de dar free no array principal para evitar leak de memória.
+        free(ttp);
+        ttp = NULL;
+    }
+    if (ignore_pairs) {
+        free(ignore_pairs);
+        ignore_pairs = NULL;
+    }
+    
+    // 4. Resetar o estado das bibliotecas internas do tcptrace
+    // cainit(); // Se necessário re-inicializar tabelas hash
+}
 
 void
 trace_done(void)
@@ -2535,7 +2561,7 @@ trace_done(void)
   int ix;
   static int count = 0;
   Bool incomplete_pkt_capture = FALSE;
-  
+
   if (!run_continuously) {
     if (!printsuppress) {
 	if (tcp_trace_count == 0) {
@@ -2723,6 +2749,8 @@ trace_done(void)
   
     if ((debug>2) && !nonames)
 	cadump();
+
+	// reset_tcptrace_globals();
 }
 
 static void
