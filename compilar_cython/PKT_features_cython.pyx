@@ -239,66 +239,66 @@ cpdef tuple calcular_estatisticas_raw(list lista_raw_pkts, str prefix, str proto
     lista_aux_3pos =  np.percentile(
         len_ip_header, [25, 50, 75], overwrite_input=True
     )
-    lista_resultados[0] = below(len_ip_header, lista_aux_3pos[1])
-    lista_resultados[1] = above(len_ip_header, lista_aux_3pos[1])
-    lista_resultados[2] = len_ip_header.sum()
-    lista_resultados[3] = len_ip_header.std()
-    lista_resultados[4] = len_ip_header.max()
-    lista_resultados[5] = len_ip_header.var()
-    lista_resultados[6] = lista_aux_3pos[2]
-    lista_resultados[7] = lista_aux_3pos[0]
-    lista_resultados[8] = len_ip_header.min()
-    lista_resultados[9] = lista_aux_3pos[1]
-    lista_resultados[10] = len_ip_header.mean()
+    lista_resultados[19] = below(len_ip_header, lista_aux_3pos[1])
+    lista_resultados[20] = above(len_ip_header, lista_aux_3pos[1])
+    lista_resultados[21] = len_ip_header.sum()
+    lista_resultados[22] = len_ip_header.std()
+    lista_resultados[23] = len_ip_header.max()
+    lista_resultados[24] = len_ip_header.var()
+    lista_resultados[25] = lista_aux_3pos[2]
+    lista_resultados[26] = lista_aux_3pos[0]
+    lista_resultados[27] = len_ip_header.min()
+    lista_resultados[28] = lista_aux_3pos[1]
+    lista_resultados[29] = len_ip_header.mean()
 
     # len_ip --
     lista_aux_3pos =  np.percentile(
         len_ip_total, [25, 50, 75], overwrite_input=True
     )
-    lista_resultados[0] = below(len_ip_total, lista_aux_3pos[1])
-    lista_resultados[1] = above(len_ip_total, lista_aux_3pos[1])
-    lista_resultados[2] = len_ip_total.sum()
-    lista_resultados[3] = len_ip_total.std()
-    lista_resultados[4] = len_ip_total.max()
-    lista_resultados[5] = len_ip_total.var()
-    lista_resultados[6] = lista_aux_3pos[2]
-    lista_resultados[7] = lista_aux_3pos[0]
-    lista_resultados[8] = len_ip_total.min()
-    lista_resultados[9] = lista_aux_3pos[1]
-    lista_resultados[10] = len_ip_total.mean() 
+    lista_resultados[30] = below(len_ip_total, lista_aux_3pos[1])
+    lista_resultados[31] = above(len_ip_total, lista_aux_3pos[1])
+    lista_resultados[32] = len_ip_total.sum()
+    lista_resultados[33] = len_ip_total.std()
+    lista_resultados[34] = len_ip_total.max()
+    lista_resultados[35] = len_ip_total.var()
+    lista_resultados[36] = lista_aux_3pos[2]
+    lista_resultados[37] = lista_aux_3pos[0]
+    lista_resultados[38] = len_ip_total.min()
+    lista_resultados[39] = lista_aux_3pos[1]
+    lista_resultados[40] = len_ip_total.mean() 
 
     # ! arrumar ! o len_proto e o len_payload
     # len_proto --
     lista_aux_3pos =  np.percentile(
         len_proto, [25, 50, 75], overwrite_input=True
     )
-    lista_resultados[0] = below(len_proto, lista_aux_3pos[1])
-    lista_resultados[1] = above(len_proto, lista_aux_3pos[1])
-    lista_resultados[2] = len_proto.sum()
-    lista_resultados[3] = len_proto.std()
-    lista_resultados[4] = len_proto.max()
-    lista_resultados[5] = len_proto.var()
-    lista_resultados[6] = lista_aux_3pos[2]
-    lista_resultados[7] = lista_aux_3pos[0]
-    lista_resultados[8] = len_proto.min()
-    lista_resultados[9] = lista_aux_3pos[1]
-    lista_resultados[10] = len_proto.mean() 
+    lista_resultados[41] = below(len_proto, lista_aux_3pos[1])
+    lista_resultados[42] = above(len_proto, lista_aux_3pos[1])
+    lista_resultados[43] = len_proto.sum()
+    lista_resultados[44] = len_proto.std()
+    lista_resultados[45] = len_proto.max()
+    lista_resultados[46] = len_proto.var()
+    lista_resultados[47] = lista_aux_3pos[2]
+    lista_resultados[48] = lista_aux_3pos[0]
+    lista_resultados[49] = len_proto.min()
+    lista_resultados[50] = lista_aux_3pos[1]
+    lista_resultados[51] = len_proto.mean() 
 
     # len_payload --
     lista_aux_3pos =  np.percentile(
         len_payload, [25, 50, 75], overwrite_input=True
     )
-    lista_resultados[0] = below(len_payload, lista_aux_3pos[1])
-    lista_resultados[1] = above(len_payload, lista_aux_3pos[1])
-    lista_resultados[2] = len_payload.sum()
-    lista_resultados[3] = len_payload.std()
-    lista_resultados[4] = len_payload.max()
-    lista_resultados[5] = len_payload.var()
-    lista_resultados[6] = lista_aux_3pos[2]
-    lista_resultados[7] = lista_aux_3pos[0]
-    lista_resultados[8] = len_payload.min()
-    lista_resultados[9] = lista_aux_3pos[1]
-    lista_resultados[10] = len_payload.mean() 
+    lista_resultados[52] = below(len_payload, lista_aux_3pos[1])
+    lista_resultados[53] = above(len_payload, lista_aux_3pos[1])
+    lista_resultados[54] = len_payload.sum()
+    lista_resultados[55] = len_payload.std()
+    lista_resultados[56] = len_payload.max()
+    lista_resultados[57] = len_payload.var()
+    lista_resultados[58] = lista_aux_3pos[2]
+    lista_resultados[59] = lista_aux_3pos[0]
+    lista_resultados[60] = len_payload.min()
+    lista_resultados[61] = lista_aux_3pos[1]
+    lista_resultados[62] = len_payload.mean() 
 
     # [O restante da sua lógica de percentis e lista_resultados entra aqui]
     

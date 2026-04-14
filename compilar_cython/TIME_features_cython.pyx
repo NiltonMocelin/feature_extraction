@@ -169,7 +169,6 @@ cdef tuple No_transitions_bulk_raw(list bloco, str proto_str, int offset):
         elif ip.protocol == UDP_PROTO:
             payload_len = len(bloco[i][1]) - offset - ihl - 8 # UDP header é fixo de 8 bytes
 
-
         if payload_len < 1:
             contador_pacotes = 0
             prev_time = bloco[i][0]

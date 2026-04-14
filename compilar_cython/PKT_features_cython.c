@@ -22866,7 +22866,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
  *     lista_aux_3pos =  np.percentile(
  *         len_ip_header, [25, 50, 75], overwrite_input=True             # <<<<<<<<<<<<<<
  *     )
- *     lista_resultados[0] = below(len_ip_header, lista_aux_3pos[1])
+ *     lista_resultados[19] = below(len_ip_header, lista_aux_3pos[1])
  */
   __pyx_t_5 = PyList_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 240, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -22901,7 +22901,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
  *     lista_aux_3pos =  np.percentile(
  *         len_ip_header, [25, 50, 75], overwrite_input=True             # <<<<<<<<<<<<<<
  *     )
- *     lista_resultados[0] = below(len_ip_header, lista_aux_3pos[1])
+ *     lista_resultados[19] = below(len_ip_header, lista_aux_3pos[1])
  */
   __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 240, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -22945,39 +22945,39 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   /* "PKT_features_cython.pyx":242
  *         len_ip_header, [25, 50, 75], overwrite_input=True
  *     )
- *     lista_resultados[0] = below(len_ip_header, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
- *     lista_resultados[1] = above(len_ip_header, lista_aux_3pos[1])
- *     lista_resultados[2] = len_ip_header.sum()
+ *     lista_resultados[19] = below(len_ip_header, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
+ *     lista_resultados[20] = above(len_ip_header, lista_aux_3pos[1])
+ *     lista_resultados[21] = len_ip_header.sum()
  */
   __pyx_t_87 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_v_len_ip_header), PyBUF_WRITABLE); if (unlikely(!__pyx_t_87.memview)) __PYX_ERR(0, 242, __pyx_L1_error)
   __pyx_t_81 = 1;
   __pyx_t_76 = __pyx_f_19PKT_features_cython_below(__pyx_t_87, (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides))); if (unlikely(__pyx_t_76 == ((int)-1) && PyErr_Occurred())) __PYX_ERR(0, 242, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_87, 1);
   __pyx_t_87.memview = NULL; __pyx_t_87.data = NULL;
-  __pyx_t_81 = 0;
+  __pyx_t_81 = 19;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_76;
 
   /* "PKT_features_cython.pyx":243
  *     )
- *     lista_resultados[0] = below(len_ip_header, lista_aux_3pos[1])
- *     lista_resultados[1] = above(len_ip_header, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
- *     lista_resultados[2] = len_ip_header.sum()
- *     lista_resultados[3] = len_ip_header.std()
+ *     lista_resultados[19] = below(len_ip_header, lista_aux_3pos[1])
+ *     lista_resultados[20] = above(len_ip_header, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
+ *     lista_resultados[21] = len_ip_header.sum()
+ *     lista_resultados[22] = len_ip_header.std()
  */
   __pyx_t_87 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_v_len_ip_header), PyBUF_WRITABLE); if (unlikely(!__pyx_t_87.memview)) __PYX_ERR(0, 243, __pyx_L1_error)
   __pyx_t_81 = 1;
   __pyx_t_76 = __pyx_f_19PKT_features_cython_above(__pyx_t_87, (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides))); if (unlikely(__pyx_t_76 == ((int)-1) && PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_87, 1);
   __pyx_t_87.memview = NULL; __pyx_t_87.data = NULL;
-  __pyx_t_81 = 1;
+  __pyx_t_81 = 20;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_76;
 
   /* "PKT_features_cython.pyx":244
- *     lista_resultados[0] = below(len_ip_header, lista_aux_3pos[1])
- *     lista_resultados[1] = above(len_ip_header, lista_aux_3pos[1])
- *     lista_resultados[2] = len_ip_header.sum()             # <<<<<<<<<<<<<<
- *     lista_resultados[3] = len_ip_header.std()
- *     lista_resultados[4] = len_ip_header.max()
+ *     lista_resultados[19] = below(len_ip_header, lista_aux_3pos[1])
+ *     lista_resultados[20] = above(len_ip_header, lista_aux_3pos[1])
+ *     lista_resultados[21] = len_ip_header.sum()             # <<<<<<<<<<<<<<
+ *     lista_resultados[22] = len_ip_header.std()
+ *     lista_resultados[23] = len_ip_header.max()
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_ip_header), __pyx_n_s_sum); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 244, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -23005,15 +23005,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 244, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 2;
+  __pyx_t_81 = 21;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":245
- *     lista_resultados[1] = above(len_ip_header, lista_aux_3pos[1])
- *     lista_resultados[2] = len_ip_header.sum()
- *     lista_resultados[3] = len_ip_header.std()             # <<<<<<<<<<<<<<
- *     lista_resultados[4] = len_ip_header.max()
- *     lista_resultados[5] = len_ip_header.var()
+ *     lista_resultados[20] = above(len_ip_header, lista_aux_3pos[1])
+ *     lista_resultados[21] = len_ip_header.sum()
+ *     lista_resultados[22] = len_ip_header.std()             # <<<<<<<<<<<<<<
+ *     lista_resultados[23] = len_ip_header.max()
+ *     lista_resultados[24] = len_ip_header.var()
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_ip_header), __pyx_n_s_std); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -23041,15 +23041,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 3;
+  __pyx_t_81 = 22;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":246
- *     lista_resultados[2] = len_ip_header.sum()
- *     lista_resultados[3] = len_ip_header.std()
- *     lista_resultados[4] = len_ip_header.max()             # <<<<<<<<<<<<<<
- *     lista_resultados[5] = len_ip_header.var()
- *     lista_resultados[6] = lista_aux_3pos[2]
+ *     lista_resultados[21] = len_ip_header.sum()
+ *     lista_resultados[22] = len_ip_header.std()
+ *     lista_resultados[23] = len_ip_header.max()             # <<<<<<<<<<<<<<
+ *     lista_resultados[24] = len_ip_header.var()
+ *     lista_resultados[25] = lista_aux_3pos[2]
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_ip_header), __pyx_n_s_max); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -23077,15 +23077,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 4;
+  __pyx_t_81 = 23;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":247
- *     lista_resultados[3] = len_ip_header.std()
- *     lista_resultados[4] = len_ip_header.max()
- *     lista_resultados[5] = len_ip_header.var()             # <<<<<<<<<<<<<<
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]
+ *     lista_resultados[22] = len_ip_header.std()
+ *     lista_resultados[23] = len_ip_header.max()
+ *     lista_resultados[24] = len_ip_header.var()             # <<<<<<<<<<<<<<
+ *     lista_resultados[25] = lista_aux_3pos[2]
+ *     lista_resultados[26] = lista_aux_3pos[0]
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_ip_header), __pyx_n_s_var); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -23113,37 +23113,37 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 5;
+  __pyx_t_81 = 24;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":248
- *     lista_resultados[4] = len_ip_header.max()
- *     lista_resultados[5] = len_ip_header.var()
- *     lista_resultados[6] = lista_aux_3pos[2]             # <<<<<<<<<<<<<<
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_ip_header.min()
+ *     lista_resultados[23] = len_ip_header.max()
+ *     lista_resultados[24] = len_ip_header.var()
+ *     lista_resultados[25] = lista_aux_3pos[2]             # <<<<<<<<<<<<<<
+ *     lista_resultados[26] = lista_aux_3pos[0]
+ *     lista_resultados[27] = len_ip_header.min()
  */
   __pyx_t_81 = 2;
-  __pyx_t_89 = 6;
+  __pyx_t_89 = 25;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":249
- *     lista_resultados[5] = len_ip_header.var()
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]             # <<<<<<<<<<<<<<
- *     lista_resultados[8] = len_ip_header.min()
- *     lista_resultados[9] = lista_aux_3pos[1]
+ *     lista_resultados[24] = len_ip_header.var()
+ *     lista_resultados[25] = lista_aux_3pos[2]
+ *     lista_resultados[26] = lista_aux_3pos[0]             # <<<<<<<<<<<<<<
+ *     lista_resultados[27] = len_ip_header.min()
+ *     lista_resultados[28] = lista_aux_3pos[1]
  */
   __pyx_t_81 = 0;
-  __pyx_t_89 = 7;
+  __pyx_t_89 = 26;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":250
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_ip_header.min()             # <<<<<<<<<<<<<<
- *     lista_resultados[9] = lista_aux_3pos[1]
- *     lista_resultados[10] = len_ip_header.mean()
+ *     lista_resultados[25] = lista_aux_3pos[2]
+ *     lista_resultados[26] = lista_aux_3pos[0]
+ *     lista_resultados[27] = len_ip_header.min()             # <<<<<<<<<<<<<<
+ *     lista_resultados[28] = lista_aux_3pos[1]
+ *     lista_resultados[29] = len_ip_header.mean()
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_ip_header), __pyx_n_s_min); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -23171,24 +23171,24 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 8;
+  __pyx_t_81 = 27;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":251
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_ip_header.min()
- *     lista_resultados[9] = lista_aux_3pos[1]             # <<<<<<<<<<<<<<
- *     lista_resultados[10] = len_ip_header.mean()
+ *     lista_resultados[26] = lista_aux_3pos[0]
+ *     lista_resultados[27] = len_ip_header.min()
+ *     lista_resultados[28] = lista_aux_3pos[1]             # <<<<<<<<<<<<<<
+ *     lista_resultados[29] = len_ip_header.mean()
  * 
  */
   __pyx_t_81 = 1;
-  __pyx_t_89 = 9;
+  __pyx_t_89 = 28;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":252
- *     lista_resultados[8] = len_ip_header.min()
- *     lista_resultados[9] = lista_aux_3pos[1]
- *     lista_resultados[10] = len_ip_header.mean()             # <<<<<<<<<<<<<<
+ *     lista_resultados[27] = len_ip_header.min()
+ *     lista_resultados[28] = lista_aux_3pos[1]
+ *     lista_resultados[29] = len_ip_header.mean()             # <<<<<<<<<<<<<<
  * 
  *     # len_ip --
  */
@@ -23218,7 +23218,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 10;
+  __pyx_t_81 = 29;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":255
@@ -23239,7 +23239,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
  *     lista_aux_3pos =  np.percentile(
  *         len_ip_total, [25, 50, 75], overwrite_input=True             # <<<<<<<<<<<<<<
  *     )
- *     lista_resultados[0] = below(len_ip_total, lista_aux_3pos[1])
+ *     lista_resultados[30] = below(len_ip_total, lista_aux_3pos[1])
  */
   __pyx_t_65 = PyList_New(3); if (unlikely(!__pyx_t_65)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_65);
@@ -23274,7 +23274,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
  *     lista_aux_3pos =  np.percentile(
  *         len_ip_total, [25, 50, 75], overwrite_input=True             # <<<<<<<<<<<<<<
  *     )
- *     lista_resultados[0] = below(len_ip_total, lista_aux_3pos[1])
+ *     lista_resultados[30] = below(len_ip_total, lista_aux_3pos[1])
  */
   __pyx_t_65 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_65)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_65);
@@ -23318,39 +23318,39 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   /* "PKT_features_cython.pyx":258
  *         len_ip_total, [25, 50, 75], overwrite_input=True
  *     )
- *     lista_resultados[0] = below(len_ip_total, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
- *     lista_resultados[1] = above(len_ip_total, lista_aux_3pos[1])
- *     lista_resultados[2] = len_ip_total.sum()
+ *     lista_resultados[30] = below(len_ip_total, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
+ *     lista_resultados[31] = above(len_ip_total, lista_aux_3pos[1])
+ *     lista_resultados[32] = len_ip_total.sum()
  */
   __pyx_t_87 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_v_len_ip_total), PyBUF_WRITABLE); if (unlikely(!__pyx_t_87.memview)) __PYX_ERR(0, 258, __pyx_L1_error)
   __pyx_t_81 = 1;
   __pyx_t_76 = __pyx_f_19PKT_features_cython_below(__pyx_t_87, (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides))); if (unlikely(__pyx_t_76 == ((int)-1) && PyErr_Occurred())) __PYX_ERR(0, 258, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_87, 1);
   __pyx_t_87.memview = NULL; __pyx_t_87.data = NULL;
-  __pyx_t_81 = 0;
+  __pyx_t_81 = 30;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_76;
 
   /* "PKT_features_cython.pyx":259
  *     )
- *     lista_resultados[0] = below(len_ip_total, lista_aux_3pos[1])
- *     lista_resultados[1] = above(len_ip_total, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
- *     lista_resultados[2] = len_ip_total.sum()
- *     lista_resultados[3] = len_ip_total.std()
+ *     lista_resultados[30] = below(len_ip_total, lista_aux_3pos[1])
+ *     lista_resultados[31] = above(len_ip_total, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
+ *     lista_resultados[32] = len_ip_total.sum()
+ *     lista_resultados[33] = len_ip_total.std()
  */
   __pyx_t_87 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_v_len_ip_total), PyBUF_WRITABLE); if (unlikely(!__pyx_t_87.memview)) __PYX_ERR(0, 259, __pyx_L1_error)
   __pyx_t_81 = 1;
   __pyx_t_76 = __pyx_f_19PKT_features_cython_above(__pyx_t_87, (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides))); if (unlikely(__pyx_t_76 == ((int)-1) && PyErr_Occurred())) __PYX_ERR(0, 259, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_87, 1);
   __pyx_t_87.memview = NULL; __pyx_t_87.data = NULL;
-  __pyx_t_81 = 1;
+  __pyx_t_81 = 31;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_76;
 
   /* "PKT_features_cython.pyx":260
- *     lista_resultados[0] = below(len_ip_total, lista_aux_3pos[1])
- *     lista_resultados[1] = above(len_ip_total, lista_aux_3pos[1])
- *     lista_resultados[2] = len_ip_total.sum()             # <<<<<<<<<<<<<<
- *     lista_resultados[3] = len_ip_total.std()
- *     lista_resultados[4] = len_ip_total.max()
+ *     lista_resultados[30] = below(len_ip_total, lista_aux_3pos[1])
+ *     lista_resultados[31] = above(len_ip_total, lista_aux_3pos[1])
+ *     lista_resultados[32] = len_ip_total.sum()             # <<<<<<<<<<<<<<
+ *     lista_resultados[33] = len_ip_total.std()
+ *     lista_resultados[34] = len_ip_total.max()
  */
   __pyx_t_65 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_ip_total), __pyx_n_s_sum); if (unlikely(!__pyx_t_65)) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_65);
@@ -23378,15 +23378,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_63); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 260, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_63); __pyx_t_63 = 0;
-  __pyx_t_81 = 2;
+  __pyx_t_81 = 32;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":261
- *     lista_resultados[1] = above(len_ip_total, lista_aux_3pos[1])
- *     lista_resultados[2] = len_ip_total.sum()
- *     lista_resultados[3] = len_ip_total.std()             # <<<<<<<<<<<<<<
- *     lista_resultados[4] = len_ip_total.max()
- *     lista_resultados[5] = len_ip_total.var()
+ *     lista_resultados[31] = above(len_ip_total, lista_aux_3pos[1])
+ *     lista_resultados[32] = len_ip_total.sum()
+ *     lista_resultados[33] = len_ip_total.std()             # <<<<<<<<<<<<<<
+ *     lista_resultados[34] = len_ip_total.max()
+ *     lista_resultados[35] = len_ip_total.var()
  */
   __pyx_t_65 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_ip_total), __pyx_n_s_std); if (unlikely(!__pyx_t_65)) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_65);
@@ -23414,15 +23414,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_63); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_63); __pyx_t_63 = 0;
-  __pyx_t_81 = 3;
+  __pyx_t_81 = 33;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":262
- *     lista_resultados[2] = len_ip_total.sum()
- *     lista_resultados[3] = len_ip_total.std()
- *     lista_resultados[4] = len_ip_total.max()             # <<<<<<<<<<<<<<
- *     lista_resultados[5] = len_ip_total.var()
- *     lista_resultados[6] = lista_aux_3pos[2]
+ *     lista_resultados[32] = len_ip_total.sum()
+ *     lista_resultados[33] = len_ip_total.std()
+ *     lista_resultados[34] = len_ip_total.max()             # <<<<<<<<<<<<<<
+ *     lista_resultados[35] = len_ip_total.var()
+ *     lista_resultados[36] = lista_aux_3pos[2]
  */
   __pyx_t_65 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_ip_total), __pyx_n_s_max); if (unlikely(!__pyx_t_65)) __PYX_ERR(0, 262, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_65);
@@ -23450,15 +23450,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_63); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 262, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_63); __pyx_t_63 = 0;
-  __pyx_t_81 = 4;
+  __pyx_t_81 = 34;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":263
- *     lista_resultados[3] = len_ip_total.std()
- *     lista_resultados[4] = len_ip_total.max()
- *     lista_resultados[5] = len_ip_total.var()             # <<<<<<<<<<<<<<
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]
+ *     lista_resultados[33] = len_ip_total.std()
+ *     lista_resultados[34] = len_ip_total.max()
+ *     lista_resultados[35] = len_ip_total.var()             # <<<<<<<<<<<<<<
+ *     lista_resultados[36] = lista_aux_3pos[2]
+ *     lista_resultados[37] = lista_aux_3pos[0]
  */
   __pyx_t_65 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_ip_total), __pyx_n_s_var); if (unlikely(!__pyx_t_65)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_65);
@@ -23486,37 +23486,37 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_63); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_63); __pyx_t_63 = 0;
-  __pyx_t_81 = 5;
+  __pyx_t_81 = 35;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":264
- *     lista_resultados[4] = len_ip_total.max()
- *     lista_resultados[5] = len_ip_total.var()
- *     lista_resultados[6] = lista_aux_3pos[2]             # <<<<<<<<<<<<<<
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_ip_total.min()
+ *     lista_resultados[34] = len_ip_total.max()
+ *     lista_resultados[35] = len_ip_total.var()
+ *     lista_resultados[36] = lista_aux_3pos[2]             # <<<<<<<<<<<<<<
+ *     lista_resultados[37] = lista_aux_3pos[0]
+ *     lista_resultados[38] = len_ip_total.min()
  */
   __pyx_t_81 = 2;
-  __pyx_t_89 = 6;
+  __pyx_t_89 = 36;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":265
- *     lista_resultados[5] = len_ip_total.var()
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]             # <<<<<<<<<<<<<<
- *     lista_resultados[8] = len_ip_total.min()
- *     lista_resultados[9] = lista_aux_3pos[1]
+ *     lista_resultados[35] = len_ip_total.var()
+ *     lista_resultados[36] = lista_aux_3pos[2]
+ *     lista_resultados[37] = lista_aux_3pos[0]             # <<<<<<<<<<<<<<
+ *     lista_resultados[38] = len_ip_total.min()
+ *     lista_resultados[39] = lista_aux_3pos[1]
  */
   __pyx_t_81 = 0;
-  __pyx_t_89 = 7;
+  __pyx_t_89 = 37;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":266
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_ip_total.min()             # <<<<<<<<<<<<<<
- *     lista_resultados[9] = lista_aux_3pos[1]
- *     lista_resultados[10] = len_ip_total.mean()
+ *     lista_resultados[36] = lista_aux_3pos[2]
+ *     lista_resultados[37] = lista_aux_3pos[0]
+ *     lista_resultados[38] = len_ip_total.min()             # <<<<<<<<<<<<<<
+ *     lista_resultados[39] = lista_aux_3pos[1]
+ *     lista_resultados[40] = len_ip_total.mean()
  */
   __pyx_t_65 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_ip_total), __pyx_n_s_min); if (unlikely(!__pyx_t_65)) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_65);
@@ -23544,24 +23544,24 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_63); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_63); __pyx_t_63 = 0;
-  __pyx_t_81 = 8;
+  __pyx_t_81 = 38;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":267
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_ip_total.min()
- *     lista_resultados[9] = lista_aux_3pos[1]             # <<<<<<<<<<<<<<
- *     lista_resultados[10] = len_ip_total.mean()
+ *     lista_resultados[37] = lista_aux_3pos[0]
+ *     lista_resultados[38] = len_ip_total.min()
+ *     lista_resultados[39] = lista_aux_3pos[1]             # <<<<<<<<<<<<<<
+ *     lista_resultados[40] = len_ip_total.mean()
  * 
  */
   __pyx_t_81 = 1;
-  __pyx_t_89 = 9;
+  __pyx_t_89 = 39;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":268
- *     lista_resultados[8] = len_ip_total.min()
- *     lista_resultados[9] = lista_aux_3pos[1]
- *     lista_resultados[10] = len_ip_total.mean()             # <<<<<<<<<<<<<<
+ *     lista_resultados[38] = len_ip_total.min()
+ *     lista_resultados[39] = lista_aux_3pos[1]
+ *     lista_resultados[40] = len_ip_total.mean()             # <<<<<<<<<<<<<<
  * 
  *     # ! arrumar ! o len_proto e o len_payload
  */
@@ -23591,7 +23591,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_63); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_63); __pyx_t_63 = 0;
-  __pyx_t_81 = 10;
+  __pyx_t_81 = 40;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":272
@@ -23612,7 +23612,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
  *     lista_aux_3pos =  np.percentile(
  *         len_proto, [25, 50, 75], overwrite_input=True             # <<<<<<<<<<<<<<
  *     )
- *     lista_resultados[0] = below(len_proto, lista_aux_3pos[1])
+ *     lista_resultados[41] = below(len_proto, lista_aux_3pos[1])
  */
   __pyx_t_63 = PyList_New(3); if (unlikely(!__pyx_t_63)) __PYX_ERR(0, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_63);
@@ -23647,7 +23647,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
  *     lista_aux_3pos =  np.percentile(
  *         len_proto, [25, 50, 75], overwrite_input=True             # <<<<<<<<<<<<<<
  *     )
- *     lista_resultados[0] = below(len_proto, lista_aux_3pos[1])
+ *     lista_resultados[41] = below(len_proto, lista_aux_3pos[1])
  */
   __pyx_t_63 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_63)) __PYX_ERR(0, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_63);
@@ -23691,39 +23691,39 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   /* "PKT_features_cython.pyx":275
  *         len_proto, [25, 50, 75], overwrite_input=True
  *     )
- *     lista_resultados[0] = below(len_proto, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
- *     lista_resultados[1] = above(len_proto, lista_aux_3pos[1])
- *     lista_resultados[2] = len_proto.sum()
+ *     lista_resultados[41] = below(len_proto, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
+ *     lista_resultados[42] = above(len_proto, lista_aux_3pos[1])
+ *     lista_resultados[43] = len_proto.sum()
  */
   __pyx_t_87 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_v_len_proto), PyBUF_WRITABLE); if (unlikely(!__pyx_t_87.memview)) __PYX_ERR(0, 275, __pyx_L1_error)
   __pyx_t_81 = 1;
   __pyx_t_76 = __pyx_f_19PKT_features_cython_below(__pyx_t_87, (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides))); if (unlikely(__pyx_t_76 == ((int)-1) && PyErr_Occurred())) __PYX_ERR(0, 275, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_87, 1);
   __pyx_t_87.memview = NULL; __pyx_t_87.data = NULL;
-  __pyx_t_81 = 0;
+  __pyx_t_81 = 41;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_76;
 
   /* "PKT_features_cython.pyx":276
  *     )
- *     lista_resultados[0] = below(len_proto, lista_aux_3pos[1])
- *     lista_resultados[1] = above(len_proto, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
- *     lista_resultados[2] = len_proto.sum()
- *     lista_resultados[3] = len_proto.std()
+ *     lista_resultados[41] = below(len_proto, lista_aux_3pos[1])
+ *     lista_resultados[42] = above(len_proto, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
+ *     lista_resultados[43] = len_proto.sum()
+ *     lista_resultados[44] = len_proto.std()
  */
   __pyx_t_87 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_v_len_proto), PyBUF_WRITABLE); if (unlikely(!__pyx_t_87.memview)) __PYX_ERR(0, 276, __pyx_L1_error)
   __pyx_t_81 = 1;
   __pyx_t_76 = __pyx_f_19PKT_features_cython_above(__pyx_t_87, (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides))); if (unlikely(__pyx_t_76 == ((int)-1) && PyErr_Occurred())) __PYX_ERR(0, 276, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_87, 1);
   __pyx_t_87.memview = NULL; __pyx_t_87.data = NULL;
-  __pyx_t_81 = 1;
+  __pyx_t_81 = 42;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_76;
 
   /* "PKT_features_cython.pyx":277
- *     lista_resultados[0] = below(len_proto, lista_aux_3pos[1])
- *     lista_resultados[1] = above(len_proto, lista_aux_3pos[1])
- *     lista_resultados[2] = len_proto.sum()             # <<<<<<<<<<<<<<
- *     lista_resultados[3] = len_proto.std()
- *     lista_resultados[4] = len_proto.max()
+ *     lista_resultados[41] = below(len_proto, lista_aux_3pos[1])
+ *     lista_resultados[42] = above(len_proto, lista_aux_3pos[1])
+ *     lista_resultados[43] = len_proto.sum()             # <<<<<<<<<<<<<<
+ *     lista_resultados[44] = len_proto.std()
+ *     lista_resultados[45] = len_proto.max()
  */
   __pyx_t_63 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_proto), __pyx_n_s_sum); if (unlikely(!__pyx_t_63)) __PYX_ERR(0, 277, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_63);
@@ -23751,15 +23751,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 277, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_81 = 2;
+  __pyx_t_81 = 43;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":278
- *     lista_resultados[1] = above(len_proto, lista_aux_3pos[1])
- *     lista_resultados[2] = len_proto.sum()
- *     lista_resultados[3] = len_proto.std()             # <<<<<<<<<<<<<<
- *     lista_resultados[4] = len_proto.max()
- *     lista_resultados[5] = len_proto.var()
+ *     lista_resultados[42] = above(len_proto, lista_aux_3pos[1])
+ *     lista_resultados[43] = len_proto.sum()
+ *     lista_resultados[44] = len_proto.std()             # <<<<<<<<<<<<<<
+ *     lista_resultados[45] = len_proto.max()
+ *     lista_resultados[46] = len_proto.var()
  */
   __pyx_t_63 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_proto), __pyx_n_s_std); if (unlikely(!__pyx_t_63)) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_63);
@@ -23787,15 +23787,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_81 = 3;
+  __pyx_t_81 = 44;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":279
- *     lista_resultados[2] = len_proto.sum()
- *     lista_resultados[3] = len_proto.std()
- *     lista_resultados[4] = len_proto.max()             # <<<<<<<<<<<<<<
- *     lista_resultados[5] = len_proto.var()
- *     lista_resultados[6] = lista_aux_3pos[2]
+ *     lista_resultados[43] = len_proto.sum()
+ *     lista_resultados[44] = len_proto.std()
+ *     lista_resultados[45] = len_proto.max()             # <<<<<<<<<<<<<<
+ *     lista_resultados[46] = len_proto.var()
+ *     lista_resultados[47] = lista_aux_3pos[2]
  */
   __pyx_t_63 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_proto), __pyx_n_s_max); if (unlikely(!__pyx_t_63)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_63);
@@ -23823,15 +23823,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_81 = 4;
+  __pyx_t_81 = 45;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":280
- *     lista_resultados[3] = len_proto.std()
- *     lista_resultados[4] = len_proto.max()
- *     lista_resultados[5] = len_proto.var()             # <<<<<<<<<<<<<<
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]
+ *     lista_resultados[44] = len_proto.std()
+ *     lista_resultados[45] = len_proto.max()
+ *     lista_resultados[46] = len_proto.var()             # <<<<<<<<<<<<<<
+ *     lista_resultados[47] = lista_aux_3pos[2]
+ *     lista_resultados[48] = lista_aux_3pos[0]
  */
   __pyx_t_63 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_proto), __pyx_n_s_var); if (unlikely(!__pyx_t_63)) __PYX_ERR(0, 280, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_63);
@@ -23859,37 +23859,37 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 280, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_81 = 5;
+  __pyx_t_81 = 46;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":281
- *     lista_resultados[4] = len_proto.max()
- *     lista_resultados[5] = len_proto.var()
- *     lista_resultados[6] = lista_aux_3pos[2]             # <<<<<<<<<<<<<<
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_proto.min()
+ *     lista_resultados[45] = len_proto.max()
+ *     lista_resultados[46] = len_proto.var()
+ *     lista_resultados[47] = lista_aux_3pos[2]             # <<<<<<<<<<<<<<
+ *     lista_resultados[48] = lista_aux_3pos[0]
+ *     lista_resultados[49] = len_proto.min()
  */
   __pyx_t_81 = 2;
-  __pyx_t_89 = 6;
+  __pyx_t_89 = 47;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":282
- *     lista_resultados[5] = len_proto.var()
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]             # <<<<<<<<<<<<<<
- *     lista_resultados[8] = len_proto.min()
- *     lista_resultados[9] = lista_aux_3pos[1]
+ *     lista_resultados[46] = len_proto.var()
+ *     lista_resultados[47] = lista_aux_3pos[2]
+ *     lista_resultados[48] = lista_aux_3pos[0]             # <<<<<<<<<<<<<<
+ *     lista_resultados[49] = len_proto.min()
+ *     lista_resultados[50] = lista_aux_3pos[1]
  */
   __pyx_t_81 = 0;
-  __pyx_t_89 = 7;
+  __pyx_t_89 = 48;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":283
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_proto.min()             # <<<<<<<<<<<<<<
- *     lista_resultados[9] = lista_aux_3pos[1]
- *     lista_resultados[10] = len_proto.mean()
+ *     lista_resultados[47] = lista_aux_3pos[2]
+ *     lista_resultados[48] = lista_aux_3pos[0]
+ *     lista_resultados[49] = len_proto.min()             # <<<<<<<<<<<<<<
+ *     lista_resultados[50] = lista_aux_3pos[1]
+ *     lista_resultados[51] = len_proto.mean()
  */
   __pyx_t_63 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_proto), __pyx_n_s_min); if (unlikely(!__pyx_t_63)) __PYX_ERR(0, 283, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_63);
@@ -23917,24 +23917,24 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 283, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_81 = 8;
+  __pyx_t_81 = 49;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":284
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_proto.min()
- *     lista_resultados[9] = lista_aux_3pos[1]             # <<<<<<<<<<<<<<
- *     lista_resultados[10] = len_proto.mean()
+ *     lista_resultados[48] = lista_aux_3pos[0]
+ *     lista_resultados[49] = len_proto.min()
+ *     lista_resultados[50] = lista_aux_3pos[1]             # <<<<<<<<<<<<<<
+ *     lista_resultados[51] = len_proto.mean()
  * 
  */
   __pyx_t_81 = 1;
-  __pyx_t_89 = 9;
+  __pyx_t_89 = 50;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":285
- *     lista_resultados[8] = len_proto.min()
- *     lista_resultados[9] = lista_aux_3pos[1]
- *     lista_resultados[10] = len_proto.mean()             # <<<<<<<<<<<<<<
+ *     lista_resultados[49] = len_proto.min()
+ *     lista_resultados[50] = lista_aux_3pos[1]
+ *     lista_resultados[51] = len_proto.mean()             # <<<<<<<<<<<<<<
  * 
  *     # len_payload --
  */
@@ -23964,7 +23964,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_81 = 10;
+  __pyx_t_81 = 51;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":288
@@ -23985,7 +23985,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
  *     lista_aux_3pos =  np.percentile(
  *         len_payload, [25, 50, 75], overwrite_input=True             # <<<<<<<<<<<<<<
  *     )
- *     lista_resultados[0] = below(len_payload, lista_aux_3pos[1])
+ *     lista_resultados[52] = below(len_payload, lista_aux_3pos[1])
  */
   __pyx_t_5 = PyList_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 289, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -24020,7 +24020,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
  *     lista_aux_3pos =  np.percentile(
  *         len_payload, [25, 50, 75], overwrite_input=True             # <<<<<<<<<<<<<<
  *     )
- *     lista_resultados[0] = below(len_payload, lista_aux_3pos[1])
+ *     lista_resultados[52] = below(len_payload, lista_aux_3pos[1])
  */
   __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 289, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -24064,39 +24064,39 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   /* "PKT_features_cython.pyx":291
  *         len_payload, [25, 50, 75], overwrite_input=True
  *     )
- *     lista_resultados[0] = below(len_payload, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
- *     lista_resultados[1] = above(len_payload, lista_aux_3pos[1])
- *     lista_resultados[2] = len_payload.sum()
+ *     lista_resultados[52] = below(len_payload, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
+ *     lista_resultados[53] = above(len_payload, lista_aux_3pos[1])
+ *     lista_resultados[54] = len_payload.sum()
  */
   __pyx_t_87 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_v_len_payload), PyBUF_WRITABLE); if (unlikely(!__pyx_t_87.memview)) __PYX_ERR(0, 291, __pyx_L1_error)
   __pyx_t_81 = 1;
   __pyx_t_76 = __pyx_f_19PKT_features_cython_below(__pyx_t_87, (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides))); if (unlikely(__pyx_t_76 == ((int)-1) && PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_87, 1);
   __pyx_t_87.memview = NULL; __pyx_t_87.data = NULL;
-  __pyx_t_81 = 0;
+  __pyx_t_81 = 52;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_76;
 
   /* "PKT_features_cython.pyx":292
  *     )
- *     lista_resultados[0] = below(len_payload, lista_aux_3pos[1])
- *     lista_resultados[1] = above(len_payload, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
- *     lista_resultados[2] = len_payload.sum()
- *     lista_resultados[3] = len_payload.std()
+ *     lista_resultados[52] = below(len_payload, lista_aux_3pos[1])
+ *     lista_resultados[53] = above(len_payload, lista_aux_3pos[1])             # <<<<<<<<<<<<<<
+ *     lista_resultados[54] = len_payload.sum()
+ *     lista_resultados[55] = len_payload.std()
  */
   __pyx_t_87 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(((PyObject *)__pyx_v_len_payload), PyBUF_WRITABLE); if (unlikely(!__pyx_t_87.memview)) __PYX_ERR(0, 292, __pyx_L1_error)
   __pyx_t_81 = 1;
   __pyx_t_76 = __pyx_f_19PKT_features_cython_above(__pyx_t_87, (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides))); if (unlikely(__pyx_t_76 == ((int)-1) && PyErr_Occurred())) __PYX_ERR(0, 292, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_t_87, 1);
   __pyx_t_87.memview = NULL; __pyx_t_87.data = NULL;
-  __pyx_t_81 = 1;
+  __pyx_t_81 = 53;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_76;
 
   /* "PKT_features_cython.pyx":293
- *     lista_resultados[0] = below(len_payload, lista_aux_3pos[1])
- *     lista_resultados[1] = above(len_payload, lista_aux_3pos[1])
- *     lista_resultados[2] = len_payload.sum()             # <<<<<<<<<<<<<<
- *     lista_resultados[3] = len_payload.std()
- *     lista_resultados[4] = len_payload.max()
+ *     lista_resultados[52] = below(len_payload, lista_aux_3pos[1])
+ *     lista_resultados[53] = above(len_payload, lista_aux_3pos[1])
+ *     lista_resultados[54] = len_payload.sum()             # <<<<<<<<<<<<<<
+ *     lista_resultados[55] = len_payload.std()
+ *     lista_resultados[56] = len_payload.max()
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_payload), __pyx_n_s_sum); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 293, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -24124,15 +24124,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 293, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 2;
+  __pyx_t_81 = 54;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":294
- *     lista_resultados[1] = above(len_payload, lista_aux_3pos[1])
- *     lista_resultados[2] = len_payload.sum()
- *     lista_resultados[3] = len_payload.std()             # <<<<<<<<<<<<<<
- *     lista_resultados[4] = len_payload.max()
- *     lista_resultados[5] = len_payload.var()
+ *     lista_resultados[53] = above(len_payload, lista_aux_3pos[1])
+ *     lista_resultados[54] = len_payload.sum()
+ *     lista_resultados[55] = len_payload.std()             # <<<<<<<<<<<<<<
+ *     lista_resultados[56] = len_payload.max()
+ *     lista_resultados[57] = len_payload.var()
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_payload), __pyx_n_s_std); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 294, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -24160,15 +24160,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 294, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 3;
+  __pyx_t_81 = 55;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":295
- *     lista_resultados[2] = len_payload.sum()
- *     lista_resultados[3] = len_payload.std()
- *     lista_resultados[4] = len_payload.max()             # <<<<<<<<<<<<<<
- *     lista_resultados[5] = len_payload.var()
- *     lista_resultados[6] = lista_aux_3pos[2]
+ *     lista_resultados[54] = len_payload.sum()
+ *     lista_resultados[55] = len_payload.std()
+ *     lista_resultados[56] = len_payload.max()             # <<<<<<<<<<<<<<
+ *     lista_resultados[57] = len_payload.var()
+ *     lista_resultados[58] = lista_aux_3pos[2]
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_payload), __pyx_n_s_max); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 295, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -24196,15 +24196,15 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 295, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 4;
+  __pyx_t_81 = 56;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":296
- *     lista_resultados[3] = len_payload.std()
- *     lista_resultados[4] = len_payload.max()
- *     lista_resultados[5] = len_payload.var()             # <<<<<<<<<<<<<<
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]
+ *     lista_resultados[55] = len_payload.std()
+ *     lista_resultados[56] = len_payload.max()
+ *     lista_resultados[57] = len_payload.var()             # <<<<<<<<<<<<<<
+ *     lista_resultados[58] = lista_aux_3pos[2]
+ *     lista_resultados[59] = lista_aux_3pos[0]
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_payload), __pyx_n_s_var); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -24232,37 +24232,37 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 5;
+  __pyx_t_81 = 57;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":297
- *     lista_resultados[4] = len_payload.max()
- *     lista_resultados[5] = len_payload.var()
- *     lista_resultados[6] = lista_aux_3pos[2]             # <<<<<<<<<<<<<<
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_payload.min()
+ *     lista_resultados[56] = len_payload.max()
+ *     lista_resultados[57] = len_payload.var()
+ *     lista_resultados[58] = lista_aux_3pos[2]             # <<<<<<<<<<<<<<
+ *     lista_resultados[59] = lista_aux_3pos[0]
+ *     lista_resultados[60] = len_payload.min()
  */
   __pyx_t_81 = 2;
-  __pyx_t_89 = 6;
+  __pyx_t_89 = 58;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":298
- *     lista_resultados[5] = len_payload.var()
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]             # <<<<<<<<<<<<<<
- *     lista_resultados[8] = len_payload.min()
- *     lista_resultados[9] = lista_aux_3pos[1]
+ *     lista_resultados[57] = len_payload.var()
+ *     lista_resultados[58] = lista_aux_3pos[2]
+ *     lista_resultados[59] = lista_aux_3pos[0]             # <<<<<<<<<<<<<<
+ *     lista_resultados[60] = len_payload.min()
+ *     lista_resultados[61] = lista_aux_3pos[1]
  */
   __pyx_t_81 = 0;
-  __pyx_t_89 = 7;
+  __pyx_t_89 = 59;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":299
- *     lista_resultados[6] = lista_aux_3pos[2]
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_payload.min()             # <<<<<<<<<<<<<<
- *     lista_resultados[9] = lista_aux_3pos[1]
- *     lista_resultados[10] = len_payload.mean()
+ *     lista_resultados[58] = lista_aux_3pos[2]
+ *     lista_resultados[59] = lista_aux_3pos[0]
+ *     lista_resultados[60] = len_payload.min()             # <<<<<<<<<<<<<<
+ *     lista_resultados[61] = lista_aux_3pos[1]
+ *     lista_resultados[62] = len_payload.mean()
  */
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_len_payload), __pyx_n_s_min); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -24290,24 +24290,24 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 8;
+  __pyx_t_81 = 60;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":300
- *     lista_resultados[7] = lista_aux_3pos[0]
- *     lista_resultados[8] = len_payload.min()
- *     lista_resultados[9] = lista_aux_3pos[1]             # <<<<<<<<<<<<<<
- *     lista_resultados[10] = len_payload.mean()
+ *     lista_resultados[59] = lista_aux_3pos[0]
+ *     lista_resultados[60] = len_payload.min()
+ *     lista_resultados[61] = lista_aux_3pos[1]             # <<<<<<<<<<<<<<
+ *     lista_resultados[62] = len_payload.mean()
  * 
  */
   __pyx_t_81 = 1;
-  __pyx_t_89 = 9;
+  __pyx_t_89 = 61;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_89, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_aux_3pos.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_aux_3pos.diminfo[0].strides));
 
   /* "PKT_features_cython.pyx":301
- *     lista_resultados[8] = len_payload.min()
- *     lista_resultados[9] = lista_aux_3pos[1]
- *     lista_resultados[10] = len_payload.mean()             # <<<<<<<<<<<<<<
+ *     lista_resultados[60] = len_payload.min()
+ *     lista_resultados[61] = lista_aux_3pos[1]
+ *     lista_resultados[62] = len_payload.mean()             # <<<<<<<<<<<<<<
  * 
  *     # [O restante da sua lgica de percentis e lista_resultados entra aqui]
  */
@@ -24337,7 +24337,7 @@ static PyObject *__pyx_f_19PKT_features_cython_calcular_estatisticas_raw(PyObjec
   }
   __pyx_t_83 = __pyx_PyFloat_AsDouble(__pyx_t_65); if (unlikely((__pyx_t_83 == ((npy_float64)-1)) && PyErr_Occurred())) __PYX_ERR(0, 301, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_65); __pyx_t_65 = 0;
-  __pyx_t_81 = 10;
+  __pyx_t_81 = 62;
   *__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_lista_resultados.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_lista_resultados.diminfo[0].strides) = __pyx_t_83;
 
   /* "PKT_features_cython.pyx":305
