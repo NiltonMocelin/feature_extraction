@@ -120,7 +120,7 @@ def gerar_blocos_processar_otimizado(lista_ts_raw_pkts, file_path, linktype, tab
                                      app_class, is_tcptrace=True, host_a= "", host_b="", is_two_way= True, 
                                      block_size = -1, idle_timeout=None):
      
-    if len(lista_ts_raw_pkts_ab) == []:
+    if len(lista_ts_raw_pkts) == []:
         print("Gerar_blocos: lista vazia")
         return
 
@@ -233,22 +233,9 @@ def host_mais_pacotes(bloco_pacotes):
     
     return host_b            
 
-if __name__ == '__main__':
-
+def run(args):
     # lista_tam_blocos = [10,30,50]
     is_somente_blocos = True # nao faz flow total
-
-    parser = argparse.ArgumentParser(description='estatistica fluxos')
-    parser.add_argument('--service_class', metavar='<[string] class of service (ex. video_real)>',
-                        help='<[string] class of service (ex. video_real)>', required=True)
-    parser.add_argument('--app_class', metavar='<[string] app of service (ex. facebook)>',
-                        help='<[string] app of service (ex. facebook)>', required=True)
-    parser.add_argument('--block_size', metavar='<[int] block_size (ex. 10)>',
-                        help='<[int] block_size (ex. 10)>', required=True)
-    parser.add_argument('--file_name', metavar='<[string] folder of the captured flows (pcap or pcapng)>',
-                        help='<[string] folder of the captured flows (pcap or pcapng)>', required=True)
-
-    args = parser.parse_args()
 
     file_name = args.file_name # deveria ser file_path..
     # lista_arquivos = sorted(os.listdir(folder_name))
@@ -259,8 +246,8 @@ if __name__ == '__main__':
     max_pacotes = 5000
 
     if '.pcap' not in file_name:
-        print(f"Erro- exit: {file_name}")
-        exit(0)
+        print(f"Erro- not a pcap: {file_name}")
+        return
 
     proto = None
     if 'TCP' in file_name or 'tcp' in file_name:
@@ -268,18 +255,29 @@ if __name__ == '__main__':
     elif 'UDP' in file_name  or 'udp' in file_name:
         proto = 'udp'
     else: 
-        print(f"Erro- exit: {file_name}")
-        exit(0)
-        
+        print(f"Erro- not an udp or tcp: {file_name}")
+        return
+    
     ts = time.time()
     print(f"[inicio]: {file_name}")
 
     lista_ts_raw_pkts, linktype = opcap.ler_binario_direto(file_name, max_pacotes) #[(timestamp, bytes)]
+    host_a = ""
     lista_ts_raw_pkts_ab = []
     lista_ts_raw_pkts_ba = []
-    
-    #tabelas -> twoways_, fluxo_total_two_ways, fluxo_total_ab, ab_
-    print("gerando blocos e processando")
+    for ts,pkt in lista_ts_raw_pkts:
+        pkt_dict = opcap.montar_pkt_to_dict(pkt, linktype)
+        if pkt_dict!= None:
+            if 'ipv4' in pkt_dict:
+                if host_a=="":
+                    host_a = pkt_dict['ipv4']['src_ip']
+                if  pkt_dict['ipv4']['src_ip'] == host_a:
+                    lista_ts_raw_pkts_ab.append((ts,pkt))
+                else:
+                    lista_ts_raw_pkts_ba.append((ts,pkt))
+        else:
+            print("ERRO um pacote mal formado foi encontrado:")
+            return
         
     # if not is_somente_blocos:
     #     # Calcular o fluxo total    ################################################################
@@ -294,11 +292,10 @@ if __name__ == '__main__':
     print(f'calculando ab_{tam_bloco}pkts_2s')
     # 10 pacotes IAT 2s         ##################################################################
     # ab
-
-    gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path=file_name, tabela_db=f'ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
+    gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts_ab, linktype=linktype, block_size=tam_bloco, file_path=file_name, tabela_db=f'ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
     # exit(0)
     # ba
-    gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
+    gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts_ba, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
     
     # proto = 'XX'
     # alem disso, criar as bases específicas para TCP
@@ -313,11 +310,31 @@ if __name__ == '__main__':
         # exit(0)
         # 10 pkts
         # ab
-        gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_tcp_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
+        gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts_ab, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_tcp_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
         # ba
-        gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_tcp_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
+        gerar_blocos_processar_otimizado(lista_ts_raw_pkts = lista_ts_raw_pkts_ba, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_tcp_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
 
-    print(f"[fim-{time.time()-ts}]: {file_name}")
-
-    # removerArquivosTemporarios(file_name)
+        # removerArquivosTemporarios(file_name)
     print(f"---------------- [FIM-{time.time()-ts}] ----------------")
+    return
+
+
+if __name__ == '__main__':
+
+
+    parser = argparse.ArgumentParser(description='estatistica fluxos')
+    parser.add_argument('--service_class', metavar='<[string] class of service (ex. video_real)>',
+                        help='<[string] class of service (ex. video_real)>', required=True)
+    parser.add_argument('--app_class', metavar='<[string] app of service (ex. facebook)>',
+                        help='<[string] app of service (ex. facebook)>', required=True)
+    parser.add_argument('--block_size', metavar='<[int] block_size (ex. 10)>',
+                        help='<[int] block_size (ex. 10)>', required=True)
+    parser.add_argument('--file_name', metavar='<[string] folder of the captured flows (pcap or pcapng)>',
+                        help='<[string] folder of the captured flows (pcap or pcapng)>', required=True)
+
+    args = parser.parse_args()
+
+    #tabelas -> twoways_, fluxo_total_two_ways, fluxo_total_ab, ab_
+    print("gerando blocos e processando")
+    run(args)
+    

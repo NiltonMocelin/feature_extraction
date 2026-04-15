@@ -148,7 +148,7 @@ def process_bloco_pypcap(filepath, lista_ts_raw_pkts, linktype, id_bloco, host_a
     resultados_saida = [filepath, service_class, app_class, host_a, host_b, port_a, port_b, id_bloco, 0 if proto=='TCP' else 1, 0, 0, 0, 0]
     colunas_saida = ['filename', 'service_class', 'app_class', 'host_a', 'host_b', 'a_port', 'b_port', 'id_bloco', 'proto', 'bandwidth', 'delay', 'jitter', 'loss']
 
-    lista_ts_raw_pkts_ab = [(ts,pkt) for ts,pkt in lista_ts_raw_pkts if opcap.montar_pkt_to_dict(pkt, linktype)['ipv4']['src_ip']!= host_a]
+    lista_ts_raw_pkts_ab = [(ts,pkt) for ts,pkt in lista_ts_raw_pkts if opcap.montar_pkt_to_dict(pkt, linktype)['ipv4']['src_ip']== host_a]
     res = calcular_time_features(lista_ts_raw_pkts_ab, "ab_", proto, offset)
     # print(f"res calcular_time_features: {res}")
     colunas_saida.extend(res[0])
