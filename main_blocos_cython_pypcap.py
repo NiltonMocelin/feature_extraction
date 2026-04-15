@@ -97,20 +97,25 @@ def inserirArquivoEmDB(file_name, dbcon, nome_tabela):
     return True
 
 
-def escreverArquivo(folder_name, file_name, resultados_str, append=True):
+def escreverArquivo(folder_name, file_name, resultados_str, append=True, lock=None):
+
+    if not lock:
+        lock = FileLock(f"{file_name}.csv.lock")
 
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
 
     file_path = os.path.join(folder_name, file_name)
-    file = open(file_path, 'a' if append else 'w', encoding='utf-8')
-    if type(resultados_str) == list:
-        for linha in resultados_str:
-            file.write(linha+'\n')
-    else:
-        file.write(resultados_str+'\n')
-    file.flush()
-    file.close()
+    
+    with lock: # nao remova o filelock manualmente durante os processos !! vai causar inconsistencia
+        file = open(file_path, 'a' if append else 'w', encoding='utf-8')
+        if type(resultados_str) == list:
+            for linha in resultados_str:
+                file.write(linha+'\n')
+        else:
+            file.write(resultados_str+'\n')
+        file.flush()
+        file.close()
     return
 
 
@@ -151,7 +156,7 @@ def gerar_blocos_processar_otimizado(lista_ts_raw_pkts, file_path, linktype, tab
     
     colunas = ""
     colunas_file = "header.csv"
-    lock = FileLock(f"{tabela_db}_{app_class}.csv.lock")
+    
 
     print(f'Opening {file_path} sz: {os.path.getsize(file_path)} tam_bloco: {block_size} tabela: {tabela_db}...')
 
@@ -192,21 +197,18 @@ def gerar_blocos_processar_otimizado(lista_ts_raw_pkts, file_path, linktype, tab
 
         if contador_blocos % 500 ==0:
             print(f'[working: {time.time() - tempo_ini}] pacotes_processados {qtd_pacotes_processados} blocos processados {contador_blocos} pacotes bloco atuaal {block_size}')
-            with lock:
-                print("Escrevendo resultados")
-                escreverArquivo(tabela_db, f"{tabela_db}_{app_class}.csv", lista_resultados)
+            
+            print("Escrevendo resultados")
+            escreverArquivo(tabela_db, f"{tabela_db}_{app_class}.csv", lista_resultados)
             lista_resultados.clear()
     
-    with lock:
-        print("Escrevendo resultados")
-        escreverArquivo(tabela_db, f"{tabela_db}_{app_class}.csv", lista_resultados)
+
+    print("Escrevendo resultados")
+    escreverArquivo(tabela_db, f"{tabela_db}_{app_class}.csv", lista_resultados)
     lista_resultados.clear()
 
     if not os.path.exists(f"{tabela_db}/{colunas_file}"): #escrever as colunas apenas se nao foi feito antes...
         escreverArquivo(tabela_db, colunas_file, colunas)
-
-    if os.path.exists(f"{tabela_db}_{app_class}.csv.lock"):
-        os.remove(f"{tabela_db}_{app_class}.csv.lock")
 
     print(f"File {file_path} terminou: {time.time()-tempo_ini}")
     return

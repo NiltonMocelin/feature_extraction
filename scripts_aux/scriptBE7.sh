@@ -14,11 +14,11 @@ listar_arquivos() {
     # Loop pelos itens do diretório
     for arquivo in "$caminho"/*; do
 
-        for i in 10 30 50; do
+        for i in 10 20 30 50 100; do
             # O [ -f ] garante que processamos apenas ARQUIVOS (pula pastas)
             if [ -f "$arquivo" ]; then
                 echo "Processando: $(basename "$arquivo") tam_bloco $i"
-                python main_blocos_cython.py --block_size $i --service_class $service --app_class $app --file_name $arquivo
+                python main_blocos_cython_pypcap.py --block_size $i --service_class $service --app_class $app --file_name $arquivo
             fi
         done
     done

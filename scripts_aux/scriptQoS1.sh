@@ -14,11 +14,11 @@ listar_arquivos() {
     # Loop pelos itens do diretório
     for arquivo in "$caminho"/*; do
 
-        for i in 10 30 50; do
+        for i in 10 20 30 50 100; do
             # O [ -f ] garante que processamos apenas ARQUIVOS (pula pastas)
             if [ -f "$arquivo" ]; then
                 echo "Processando: $(basename "$arquivo") tam_bloco $i"
-                python main_blocos_cython.py --block_size $i --service_class $service --app_class $app --file_name $arquivo
+                python main_blocos_cython_pypcap.py --block_size $i --service_class $service --app_class $app --file_name $arquivo
             fi
         done
     done
@@ -27,7 +27,7 @@ listar_arquivos() {
 # python main.py --service_class qos --app_class vpn_facebook_audio_estatico --folder_name /mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/VPN-PCAPS-01/qos/vpn_facebook_audio/ 
 listar_arquivos "qos" "vpn_facebook_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/VPN-PCAPS-01/qos/vpn_facebook_audio" &
 
-exit(0)
+#exit(0)
 
 # python main.py --service_class qos --app_class vpn_hangouts_audio_estatico --folder_name /mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/VPN-PCAPS-01/qos/vpn_hangouts_audio/
 listar_arquivos "qos" "vpn_hangouts_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/VPN-PCAPS-01/qos/vpn_hangouts_audio" &
