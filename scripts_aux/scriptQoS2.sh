@@ -23,26 +23,26 @@ listar_arquivos() {
 }
 
 #python main.py --service_class qos --app_class tor_hangouts_audio_estatico --folder_name /mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_hangouts_audio/ 
-listar_arquivos "qos" "tor_hangouts_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_hangouts_audio" &
+listar_arquivos "qos" "tor_hangouts_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_hangouts_audio" 
 
 #python main.py --service_class qos --app_class tor_hangouts_audio_real --folder_name /mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_hangouts_voip/  
-listar_arquivos  "qos" "tor_hangouts_audio_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_hangouts_voip" &
+listar_arquivos  "qos" "tor_hangouts_audio_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_hangouts_voip" 
 
 #python main.py --service_class qos --app_class tor_skype_audio_estatico --folder_name /mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_skype_audio/    
-listar_arquivos  "qos" "tor_skype_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_skype_audio" &
+listar_arquivos  "qos" "tor_skype_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_skype_audio" 
 
 #python main.py --service_class qos --app_class tor_skype_audio_real --folder_name /mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_skype_voip/     
-listar_arquivos  "qos" "tor_skype_audio_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_skype_voip" &
+listar_arquivos  "qos" "tor_skype_audio_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_skype_voip" 
 
 
 
 #python main.py --service_class qos --app_class tor_spotify_audio_estatico --folder_name /mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_spotify/        
-listar_arquivos "qos" "tor_spotify_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_spotify" &
+listar_arquivos "qos" "tor_spotify_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_spotify" 
 
 #python main.py --service_class qos --app_class tor_vimeo_video_estatico --folder_name /mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_vimeo/
-listar_arquivos "qos" "tor_vimeo_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_vimeo"  &
+listar_arquivos "qos" "tor_vimeo_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_vimeo"  
 
-wait
+
 
 #python main.py --service_class qos --app_class tor_facebook_audio_estatico --folder_name /mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_facebook_audio/
 listar_arquivos "qos" "tor_facebook_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_facebook_audio" 
@@ -53,4 +53,3 @@ listar_arquivos "qos" "tor_facebook_audio_real" "/mnt/usb-JMicron_Tech_DD5641988
 #python main.py --service_class qos --app_class tor_youtube_video_estatico --folder_name /mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_youtube/
 listar_arquivos "qos" "tor_youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_youtube" 
 
-wait

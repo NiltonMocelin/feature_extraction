@@ -2565,10 +2565,10 @@ trace_done(void)
   if (!run_continuously) {
     if (!printsuppress) {
 	if (tcp_trace_count == 0) {
-	    fprintf(stdout,"%sno traced TCP packets\n", comment);
+	    // fprintf(stdout,"%sno traced TCP packets\n", comment);
 	    return;
 	} else {
-	    fprintf(stdout,"%sTCP connection info:\n", comment);
+	    // fprintf(stdout,"%sTCP connection info:\n", comment);
 	}
     }
 
@@ -2699,15 +2699,15 @@ trace_done(void)
 		} else if (!ignore_non_comp || ConnComplete(ptp)) {
 		    if(csv || tsv || (sv != NULL)) {
 		       if(first) {
-			  PrintSVHeader();
+			//   PrintSVHeader();
 			  first = FALSE;
 		       }
-		       fprintf(stdout, "%d%s", ix+1, sp);
+		    //    fprintf(stdout, "%d%s", ix+1, sp);
 		    }
 		    else {
-		       if (ix > 0)
-			 fprintf(stdout,"================================\n");
-		       fprintf(stdout,"TCP connection %d:\n", ix+1);
+		    //    if (ix > 0)
+			//  fprintf(stdout,"================================\n");
+		    //    fprintf(stdout,"TCP connection %d:\n", ix+1);
 		       
 		    }
 		    PrintTrace(ptp);

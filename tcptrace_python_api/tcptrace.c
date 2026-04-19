@@ -725,17 +725,57 @@ void freeme(char *ptr) {
     free(ptr); // Deallocates memory
 }
 
-char buffer_colunas[1024*64];
-char buffer_resultados[1024*64];
+
+#include <sys/mman.h>
+#include <sys/wait.h>
+#define BUFFER_SIZE (1024 * 64)
+// char buffer_colunas[1024*64];
+// char buffer_resultados[1024*64];
+char *buffer_colunas;
+char *buffer_resultados;
 int offset_buffer_colunas = 0;
 int offset_buffer_resultados = 0;
 
+void inicializar_memoria_compartilhada() {
+    // Mapeia memória compartilhada anônima (não precisa de arquivo)
+    buffer_colunas = mmap(NULL, BUFFER_SIZE, PROT_READ | PROT_WRITE, 
+                          MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    buffer_resultados = mmap(NULL, BUFFER_SIZE, PROT_READ | PROT_WRITE, 
+                             MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+}
+
+void destruir_memoria_compartilhada() {
+    if (buffer_colunas != NULL) {
+        munmap(buffer_colunas, BUFFER_SIZE);
+        munmap(buffer_resultados, BUFFER_SIZE);
+        // munmap(offset_buffer_colunas, sizeof(int));
+        // munmap(offset_buffer_resultados, sizeof(int));
+        
+        buffer_colunas = NULL;
+        buffer_resultados = NULL;
+        // offset_buffer_colunas = NULL;
+        // offset_buffer_resultados = NULL;
+    }
+}
+
+
+// Isso rodará automaticamente quando a DLL/SO for carregada
+void __attribute__ ((constructor)) setup_shared_mem() {
+    if (buffer_colunas == NULL) {
+        inicializar_memoria_compartilhada();
+    }
+}
+
+// Executa automaticamente quando o programa/script Python fechar
+void __attribute__ ((destructor)) cleanup_shared_mem() {
+    destruir_memoria_compartilhada();
+}
 
 void escrever_resultados_str(char *coluna, char *valor)
 { //o que esta acontecendo aqui
 
-    offset_buffer_colunas += snprintf(buffer_colunas + offset_buffer_colunas, sizeof(buffer_colunas) - offset_buffer_colunas, "%s,", coluna);
-    offset_buffer_resultados += snprintf(buffer_resultados + offset_buffer_resultados, sizeof(buffer_resultados) - offset_buffer_resultados, "%s,", valor);
+    offset_buffer_colunas += snprintf(buffer_colunas + offset_buffer_colunas, BUFFER_SIZE - offset_buffer_colunas, "%s,", coluna);
+    offset_buffer_resultados += snprintf(buffer_resultados + offset_buffer_resultados, BUFFER_SIZE - offset_buffer_resultados, "%s,", valor);
     
     return;
 }
@@ -744,8 +784,8 @@ void escrever_resultados_str(char *coluna, char *valor)
 void escrever_resultados_int(char *coluna, long int valor)
 { //o que esta acontecendo aqui
 
-    offset_buffer_colunas += snprintf(buffer_colunas + offset_buffer_colunas, sizeof(buffer_colunas) - offset_buffer_colunas, "%s,", coluna);
-    offset_buffer_resultados += snprintf(buffer_resultados + offset_buffer_resultados, sizeof(buffer_resultados) - offset_buffer_resultados, "%ld,", valor);
+    offset_buffer_colunas += snprintf(buffer_colunas + offset_buffer_colunas, BUFFER_SIZE - offset_buffer_colunas, "%s,", coluna);
+    offset_buffer_resultados += snprintf(buffer_resultados + offset_buffer_resultados, BUFFER_SIZE - offset_buffer_resultados, "%ld,", valor);
     
     return;
 }
@@ -753,15 +793,17 @@ void escrever_resultados_int(char *coluna, long int valor)
 void escrever_resultados_float(char *coluna, float valor)
 { //o que esta acontecendo aqui
 
-    offset_buffer_colunas += snprintf(buffer_colunas + offset_buffer_colunas, sizeof(buffer_colunas) - offset_buffer_colunas, "%s,", coluna);
-    offset_buffer_resultados += snprintf(buffer_resultados + offset_buffer_resultados, sizeof(buffer_resultados) - offset_buffer_resultados, "%f,", valor);
+    offset_buffer_colunas += snprintf(buffer_colunas + offset_buffer_colunas, BUFFER_SIZE - offset_buffer_colunas, "%s,", coluna);
+    offset_buffer_resultados += snprintf(buffer_resultados + offset_buffer_resultados, BUFFER_SIZE - offset_buffer_resultados, "%f,", valor);
     
     return;
 }
 
 void reset_buffers(){
-	memset(buffer_colunas, 0, sizeof(buffer_colunas));
-	memset(buffer_resultados, 0, sizeof(buffer_resultados));
+	memset(buffer_colunas, 0, BUFFER_SIZE);
+	memset(buffer_resultados, 0, BUFFER_SIZE);
+	offset_buffer_colunas = 0;
+    offset_buffer_resultados = 0;
 }
 
 char *get_colunas(){
@@ -809,328 +851,204 @@ extrair_features(
     char *argv)
 {
 
-	char *argumentos[] = {"tcptrace", "-l", "-r", "-W", "-u", "--csv", argv, NULL};
+	char *argumentos[] = {"tcptrace","-l", "-r", "-W", "-u", "--csv", argv, NULL};
 	int argc = 7; // Número de argumentos, incluindo o nome do programa
     int i;
     double etime;
+
+	// reset_buffers();
 	
+	pid_t pid = fork();
 
-	// printf("Entrou");
-	// fprintf(stdout, "Entrou\n");
-	
-	// fprintf(stdout, "print argumentos:");
-	// for (int ut =0; ut< argc;ut++)
-	// fprintf(stdout, " %s, ", argumentos[ut]);
-	// fprintf(stdout, " \n");
-	// return "ola";
-    if (argc == 1)
-	Help(NULL);
+	if (pid < 0) {
+        perror("fork falhou");
+        return NULL;
+    }
 
-    /* initialize internals */
-    trace_init(); // ou aqui esta limpando os argv
-    udptrace_init(); // ou aqui esta limpando os argv
-    plot_init();
-	// inicializacao = 1;
-	
-	// fprintf(stdout, "A\n");
+	if (pid == 0) { // Processo FILHO
 
-    /* let modules start first */
-    LoadModules(argc,argumentos); // ou aqui esta limpando os argv
+		// printf("Entrou");
+		// fprintf(stdout, "Entrou\n");
+		
+		// fprintf(stdout, "print argumentos:");
+		// for (int ut =0; ut< argc;ut++)
+		// fprintf(stdout, " %s, ", argumentos[ut]);
+		// fprintf(stdout, " \n");
+		// return "ola";
+		if (argc == 1)
+		Help(NULL);
 
-    /* parse the flags */
-    CheckArguments(&argc,argumentos); // ou aqui esta limpando os argv
-	
-	
-	// fprintf(stdout, "B\n");
+		/* initialize internals */
+		trace_init(); // ou aqui esta limpando os argv
+		udptrace_init(); // ou aqui esta limpando os argv
+		plot_init();
+		// inicializacao = 1;
+		
+		// fprintf(stdout, "A\n");
 
-    /* Used with <SP>-separated-values,
-     * prints a '#' before each header line if --csv/--tsv is requested.
-     */
-   comment = (char *)malloc(sizeof(char *) * 2);
-   memset(comment, 0, sizeof(comment));
-   if(csv || tsv || (sv != NULL))
-     snprintf(comment, sizeof(comment), "#");
+		/* let modules start first */
+		LoadModules(argc,argumentos); // ou aqui esta limpando os argv
 
-// fprintf(stdout, "C\n");
-// int *stds = redirecionar_stdout_para_null(); // silent
-	// // ////////////////// Nilton -- silenciar prints para stdout
-	int original_stdout = dup(STDOUT_FILENO);
-	// Abre o /dev/null
-    int dev_null = open("/dev/null", O_WRONLY);
-	// Faz o STDOUT apontar para o /dev/null
-    dup2(dev_null, STDOUT_FILENO); 
-	// ////////Nilton
+		/* parse the flags */
+		CheckArguments(&argc,argumentos); // ou aqui esta limpando os argv
+		
+		
+		// fprintf(stdout, "B\n");
 
-    /* optional UDP */
-//    if (do_udp)
-//	udptrace_init();
+		/* Used with <SP>-separated-values,
+		* prints a '#' before each header line if --csv/--tsv is requested.
+		*/
+	comment = (char *)malloc(sizeof(char *) * 2);
+	memset(comment, 0, sizeof(comment));
+	if(csv || tsv || (sv != NULL))
+		snprintf(comment, sizeof(comment), "#");
 
-  //  if (run_continuously) {
-    //  trace_init();
-    //}
+	// fprintf(stdout, "C\n");
+	// int *stds = redirecionar_stdout_para_null(); // silent
+	// 	// ////////////////// Nilton -- silenciar prints para stdout
+	// 	int original_stdout = dup(STDOUT_FILENO);
+	// 	// Abre o /dev/null
+	// 	int dev_null = open("/dev/null", O_WRONLY);
+	// 	// Faz o STDOUT apontar para o /dev/null
+	// 	dup2(dev_null, STDOUT_FILENO); 
+	// 	// ////////Nilton
 
-    /* get starting wallclock time */
-    gettimeofday(&wallclock_start, NULL);
+		/* optional UDP */
+	//    if (do_udp)
+	//	udptrace_init();
 
-    num_files = argc;
-    printf("%s%d arg%s remaining, starting with '%s'\n",
-	   comment,
-	   num_files,
-	   num_files>1?"s":"",
-	   filenames[0]);
+	//  if (run_continuously) {
+		//  trace_init();
+		//}
 
-    if (debug>1)
-	DumpFlags();
+		/* get starting wallclock time */
+		gettimeofday(&wallclock_start, NULL);
 
-    /* knock, knock... */
-    fprintf(stdout,"%s\n", VERSION);
+		num_files = argc;
+		// printf("%s%d arg%s remaining, starting with '%s'\n",
+		// comment,
+		// num_files,
+		// num_files>1?"s":"",
+		// filenames[0]);
 
-    /* read each file in turn */
-    numfiles = argc;
-    for (i=0; i < argc; ++i) {
-	if (debug || (numfiles > 1)) {
-	    if (argc > 1)
-		printf("%sRunning file '%s' (%d of %d)\n", comment, filenames[i], i+1, numfiles);
-	    else
-		printf("%sRunning file '%s'\n", comment, filenames[i]);
+		if (debug>1)
+		DumpFlags();
+
+		/* knock, knock... */
+		// fprintf(stdout,"%s\n", VERSION);
+
+		/* read each file in turn */
+		numfiles = argc;
+		for (i=0; i < argc; ++i) {
+		if (debug || (numfiles > 1)) {
+			if (argc > 1)
+			printf("%sRunning file '%s' (%d of %d)\n", comment, filenames[i], i+1, numfiles);
+			else
+			printf("%sRunning file '%s'\n", comment, filenames[i]);
+		}
+
+		/* do the real work */
+		// printf("%sProcessing file '%s'...\n", comment, filenames[i]);
+		ProcessFile(filenames[i]);
+
+		}
+
+			// fprintf(stdout, "D\n");
+
+				//Print time ?
+
+		/* clean up output */
+		if (printticks)
+		printf("\n");
+
+		/* get ending wallclock time */
+		gettimeofday(&wallclock_finished, NULL);
+
+		/* general output */
+		// fprintf(stdout, "%s%lu packets seen, %lu TCP packets traced",
+			// comment, pnum, tcp_trace_count);
+		// if (do_udp)
+		// fprintf(stdout,", %lu UDP packets traced", udp_trace_count);
+		// fprintf(stdout,"\n");
+
+		/* processing time */
+		etime = elapsed(wallclock_start,wallclock_finished);
+		// fprintf(stdout, "%selapsed wallclock time: %s, %d pkts/sec analyzed\n",
+		// 	comment,
+		// 	elapsed2str(etime),
+		// 	(int)((double)pnum/(etime/1000000)));
+
+		/* actual tracefile times */
+		// etime = elapsed(first_packet,last_packet);
+		// fprintf(stdout,"%strace %s elapsed time: %s\n",
+		// 	comment,
+		// 	(num_files==1)?"file":"files",
+		// 	elapsed2str(etime));
+		if (debug) {
+		fprintf(stdout,"%s\tfirst packet:  %s\n", comment, ts2ascii(&first_packet));
+		fprintf(stdout,"%s\tlast packet:   %s\n", comment, ts2ascii(&last_packet));
+		}
+		if (verify_checksums) {
+		fprintf(stdout,"%sbad IP checksums:  %ld\n", comment, bad_ip_checksums);
+		fprintf(stdout,"%sbad TCP checksums: %ld\n", comment, bad_tcp_checksums);
+		if (do_udp)
+			fprintf(stdout,"%sbad UDP checksums: %ld\n", comment, bad_udp_checksums);
+		}
+
+		// fprintf(stdout, "E\n");
+			/* close files, cleanup, and etc... */
+		trace_done(); //print tcp -- aqui esta o problema
+		udptrace_done(); //print udp -- aqui está o problema
+
+		// aqui tinha o Finish_Modules
+		FinishModules();
+		plotter_done();
+
+		fflush(stdout); // 4. Flush é essencial para garantir que o dado foi para o pipe
+		
+		// voltar_stdout_para_original(stds[0], stds[1]); // Restaura o STDOUT original
+		// dup2(original_stdout, STDOUT_FILENO);
+		// close(dev_null);
+		// close(original_stdout);
+		// //
+		msync(buffer_colunas, BUFFER_SIZE, MS_SYNC);
+    	msync(buffer_resultados, BUFFER_SIZE, MS_SYNC);
+	    exit(0);
+
+	}else{ //processo pai
+		// fprintf(stdout, "F\n");
+		//Nilton
+		int status;
+		waitpid(pid, &status, 0); // Espera o filho terminar
+
+		// 1. Verifique se o filho não deu SegFault
+        if (WIFSIGNALED(status)) {
+            return "erro;filho_morreu_sinal";
+        }
+
+        // 2. Tente ler os dados. Se buffer_colunas[0] for '\0', 
+        // significa que o Pai ainda não "viu" a escrita do filho.
+        if (buffer_colunas[0] == '\0') {
+             // Pequeno fôlego para o kernel sincronizar as páginas (raro, mas acontece)
+             usleep(1000); 
+        }
+
+
+		static char buffer[BUFFER_SIZE*2]; //https://stackoverflow.com/questions/14416759/return-char-string-from-a-function#:~:text=If%20you%20want%20to%20return,2%20Comments
+		
+		snprintf(buffer, sizeof(buffer), "%s;%s", buffer_colunas, buffer_resultados);
+		// printf("Buffer colunas: %s\n", buffer_colunas);
+		// printf("Buffer valores:%s\n", buffer_resultados);
+		// printf("Buffer completo: %s\n", buffer);
+
+		// 4. LOG DE DEBUG: Se imprimir vazio aqui, o mmap falhou
+        if (buffer[0] == ';' || buffer[0] == '\0') {
+            fprintf(stderr, "[DEBUG PAI] Alerta: Buffer capturado vazio! %s\n", argumentos[6]);
+        }
+
+		reset_buffers();
+		return buffer;
 	}
-
-	/* do the real work */
-	printf("%sProcessing file '%s'...\n", comment, filenames[i]);
-	ProcessFile(filenames[i]);
-
-    }
-
-		// fprintf(stdout, "D\n");
-
-			//Print time ?
-
-    /* clean up output */
-    if (printticks)
-	printf("\n");
-
-    /* get ending wallclock time */
-    gettimeofday(&wallclock_finished, NULL);
-
-    /* general output */
-    fprintf(stdout, "%s%lu packets seen, %lu TCP packets traced",
-	    comment, pnum, tcp_trace_count);
-    if (do_udp)
-	fprintf(stdout,", %lu UDP packets traced", udp_trace_count);
-    fprintf(stdout,"\n");
-
-    /* processing time */
-    etime = elapsed(wallclock_start,wallclock_finished);
-    fprintf(stdout, "%selapsed wallclock time: %s, %d pkts/sec analyzed\n",
-	    comment,
-	    elapsed2str(etime),
-	    (int)((double)pnum/(etime/1000000)));
-
-    /* actual tracefile times */
-    etime = elapsed(first_packet,last_packet);
-    fprintf(stdout,"%strace %s elapsed time: %s\n",
-	    comment,
-	    (num_files==1)?"file":"files",
-	    elapsed2str(etime));
-    if (debug) {
-	fprintf(stdout,"%s\tfirst packet:  %s\n", comment, ts2ascii(&first_packet));
-	fprintf(stdout,"%s\tlast packet:   %s\n", comment, ts2ascii(&last_packet));
-    }
-    if (verify_checksums) {
-	fprintf(stdout,"%sbad IP checksums:  %ld\n", comment, bad_ip_checksums);
-	fprintf(stdout,"%sbad TCP checksums: %ld\n", comment, bad_tcp_checksums);
-	if (do_udp)
-	    fprintf(stdout,"%sbad UDP checksums: %ld\n", comment, bad_udp_checksums);
-    }
-
-	// fprintf(stdout, "E\n");
-		/* close files, cleanup, and etc... */
-    trace_done(); //print tcp -- aqui esta o problema
-    udptrace_done(); //print udp -- aqui está o problema
-
-	// aqui tinha o Finish_Modules
-	FinishModules();
-    plotter_done();
-
-	fflush(stdout); // 4. Flush é essencial para garantir que o dado foi para o pipe
-	
-	// voltar_stdout_para_original(stds[0], stds[1]); // Restaura o STDOUT original
-    dup2(original_stdout, STDOUT_FILENO);
-    close(dev_null);
-    close(original_stdout);
-	// //
-
-	// fprintf(stdout, "F\n");
-	//Nilton
-	static char buffer[1024*64+1]; //https://stackoverflow.com/questions/14416759/return-char-string-from-a-function#:~:text=If%20you%20want%20to%20return,2%20Comments
-	
-	snprintf(buffer, sizeof(buffer), "%s;%s", buffer_colunas, buffer_resultados);
-	// printf("Buffer colunas: %s\n", buffer_colunas);
-	// printf("Buffer valores:%s\n", buffer_resultados);
-	// printf("Buffer completo: %s\n", buffer);
-
-	reset_buffers();
-	return buffer;
-	// return 0;
-}
-
-
-char *
-extrair_features_chamadas_independentes(
-    char *argv)
-{
-
-	char *argumentos[] = {"tcptrace", "-l", "-r", "-W", "-u", "--csv", argv, NULL};
-	int argc = 7; // Número de argumentos, incluindo o nome do programa
-    int i;
-    double etime;
-	
-
-	// printf("Entrou");
-	fprintf(stdout, "Entrou\n");
-	
-	fprintf(stdout, "print argumentos:");
-	for (int ut =0; ut< argc;ut++)
-	fprintf(stdout, " %s, ", argumentos[ut]);
-	fprintf(stdout, " \n");
-	// return "ola";
-    if (argc == 1)
-	Help(NULL);
-
-    /* initialize internals */
-    trace_init(); // ou aqui esta limpando os argv
-    udptrace_init(); // ou aqui esta limpando os argv
-    plot_init();
-	// inicializacao = 1;
-	
-	fprintf(stdout, "A\n");
-
-    /* let modules start first */
-    LoadModules(argc,argumentos); // ou aqui esta limpando os argv
-
-    /* parse the flags */
-    CheckArguments(&argc,argumentos); // ou aqui esta limpando os argv
-	
-	
-	fprintf(stdout, "B\n");
-
-    /* Used with <SP>-separated-values,
-     * prints a '#' before each header line if --csv/--tsv is requested.
-     */
-   comment = (char *)malloc(sizeof(char *) * 2);
-   memset(comment, 0, sizeof(comment));
-   if(csv || tsv || (sv != NULL))
-     snprintf(comment, sizeof(comment), "#");
-
-fprintf(stdout, "C\n");
-// int *stds = redirecionar_stdout_para_null();
-
-    /* optional UDP */
-//    if (do_udp)
-//	udptrace_init();
-
-  //  if (run_continuously) {
-    //  trace_init();
-    //}
-
-    /* get starting wallclock time */
-    gettimeofday(&wallclock_start, NULL);
-
-    num_files = argc;
-    printf("%s%d arg%s remaining, starting with '%s'\n",
-	   comment,
-	   num_files,
-	   num_files>1?"s":"",
-	   filenames[0]);
-
-    if (debug>1)
-	DumpFlags();
-
-    /* knock, knock... */
-    fprintf(stdout,"%s\n", VERSION);
-
-    /* read each file in turn */
-    numfiles = argc;
-    for (i=0; i < argc; ++i) {
-	if (debug || (numfiles > 1)) {
-	    if (argc > 1)
-		printf("%sRunning file '%s' (%d of %d)\n", comment, filenames[i], i+1, numfiles);
-	    else
-		printf("%sRunning file '%s'\n", comment, filenames[i]);
-	}
-
-	/* do the real work */
-	printf("%sProcessing file '%s'...\n", comment, filenames[i]);
-	ProcessFile(filenames[i]);
-
-    }
-
-		fprintf(stdout, "D\n");
-
-			//Print time ?
-
-    /* clean up output */
-    if (printticks)
-	printf("\n");
-
-    /* get ending wallclock time */
-    gettimeofday(&wallclock_finished, NULL);
-
-    /* general output */
-    fprintf(stdout, "%s%lu packets seen, %lu TCP packets traced",
-	    comment, pnum, tcp_trace_count);
-    if (do_udp)
-	fprintf(stdout,", %lu UDP packets traced", udp_trace_count);
-    fprintf(stdout,"\n");
-
-    /* processing time */
-    etime = elapsed(wallclock_start,wallclock_finished);
-    fprintf(stdout, "%selapsed wallclock time: %s, %d pkts/sec analyzed\n",
-	    comment,
-	    elapsed2str(etime),
-	    (int)((double)pnum/(etime/1000000)));
-
-    /* actual tracefile times */
-    etime = elapsed(first_packet,last_packet);
-    fprintf(stdout,"%strace %s elapsed time: %s\n",
-	    comment,
-	    (num_files==1)?"file":"files",
-	    elapsed2str(etime));
-    if (debug) {
-	fprintf(stdout,"%s\tfirst packet:  %s\n", comment, ts2ascii(&first_packet));
-	fprintf(stdout,"%s\tlast packet:   %s\n", comment, ts2ascii(&last_packet));
-    }
-    if (verify_checksums) {
-	fprintf(stdout,"%sbad IP checksums:  %ld\n", comment, bad_ip_checksums);
-	fprintf(stdout,"%sbad TCP checksums: %ld\n", comment, bad_tcp_checksums);
-	if (do_udp)
-	    fprintf(stdout,"%sbad UDP checksums: %ld\n", comment, bad_udp_checksums);
-    }
-
-	fprintf(stdout, "E\n");
-		/* close files, cleanup, and etc... */
-    trace_done(); //print tcp -- aqui esta o problema
-    udptrace_done(); //print udp -- aqui está o problema
-
-	// aqui tinha o Finish_Modules
-	FinishModules();
-    plotter_done();
-
-	fflush(stdout); // 4. Flush é essencial para garantir que o dado foi para o pipe
-	
-	// voltar_stdout_para_original(stds[0], stds[1]); // Restaura o STDOUT original
-
-	fprintf(stdout, "F\n");
-	//Nilton
-	static char buffer[1024*64+1]; //https://stackoverflow.com/questions/14416759/return-char-string-from-a-function#:~:text=If%20you%20want%20to%20return,2%20Comments
-	
-	snprintf(buffer, sizeof(buffer), "%s;%s", buffer_colunas, buffer_resultados);
-	// printf("Buffer colunas: %s\n", buffer_colunas);
-	// printf("Buffer valores:%s\n", buffer_resultados);
-	// printf("Buffer completo: %s\n", buffer);
-
-	reset_buffers();
-	return buffer;
 	// return 0;
 }
 

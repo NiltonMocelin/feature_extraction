@@ -109,13 +109,13 @@ def criar_pcap_com_header_original(global_header, arquivo_destino, lista_de_paco
     print("Arquivo PCAP consistente gerado com sucesso.")
 
 
-def criar_pcap_com_header_proprio(nome_arquivo, lista_de_pacotes, linktype = 1):
+def criar_pcap_com_header_proprio(nome_arquivo, lista_de_pacotes):
     """
     lista_de_pacotes: [(timestamp, dados_brutos), ...]
     """
     with open(nome_arquivo, "wb") as f:
         # 1. Escreve o cabeçalho que acabamos de criar
-        f.write(gerar_global_header_proprio(network=linktype))
+        f.write(gerar_global_header_proprio())
         
         # 2. Escreve cada pacote da lista
         for ts, pkt in lista_de_pacotes:
@@ -129,38 +129,6 @@ def criar_pcap_com_header_proprio(nome_arquivo, lista_de_pacotes, linktype = 1):
             
             f.write(pkt_header)
             f.write(pkt)
-
-def preparar_buffer_pcap_compativel_dummy_eth(lista_ts_pkts, linktype_original):
-    # IMPORTANTE: Forçamos o Network para 1 (Ethernet) no Global Header
-    # porque a lógica abaixo transforma qualquer pacote em Ethernet.
-    # Se mantivermos o linktype original aqui, o Wireshark não entenderá o Dummy Eth.
-    LINKTYPE_ETHERNET = 1
-    global_header = struct.pack("<IHHIIII", 0xa1b2c3d4, 2, 4, 0, 0, 65535, LINKTYPE_ETHERNET)
-    
-    buffer_pcap = bytearray(global_header)
-
-    for ts, pkt in lista_ts_pkts:
-        ts_sec = int(ts)
-        ts_usec = int((ts % 1) * 1000000)
-        
-        # Se não for Ethernet, adicionamos 14 bytes (12 zero + 0x0800)
-        if linktype_original != LINKTYPE_ETHERNET:
-            # Verifica se o pacote é IPv4 (começa com 0x45) para garantir o Ethertype 0800
-            # Se for IPv6, o Ethertype correto seria 0x86DD
-            eth_header = b'\x00' * 12 + b'\x08\x00'
-            pacote_final = eth_header + pkt
-        else:
-            pacote_final = pkt
-
-        caplen = len(pacote_final)
-        
-        # Header de Pacote (16 bytes)
-        pkt_header = struct.pack("<IIII", ts_sec, ts_usec, caplen, caplen)
-        
-        buffer_pcap.extend(pkt_header)
-        buffer_pcap.extend(pacote_final)
-        
-    return buffer_pcap
 
 def contar_pacotes_pcap(caminho_arquivo):
     sniffer = pcap.pcap(name=caminho_arquivo)

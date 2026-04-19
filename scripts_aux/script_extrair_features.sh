@@ -11,10 +11,10 @@ sh scriptQoS6.sh #PC
 sh scriptBE1.sh #PC
 sh scriptBE2.sh #PC
 
-#sh scriptBE3.sh & #NOT
-#sh scriptBE4.sh & #NOT
-# sh scriptBE5.sh & #NOT
-# sh scriptBE6.sh & #NOT
+sh scriptBE3.sh #NOT
+sh scriptBE4.sh #NOT
+sh scriptBE5.sh #NOT
+sh scriptBE6.sh #NOT
 # wait
 
 sh scriptBE7.sh #PC

@@ -361,16 +361,16 @@ udptrace_done(void)
 			fprintf(stdout,"no traced UDP packets\n");
 			return;
 		   } else {
-			if ((tcp_trace_count > 0) && (!printbrief))
-			     printf("\n============================================================\n");
-			fprintf(stdout,"UDP connection info:\n");
+			// if ((tcp_trace_count > 0) && (!printbrief))
+			//      printf("\n============================================================\n");
+			// fprintf(stdout,"UDP connection info:\n");
 		   }
 	      }
 	      
-	      if (!printbrief)
-		   fprintf(stdout,"%d UDP %s traced:\n",
-			   num_udp_pairs + 1,
-			   num_udp_pairs==0?"connection":"connections");
+	    //   if (!printbrief)
+		//    fprintf(stdout,"%d UDP %s traced:\n",
+		// 	   num_udp_pairs + 1,
+		// 	   num_udp_pairs==0?"connection":"connections");
 	 }
 	 
 	 /* elapsed time */
@@ -397,10 +397,10 @@ udptrace_done(void)
 				  fprintf(stdout,"%3d: ", ix+1);
 				  UDPPrintBrief(pup);
 			     } else {
-				  if (ix > 0)
-				       fprintf(stdout,
-					       "================================\n");
-				  fprintf(stdout,"UDP connection %d:\n", ix+1);
+				//   if (ix > 0)
+				//        fprintf(stdout,
+				// 	       "================================\n");
+				//   fprintf(stdout,"UDP connection %d:\n", ix+1);
 				  UDPPrintTrace(pup);
 			     }
 			}

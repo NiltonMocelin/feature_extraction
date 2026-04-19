@@ -22,57 +22,56 @@ listar_arquivos() {
     done
 }
 
-listar_arquivos "qos" "gaming_chess" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/chess_1" &
-listar_arquivos "qos" "gaming_chess" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/chess_2" &
-listar_arquivos "qos" "gaming_cs2" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/cs2" &
-listar_arquivos "qos" "gaming_cs2" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/cs2-deathmatch-15ms" &
-listar_arquivos "qos" "gaming_cs2" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/cs2-deathmatch2-15ms" &
-listar_arquivos "qos" "meeting_audio_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/gmeeting_audio_real" &
-
-wait
+listar_arquivos "qos" "gaming_chess" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/chess_1" 
+listar_arquivos "qos" "gaming_chess" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/chess_2" 
+listar_arquivos "qos" "gaming_cs2" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/cs2" 
+listar_arquivos "qos" "gaming_cs2" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/cs2-deathmatch-15ms" 
+listar_arquivos "qos" "gaming_cs2" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/cs2-deathmatch2-15ms" 
+listar_arquivos "qos" "meeting_audio_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/gmeeting_audio_real" 
 
 
-listar_arquivos "qos" "gaming_chess" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/online-chess" &
-listar_arquivos "qos" "spotify_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/spotify_audio_estatico" &
-listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_twitch_real_1080p60fps" &
-listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_twitch_static_1080p60fps" &
-listar_arquivos "qos" "youtube_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_yt_real_480p_apenasudp" &
-listar_arquivos "qos" "youtube_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_yt_real_fullhd_ou_hd" &
-
-wait
-
-listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_yt_static_1080p60fps" &
-listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_yt_static_360p" &
-listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_real_1080p60_1" &
-listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_real_1080p60_2" &
-listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_real_480_1" &
-listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_real_480_2" &
-
-wait
 
 
-listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_real_720p60_1" &
-listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_1080p60_1" &
-listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_1080p60_2" &
-listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_480_1" &
-listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_480_2" &
-listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_720p60_1" &
-
-wait
-
-listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_720p60_2" &
-listar_arquivos "qos" "ufc_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/ufc_streaming" &
-listar_arquivos "qos" "youtube_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_audio_estatico" &
-listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_1080p_1" &
-listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_1080p_2" &
-listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_480p_1" &
-
-wait
+listar_arquivos "qos" "gaming_chess" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/online-chess" 
+listar_arquivos "qos" "spotify_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/spotify_audio_estatico" 
+listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_twitch_real_1080p60fps" 
+listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_twitch_static_1080p60fps" 
+listar_arquivos "qos" "youtube_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_yt_real_480p_apenasudp" 
+listar_arquivos "qos" "youtube_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_yt_real_fullhd_ou_hd" 
 
 
-listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_480p_2" &
-listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_720p_1" &
-listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_720p_2" &
+
+listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_yt_static_1080p60fps" 
+listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/teste_yt_static_360p" 
+listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_real_1080p60_1" 
+listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_real_1080p60_2" 
+listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_real_480_1" 
+listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_real_480_2" 
 
 
-wait
+
+
+listar_arquivos "qos" "twitch_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_real_720p60_1" 
+listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_1080p60_1" 
+listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_1080p60_2" 
+listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_480_1" 
+listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_480_2" 
+listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_720p60_1" 
+
+
+
+listar_arquivos "qos" "twitch_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/twitch_static_720p60_2" 
+listar_arquivos "qos" "ufc_video_real" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/ufc_streaming" 
+listar_arquivos "qos" "youtube_audio_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_audio_estatico" 
+listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_1080p_1" 
+listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_1080p_2" 
+listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_480p_1" 
+
+
+
+
+listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_480p_2" 
+listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_720p_1" 
+listar_arquivos "qos" "youtube_video_estatico" "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/minha_base/qos/youtube_static_720p_2" 
+
+

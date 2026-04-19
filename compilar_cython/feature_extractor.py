@@ -13,13 +13,13 @@
 
 from TIME_features_cython import calcular_estatisticas_raw as calcular_time_features
 from PKT_features_cython import calcular_estatisticas_raw as calcular_pkt_features
+import tcptrace_api #import processar_em_memoria, preparar_buffer_pcap_sem_header
+
 
 import sys
 import os
 sys.path.append(f'{os.getcwd()}/src')
-import tcptrace_api #import processar_em_memoria, preparar_buffer_pcap_sem_header
-
-from multiprocessing import Pool
+# import tcptrace_api #import processar_em_memoria, preparar_buffer_pcap_sem_header
 
 import operador_pypcap as opcap
 
@@ -32,17 +32,24 @@ def tratar_tcptrace(saida_tcptrace):
     lista_resultados = lista_resultados.replace("Y", "1")
     lista_resultados = lista_resultados.replace("N", "0")
     lista_resultados = lista_resultados.split(",")
-    
-    if len(lista_colunas) != len(lista_resultados):
+    qtd_colunas = len(lista_colunas)
+    qtd_resultados = len(lista_resultados)
+
+    if qtd_colunas != qtd_resultados:
         print(f"Erro: o número de colunas ({len(lista_colunas)}) não corresponde ao número de resultados ({len(lista_resultados)}).")
         return ([], [])
     
-    if len(lista_colunas) < 2 or len(lista_resultados) < 2:
+    if qtd_colunas < 2 or qtd_resultados < 2:
         print("Erro: listas vazias ")
         return ([], [])
     
-    lista_colunas.pop(-1) #remover o ultimo ,
-    lista_resultados.pop(-1)
+    # lista_colunas.pop(-1) #remover o ultimo , e os dois primeiros hosts ip address
+    # lista_resultados.pop(-1)
+    # lista_resultados.pop()
+    lista_colunas = lista_colunas[2:qtd_colunas-1]
+    lista_resultados = lista_resultados[2:qtd_resultados-1]
+
+    # print(f"saida tcptrace: {lista_colunas}")
     
     
     # [a2b_syn_fin_pkts_sent]=0/0
@@ -90,122 +97,120 @@ def tratar_tcptrace(saida_tcptrace):
     
     return lista_colunas, lista_resultados
 
-def process_bloco_pcap(filename, id_bloco, host_a, proto, service_class, app_class, bloco_total, is_two_ways):# -> tuple[list, list]:
-    """     id_bloco = contador de blocos para o subfluxo
-            class_label = como sera rotulado
-            proto = protocolo (TCP ou UDP)
-            two_ways = True or False -> são pacotes apenas de ida ou tem ida e volta ? (existem features específicas para ida e para volta)
-            bloco_total = bloco com todos os pacotes do bloco
-            bloco_ab/ba = caso queira adicinonar informacoes sobre os pacote two ways
-    """
-    res = None
-    port_a = 0
-    port_b = 0
-    host_b =''
-
-    if not bloco_total[0].haslayer('IP') or not bloco_total[0].haslayer(proto):
-        return ([], [])
-
-    if bloco_total[0].getlayer('IP').src == host_a:
-        host_b = bloco_total[0].getlayer('IP').dst
-        port_a = bloco_total[0].getlayer(proto).sport
-        port_b = bloco_total[0].getlayer(proto).dport
-    else:
-        host_b = bloco_total[0].getlayer('IP').src
-        port_a = bloco_total[0].getlayer(proto).dport
-        port_b = bloco_total[0].getlayer(proto).sport
-
-    resultados_saida = [filename, service_class, app_class, host_a, host_b, port_a, port_b, id_bloco, 0 if proto=='TCP' else 1, 0, 0, 0, 0]
-    colunas_saida = ['filename', 'service_class', 'app_class', 'host_a', 'host_b', 'a_port', 'b_port', 'id_bloco', 'proto', 'bandwidth', 'delay', 'jitter', 'loss']
-
-    res = calcular_time_features([pkt for pkt in bloco_total if pkt.getlayer('IP').src == host_a], "ab_", proto)
-    colunas_saida.extend(res[0])
-    resultados_saida.extend(res[1])
-    res = calcular_pkt_features([pkt for pkt in bloco_total if pkt.getlayer('IP').src == host_a], "ab_", proto)
-    colunas_saida.extend(res[0])
-    resultados_saida.extend(res[1])
-    
-    if is_two_ways:
-        res = calcular_time_features([pkt for pkt in bloco_total if pkt.getlayer('IP').src != host_a], "ba_", proto)
-        colunas_saida.extend(res[0])
-        resultados_saida.extend(res[1])
-        res = calcular_time_features(bloco_total, "total_", proto)
-        colunas_saida.extend(res[0])
-        resultados_saida.extend(res[1])
-
-    return (colunas_saida, resultados_saida)
-
-def process_bloco_pypcap(filepath, lista_ts_raw_pkts, linktype, id_bloco, host_a,host_b, port_a, port_b, proto, service_class, app_class, is_two_way, is_tcptrace):
+def process_bloco_pypcap(tupla_param):
+    # print(lista_ts_raw_pkts[0])
+    parametros= tupla_param[0]
+    filepath=         parametros['filepath']
+    lista_ts_raw_pkts = tupla_param[1]
+    linktype=         parametros['linktype']
+    id_bloco=         0
+    host_a=           parametros['host_a']
+    host_b=           parametros['host_b']
+    port_a=           parametros['port_a']
+    port_b=           parametros['port_b']
+    proto=            parametros['proto']
+    service_class=    parametros['service_class']
+    app_class=        parametros['app_class']
+    is_two_way=       parametros['is_two_way']
+    is_tcptrace=      parametros['is_tcptrace']
+    # print(f"a")
     if lista_ts_raw_pkts == []:
-        return ([],[])
+        print(f"[lista_pkts vazia] {len(lista_ts_raw_pkts)}")
+        return []
+        # return ([],[])
     
     offset = 0 # linktype 101
     if linktype == 1: #eth
         offset = 14
     elif linktype == 113: # linux ssl
         offset = 16
-        
-    resultados_saida = [filepath, service_class, app_class, host_a, host_b, port_a, port_b, id_bloco, 0 if proto=='TCP' else 1, 0, 0, 0, 0]
-    colunas_saida = ['filename', 'service_class', 'app_class', 'host_a', 'host_b', 'a_port', 'b_port', 'id_bloco', 'proto', 'bandwidth', 'delay', 'jitter', 'loss']
 
-    lista_ts_raw_pkts_ab = [(ts,pkt) for ts,pkt in lista_ts_raw_pkts if opcap.montar_pkt_to_dict(pkt, linktype)['ipv4']['src_ip']== host_a]
+    filename = filepath.split('/')[-1]
+
+    # aqui que eu vou decidir quem eh a e quem eh b
+
+    host_a = None
+    host_b = None
+        
+    lista_ts_raw_pkts_ab = []
+    lista_ts_raw_pkts_ba = []
+
+    for ts, pkt in lista_ts_raw_pkts:
+        pkt_dict = opcap.montar_pkt_to_dict(pkt, linktype)
+        if pkt_dict!= None:
+            if 'ipv4' in pkt_dict:
+                if not host_a:
+                    host_a = pkt_dict['ipv4']['src_ip']
+                    host_b = pkt_dict['ipv4']['dst_ip']
+                    
+                if  pkt_dict['ipv4']['src_ip'] == host_a:
+                    lista_ts_raw_pkts_ab.append((ts,pkt))
+                else:
+                    lista_ts_raw_pkts_ba.append((ts,pkt))
+            else:
+                print("Erro ao processar bloco: sem cabecalho ipv4")
+                return []
+                # return ([],[])
+        else:
+            print("Erro ao processar bloco: erro ao montar pkt_dict")
+            return []
+        
+    resultados_saida = [filepath, service_class, app_class, host_a, host_b, port_a, port_b, id_bloco, 0 if proto=='tcp' else 1, 0, 0, 0, 0]
+    # colunas_saida = ['filename', 'service_class', 'app_class', 'host_a', 'host_b', 'a_port', 'b_port', 'id_bloco', 'proto', 'bandwidth', 'delay', 'jitter', 'loss']
+
+    # print(f"b")
     res = calcular_time_features(lista_ts_raw_pkts_ab, "ab_", proto, offset)
     # print(f"res calcular_time_features: {res}")
-    colunas_saida.extend(res[0])
+    # colunas_saida.extend(res[0])
     resultados_saida.extend(res[1])
     res = calcular_pkt_features(lista_ts_raw_pkts_ab, "ab_", proto, offset)
-    colunas_saida.extend(res[0])
+    # colunas_saida.extend(res[0])
+    # print(f"res calcular_pkt_features: {res}")
     resultados_saida.extend(res[1])
-    
+    lista_ts_raw_pkts_ab.clear()
+    # print(f"c")
     if is_two_way:
-        res = calcular_time_features([(ts,pkt) for ts,pkt in lista_ts_raw_pkts if opcap.montar_pkt_to_dict(pkt, linktype)['ipv4']['src_ip']!= host_a], "ba_", proto, offset)
-        colunas_saida.extend(res[0])
+        res = calcular_time_features(lista_ts_raw_pkts_ba, "ba_", proto, offset)
+        # colunas_saida.extend(res[0])
         resultados_saida.extend(res[1])
         res = calcular_time_features(lista_ts_raw_pkts, "total_", proto, offset)
-        colunas_saida.extend(res[0])
+        # colunas_saida.extend(res[0])
         resultados_saida.extend(res[1])
-        
+    lista_ts_raw_pkts_ba.clear()
+    # print(f"d")
     if is_tcptrace:
-        bufferr = tcptrace_api.preparar_buffer_pcap_sem_header(lista_ts_raw_pkts, linktype)
-        
-        result= ""
-        with Pool(processes=1, maxtasksperchild=1) as pool:
-            result = pool.map(tcptrace_api.processar_em_memoria, [bufferr])[0].strip()
-   
-        colunas_tcptrace, resultados_tcptrace = tratar_tcptrace(result)
 
-        #juntando as listas de colunas e resultados
-        colunas_saida.extend(colunas_tcptrace)
+        bufferr = tcptrace_api.preparar_buffer_pcap_sem_header(lista_ts_raw_pkts, linktype)
+
+        resultados_valores=tcptrace_api.processar_em_memoria(bufferr) # nao precisamos utilizar multiprocessing pq agora ele usa fork
+
+        colunas_tcptrace, resultados_tcptrace = tratar_tcptrace(resultados_valores)
+        if colunas_tcptrace == [] or resultados_tcptrace == []:
+            # opcap.criar_pcap_com_header_proprio(f'erro_tcptrace_{filename}', lista_ts_raw_pkts, linktype=linktype) # esse abre no tcptrace
+            escreverArquivo('', f"erro_tcptrace_{filename}", bufferr) # analisar pq o tcptrace nao retorna nada com esse arquivo!
+            print(f"error: tcptrace retornou {resultados_valores} : {filepath} len lista_raw_pkts {len(lista_ts_raw_pkts)}")
+
         resultados_saida.extend(resultados_tcptrace)
     
-    return (colunas_saida, resultados_saida)
+    # return (colunas_saida, resultados_saida)
+    return modelar_dados_csv(resultados_saida)
 
-def process_pcap(id_bloco, host_a, proto, service_class, app_class, entrada_arquivo_pcap, bloco_pacotes, is_two_way, is_tcptrace):
-    if not bloco_pacotes:
-        return ([], [])
+def modelar_dados_csv(valores):
+    resultados_str = ""
+    contador = 0 
+    for val in valores:
+        if contador < 5: # os cinco primeiros campos sao str 
+            contador +=1
+            resultados_str+= f',"{val}"'
+        else:
+            resultados_str+= f',{val}'
+    return resultados_str.replace(',',"",1)
 
-    # chamar o processador de blocos
-    saida = process_bloco_pcap(filename=entrada_arquivo_pcap, id_bloco=id_bloco, host_a=host_a, proto=proto, service_class= service_class, app_class= app_class, bloco_total=bloco_pacotes, is_two_ways= is_two_way)
-    lista_colunas_saida = saida[0]
-    lista_resultados_saida = saida[1]
-    result = ""
-    resultados_tcptrace = []
-    colunas_tcptrace = []
- 
-    if is_tcptrace:
+def escreverArquivo(folder_name, file_name, resultados_str):
 
-        result= ""
-        with Pool(processes=4, maxtasksperchild=1) as pool:
-            result = pool.map(wrapper_extrair_features, [entrada_arquivo_pcap])[0]
-   
-        colunas_tcptrace, resultados_tcptrace = tratar_tcptrace(result)
-        # result = subprocess.run(["tcptrace", "-l", "-r", "-W", "-u", "--csv", entrada_arquivo_pcap], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        # saida = tratar_tcptrace(result, host_a, is_two_way=is_two_way)
+    file_path = os.path.join(folder_name, file_name)
+    
+    with open(file_path, 'wb') as file:
+        file.write(resultados_str)
         
-        #juntando as listas de colunas e resultados
-        lista_colunas_saida.extend(colunas_tcptrace)
-        lista_resultados_saida.extend(resultados_tcptrace)
-        # print(f"resultado{resultados_tcptrace} {colunas_tcptrace}")
-
-    # processar as duas saidas
-    return (lista_colunas_saida, lista_resultados_saida)
+    return

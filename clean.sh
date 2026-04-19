@@ -1,3 +1,4 @@
+rm *.lock
 rm src/*
 rm -rf __pycache__/
 

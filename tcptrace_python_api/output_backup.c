@@ -240,9 +240,9 @@ PrintTrace(
      */ 
 
    if(csv || tsv || (sv != NULL)) {
-       fprintf(stdout,"%s%s%s%s%s%s%s%s",
-	       ptp->a_hostname, sp, ptp->b_hostname, sp,
-	       ptp->a_portname, sp, ptp->b_portname, sp);
+    //    fprintf(stdout,"%s%s%s%s%s%s%s%s",
+	//        ptp->a_hostname, sp, ptp->b_hostname, sp,
+	//        ptp->a_portname, sp, ptp->b_portname, sp);
         
         // offset += snprintf(bufff + offset, 1000,"%s%s%s%s%s%s%s%s",
 	    //    ptp->a_hostname, sp, ptp->b_hostname, sp,
@@ -252,9 +252,9 @@ PrintTrace(
        /* Print the start and end times. In other words,
 	* print the time of the first and the last packet
 	*/ 
-       fprintf(stdout,"%ld.%ld %s %ld.%ld %s",
-	       (long)ptp->first_time.tv_sec, (long)ptp->first_time.tv_usec, sp,
-	       (long)ptp->last_time.tv_sec, (long)ptp->last_time.tv_usec, sp);
+    //    fprintf(stdout,"%ld.%ld %s %ld.%ld %s",
+	//        (long)ptp->first_time.tv_sec, (long)ptp->first_time.tv_usec, sp,
+	//        (long)ptp->last_time.tv_sec, (long)ptp->last_time.tv_usec, sp);
        sv_print_count += 2;
        
     //    offset += snprintf(bufff + offset, 1000,"%ld.%ld %s %ld.%ld %s",
@@ -262,27 +262,27 @@ PrintTrace(
 	//        (long)ptp->last_time.tv_sec, (long)ptp->last_time.tv_usec, sp);
     }
     else {
-       fprintf(stdout,"\thost %-4s      %s\n",
-	       (snprintf(bufl,sizeof(bufl),"%s:", host1),bufl), ptp->a_endpoint);
+    //    fprintf(stdout,"\thost %-4s      %s\n",
+	//        (snprintf(bufl,sizeof(bufl),"%s:", host1),bufl), ptp->a_endpoint);
         // offset += snprintf(bufff + offset, 1000,"\thost %-4s      %s\n", (snprintf(bufl,sizeof(bufl),"%s:", host1),bufl), ptp->a_endpoint);
         
-       fprintf(stdout,"\thost %-4s      %s\n",
-	       (snprintf(bufl,sizeof(bufl),"%s:", host2),bufl), ptp->b_endpoint);
+    //    fprintf(stdout,"\thost %-4s      %s\n",
+	//        (snprintf(bufl,sizeof(bufl),"%s:", host2),bufl), ptp->b_endpoint);
         // offset += snprintf(bufff + offset, 1000,"\thost %-4s      %s\n", (snprintf(bufl,sizeof(bufl),"%s:", host2),bufl), ptp->b_endpoint);
 
-       fprintf(stdout,"\tcomplete conn: %s",
-	       ConnReset(ptp)?"RESET":(
-				       ConnComplete(ptp)?"yes":"no"));
+    //    fprintf(stdout,"\tcomplete conn: %s",
+	//        ConnReset(ptp)?"RESET":(
+	// 			       ConnComplete(ptp)?"yes":"no"));
         // offset += snprintf(bufff + offset, 1000,"\tcomplete conn: %s",
 	    //    ConnReset(ptp)?"RESET":(
 		// 		       ConnComplete(ptp)?"yes":"no"));
             
        if (ConnComplete(ptp)){
-	 fprintf(stdout,"\n");
+	//  fprintf(stdout,"\n");
     //  offset += snprintf(bufff + offset, 1000,"\n");
        }else{
-	 fprintf(stdout,"\t(SYNs: %u)  (FINs: %u)\n",
-		 SynCount(ptp), FinCount(ptp));
+	//  fprintf(stdout,"\t(SYNs: %u)  (FINs: %u)\n",
+	// 	 SynCount(ptp), FinCount(ptp));
         // offset += snprintf(bufff + offset, 1000,"\t(SYNs: %u)  (FINs: %u)\n",
 		//  SynCount(ptp), FinCount(ptp));
      }

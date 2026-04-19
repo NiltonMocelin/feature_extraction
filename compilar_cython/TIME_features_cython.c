@@ -21599,7 +21599,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  *         elif ip.protocol == UDP_PROTO:
  *             payload_len = len(bloco[i][1]) - offset - ihl - 8 # UDP header  fixo de 8 bytes             # <<<<<<<<<<<<<<
  * 
- * 
+ *         if payload_len < 1:
  */
       if (unlikely(__pyx_v_bloco == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -21621,8 +21621,8 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
     }
     __pyx_L6:;
 
-    /* "TIME_features_cython.pyx":173
- * 
+    /* "TIME_features_cython.pyx":172
+ *             payload_len = len(bloco[i][1]) - offset - ihl - 8 # UDP header  fixo de 8 bytes
  * 
  *         if payload_len < 1:             # <<<<<<<<<<<<<<
  *             contador_pacotes = 0
@@ -21631,7 +21631,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
     __pyx_t_2 = (__pyx_v_payload_len < 1);
     if (__pyx_t_2) {
 
-      /* "TIME_features_cython.pyx":174
+      /* "TIME_features_cython.pyx":173
  * 
  *         if payload_len < 1:
  *             contador_pacotes = 0             # <<<<<<<<<<<<<<
@@ -21640,7 +21640,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  */
       __pyx_v_contador_pacotes = 0;
 
-      /* "TIME_features_cython.pyx":175
+      /* "TIME_features_cython.pyx":174
  *         if payload_len < 1:
  *             contador_pacotes = 0
  *             prev_time = bloco[i][0]             # <<<<<<<<<<<<<<
@@ -21649,14 +21649,14 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  */
       if (unlikely(__pyx_v_bloco == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 175, __pyx_L1_error)
+        __PYX_ERR(0, 174, __pyx_L1_error)
       }
-      __pyx_t_3 = __Pyx_GetItemInt(PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetItemInt(PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF_SET(__pyx_v_prev_time, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "TIME_features_cython.pyx":176
+      /* "TIME_features_cython.pyx":175
  *             contador_pacotes = 0
  *             prev_time = bloco[i][0]
  *             continue             # <<<<<<<<<<<<<<
@@ -21665,8 +21665,8 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  */
       goto __pyx_L4_continue;
 
-      /* "TIME_features_cython.pyx":173
- * 
+      /* "TIME_features_cython.pyx":172
+ *             payload_len = len(bloco[i][1]) - offset - ihl - 8 # UDP header  fixo de 8 bytes
  * 
  *         if payload_len < 1:             # <<<<<<<<<<<<<<
  *             contador_pacotes = 0
@@ -21674,7 +21674,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  */
     }
 
-    /* "TIME_features_cython.pyx":178
+    /* "TIME_features_cython.pyx":177
  *             continue
  * 
  *         if ip.saddr == sip: # Mesma direo             # <<<<<<<<<<<<<<
@@ -21684,7 +21684,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
     __pyx_t_2 = (__pyx_v_ip->saddr == __pyx_v_sip);
     if (__pyx_t_2) {
 
-      /* "TIME_features_cython.pyx":179
+      /* "TIME_features_cython.pyx":178
  * 
  *         if ip.saddr == sip: # Mesma direo
  *             contador_pacotes += 1             # <<<<<<<<<<<<<<
@@ -21693,7 +21693,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  */
       __pyx_v_contador_pacotes = (__pyx_v_contador_pacotes + 1);
 
-      /* "TIME_features_cython.pyx":178
+      /* "TIME_features_cython.pyx":177
  *             continue
  * 
  *         if ip.saddr == sip: # Mesma direo             # <<<<<<<<<<<<<<
@@ -21703,7 +21703,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
       goto __pyx_L8;
     }
 
-    /* "TIME_features_cython.pyx":181
+    /* "TIME_features_cython.pyx":180
  *             contador_pacotes += 1
  *         else:
  *             contador_pacotes -= 1             # <<<<<<<<<<<<<<
@@ -21715,7 +21715,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
     }
     __pyx_L8:;
 
-    /* "TIME_features_cython.pyx":183
+    /* "TIME_features_cython.pyx":182
  *             contador_pacotes -= 1
  * 
  *         if contador_pacotes > 3 or contador_pacotes < -3:             # <<<<<<<<<<<<<<
@@ -21733,7 +21733,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
     __pyx_L10_bool_binop_done:;
     if (__pyx_t_2) {
 
-      /* "TIME_features_cython.pyx":184
+      /* "TIME_features_cython.pyx":183
  * 
  *         if contador_pacotes > 3 or contador_pacotes < -3:
  *             contador_bulk += 1             # <<<<<<<<<<<<<<
@@ -21742,7 +21742,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  */
       __pyx_v_contador_bulk = (__pyx_v_contador_bulk + 1);
 
-      /* "TIME_features_cython.pyx":185
+      /* "TIME_features_cython.pyx":184
  *         if contador_pacotes > 3 or contador_pacotes < -3:
  *             contador_bulk += 1
  *             time_spent_bulk_mode += bloco[i][0] - prev_time             # <<<<<<<<<<<<<<
@@ -21751,20 +21751,20 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  */
       if (unlikely(__pyx_v_bloco == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 185, __pyx_L1_error)
+        __PYX_ERR(0, 184, __pyx_L1_error)
       }
-      __pyx_t_3 = __Pyx_GetItemInt(PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetItemInt(PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 184, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_10 = PyNumber_Subtract(__pyx_t_3, __pyx_v_prev_time); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_10 = PyNumber_Subtract(__pyx_t_3, __pyx_v_prev_time); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 184, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_time_spent_bulk_mode, __pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
+      __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_time_spent_bulk_mode, __pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 184, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       __Pyx_DECREF_SET(__pyx_v_time_spent_bulk_mode, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "TIME_features_cython.pyx":186
+      /* "TIME_features_cython.pyx":185
  *             contador_bulk += 1
  *             time_spent_bulk_mode += bloco[i][0] - prev_time
  *             prev_time = bloco[i][0]             # <<<<<<<<<<<<<<
@@ -21773,14 +21773,14 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  */
       if (unlikely(__pyx_v_bloco == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 186, __pyx_L1_error)
+        __PYX_ERR(0, 185, __pyx_L1_error)
       }
-      __pyx_t_3 = __Pyx_GetItemInt(PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 186, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetItemInt(PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF_SET(__pyx_v_prev_time, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "TIME_features_cython.pyx":183
+      /* "TIME_features_cython.pyx":182
  *             contador_pacotes -= 1
  * 
  *         if contador_pacotes > 3 or contador_pacotes < -3:             # <<<<<<<<<<<<<<
@@ -21791,7 +21791,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
     __pyx_L4_continue:;
   }
 
-  /* "TIME_features_cython.pyx":188
+  /* "TIME_features_cython.pyx":187
  *             prev_time = bloco[i][0]
  * 
  *     return (contador_bulk, time_spent_bulk_mode)             # <<<<<<<<<<<<<<
@@ -21799,15 +21799,15 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  * @cython.boundscheck(False)
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_contador_bulk); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_contador_bulk); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 188, __pyx_L1_error)
+  __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_GIVEREF(__pyx_t_3);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_3)) __PYX_ERR(0, 187, __pyx_L1_error);
   __Pyx_INCREF(__pyx_v_time_spent_bulk_mode);
   __Pyx_GIVEREF(__pyx_v_time_spent_bulk_mode);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_v_time_spent_bulk_mode)) __PYX_ERR(0, 188, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_v_time_spent_bulk_mode)) __PYX_ERR(0, 187, __pyx_L1_error);
   __pyx_t_3 = 0;
   __pyx_r = ((PyObject*)__pyx_t_10);
   __pyx_t_10 = 0;
@@ -21835,7 +21835,7 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
   return __pyx_r;
 }
 
-/* "TIME_features_cython.pyx":192
+/* "TIME_features_cython.pyx":191
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cdef double Time_spent_idle_raw(double[:] iats):             # <<<<<<<<<<<<<<
@@ -21853,7 +21853,7 @@ static double __pyx_f_20TIME_features_cython_Time_spent_idle_raw(__Pyx_memviewsl
   Py_ssize_t __pyx_t_4;
   int __pyx_t_5;
 
-  /* "TIME_features_cython.pyx":193
+  /* "TIME_features_cython.pyx":192
  * @cython.wraparound(False)
  * cdef double Time_spent_idle_raw(double[:] iats):
  *     cdef double idle = 0             # <<<<<<<<<<<<<<
@@ -21862,7 +21862,7 @@ static double __pyx_f_20TIME_features_cython_Time_spent_idle_raw(__Pyx_memviewsl
  */
   __pyx_v_idle = 0.0;
 
-  /* "TIME_features_cython.pyx":195
+  /* "TIME_features_cython.pyx":194
  *     cdef double idle = 0
  *     cdef int i
  *     for i in range(iats.shape[0]):             # <<<<<<<<<<<<<<
@@ -21874,7 +21874,7 @@ static double __pyx_f_20TIME_features_cython_Time_spent_idle_raw(__Pyx_memviewsl
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "TIME_features_cython.pyx":196
+    /* "TIME_features_cython.pyx":195
  *     cdef int i
  *     for i in range(iats.shape[0]):
  *         if iats[i] >= 2.0:             # <<<<<<<<<<<<<<
@@ -21885,7 +21885,7 @@ static double __pyx_f_20TIME_features_cython_Time_spent_idle_raw(__Pyx_memviewsl
     __pyx_t_5 = ((*((double *) ( /* dim=0 */ (__pyx_v_iats.data + __pyx_t_4 * __pyx_v_iats.strides[0]) ))) >= 2.0);
     if (__pyx_t_5) {
 
-      /* "TIME_features_cython.pyx":197
+      /* "TIME_features_cython.pyx":196
  *     for i in range(iats.shape[0]):
  *         if iats[i] >= 2.0:
  *             idle += iats[i]             # <<<<<<<<<<<<<<
@@ -21895,7 +21895,7 @@ static double __pyx_f_20TIME_features_cython_Time_spent_idle_raw(__Pyx_memviewsl
       __pyx_t_4 = __pyx_v_i;
       __pyx_v_idle = (__pyx_v_idle + (*((double *) ( /* dim=0 */ (__pyx_v_iats.data + __pyx_t_4 * __pyx_v_iats.strides[0]) ))));
 
-      /* "TIME_features_cython.pyx":196
+      /* "TIME_features_cython.pyx":195
  *     cdef int i
  *     for i in range(iats.shape[0]):
  *         if iats[i] >= 2.0:             # <<<<<<<<<<<<<<
@@ -21905,7 +21905,7 @@ static double __pyx_f_20TIME_features_cython_Time_spent_idle_raw(__Pyx_memviewsl
     }
   }
 
-  /* "TIME_features_cython.pyx":198
+  /* "TIME_features_cython.pyx":197
  *         if iats[i] >= 2.0:
  *             idle += iats[i]
  *     return idle             # <<<<<<<<<<<<<<
@@ -21915,7 +21915,7 @@ static double __pyx_f_20TIME_features_cython_Time_spent_idle_raw(__Pyx_memviewsl
   __pyx_r = __pyx_v_idle;
   goto __pyx_L0;
 
-  /* "TIME_features_cython.pyx":192
+  /* "TIME_features_cython.pyx":191
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cdef double Time_spent_idle_raw(double[:] iats):             # <<<<<<<<<<<<<<

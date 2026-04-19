@@ -1,148 +1,239 @@
-import ctypes
-import _ctypes
+import tcptrace_api
+import operador_pypcap as opcap
+import multiprocessing 
+import os
 
-# Exemplo de declaração da função C (pode estar em um .h ou no próprio .pyx)
-cdef extern from *:
-    """
-    #include <stdio.h>
-    void minha_funcao_c_real(const char* nome) {
-        printf("C recebeu o arquivo: %s\\n", nome);
-    }
-    """
-    void minha_funcao_c_real(const char* nome)
 
-encoded_strings = []
 
-def chamar_processamento(str file_name):
-    # 1. Converte a string Python (unicode) para bytes UTF-8
-    # É essencial manter essa variável 'py_bytes' viva enquanto o C usa o ponteiro
-    py_bytes = file_name.encode('utf-8')
+def get_file_name(file_path):
+    return file_path.split('/')[-1].split('.')[0]
+
+
+def modelar_dados_csv(valores):
+    resultados_str = ""
+    for val in valores:
+        resultados_str+= f',{val}'
+    return resultados_str.replace(',',"",1)
+
+def escreverArquivo(folder_name, file_name, resultados_str, append=True, lock=None):
+
+    # if not lock:
+    #     lock = FileLock(f"{file_name}.csv.lock")
+
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name, exist_ok=True) # Evita erro de concorrência
+
+    file_path = os.path.join(folder_name, file_name)
     
-    # 2. Faz o cast para char* (ponteiro C)
-    cdef char* c_file_name = py_bytes
-    
-    # 3. Chama a função C
-    minha_funcao_c_real(c_file_name)
-
-
+    # with lock: # nao remova o filelock manualmente durante os processos !! vai causar inconsistencia - estava dando problema
+    with open(file_path, 'a' if append else 'w', encoding='utf-8') as file:
+        if type(resultados_str) == list:
+            for linha in resultados_str:
+                file.write(f'{linha}\n')
+        else:
+            file.write(resultados_str+'\n')
+        # file.flush()
+        
+    return
 
 def tratar_tcptrace(saida_tcptrace):
-
-    lista_aux = saida_tcptrace.split(";")
-    if len(lista_aux) != 2:
-        print("Erro ao tratar saida tcptrace")
-        return ([],[])
-
-    lista_cabecalhos = lista_aux[0].split(',')
-    lista_resultados = lista_aux[1].split(',')
-
-    lista_cabecalhos.pop(0)#host_a
-    lista_cabecalhos.pop(0)#host_b
-    lista_cabecalhos.pop(0)#port_a
-    lista_cabecalhos.pop(0)#port_b
-    lista_cabecalhos.pop(-1)#,nada
-
-    lista_resultados.pop(0)#host_a
-    lista_resultados.pop(0)#host_b
-    lista_resultados.pop(0)#port_a
-    lista_resultados.pop(0)#port_b
-    lista_resultados.pop(-1)#,nada
-
-    lista_alterar_com_barra = [
-        "a2b_syn_fin_pkts_sent", "b2a_syn_fin_pkts_sent", "b2a_req_1323_ws_ts",
-        "a2b_req_1323_ws_ts" ]
-    dict_alteracoes_com_barra = {"a2b_syn_fin_pkts_sent":["a2b_syn_pkts_sent", "a2b_fin_pkts_sent"],
-    "b2a_syn_fin_pkts_sent":["b2a_syn_pkts_sent", "b2a_fin_pkts_sent"],
-    "a2b_req_1323_ws_ts":["a2b_req_1323_ws", "a2b_req_1323_ts"],
-    "b2a_req_1323_ws_ts":["b2a_req_1323_ws", "b2a_req_1323_ts"]
-    }
-
-    for item in lista_alterar_com_barra:
-
-        try:
-            indice = lista_cabecalhos.index(item)
-            valor_um, valor_dois = lista_resultados[indice].split("/")
-            lista_cabecalhos.pop(indice)
-            lista_cabecalhos += dict_alteracoes_com_barra[item]
-            lista_resultados.pop(indice)
-            lista_resultados.append(valor_um)
-            lista_resultados.append(valor_dois)
-        except:
-            print(f"ERRO-f-extractor-cython: {item} nao encontrado em cabecalhos")
-
-    for i,val in enumerate(lista_resultados):
-        if 'N' in val:
-            lista_resultados[i] = 0
-        elif 'Y' in val:
-            lista_resultados[i] = 1
-        if '.' in val:
-            lista_resultados[i] = float(lista_resultados[i])
-        else:
-            lista_resultados[i] = int(lista_resultados[i])   
-
-    return (lista_cabecalhos, lista_resultados)
-
-def list_to_c_char_array(py_list_of_strings):
-    encoded_strings = [s.encode('utf-8') for s in py_list_of_strings]
-    c_char_p_array_type = (ctypes.c_char_p * len(encoded_strings))
-    c_array_instance = c_char_p_array_type(*encoded_strings)
-    return c_array_instance
-
-def unload_library(lib_tcptrace):
-    lib_handle = lib_tcptrace._handle
-    _ctypes.dlclose(lib_handle) #destrutor
-    return
-def load_library():
-    lib_tcptrace = ctypes.CDLL(f'./libtcptrace.so')
-    lib_tcptrace.extrair_features.restype = ctypes.c_char_p
-    lib_tcptrace.extrair_features.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_char_p)]
-    return lib_tcptrace
-
-def fechar(lib_tcptrace):
-    lib_tcptrace.chamar_depois_terminar_manual()
-    return
-
-# Carrega a biblioteca
-lib_tcptrace = ctypes.CDLL('./libtcptrace.so')
-
-# --- CONFIGURAÇÃO CRUCIAL ---
-# Informamos ao ctypes que a main2 retorna um ponteiro de string (char *)
-lib_tcptrace.main2.restype = ctypes.c_char_p
-# Informamos que os argumentos são (int, char**)
-lib_tcptrace.main2.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_char_p)]
-# ----------------------------
-
-entrada_arquivo_pcap = "/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/Tor/qos/tor_facebook_audio/flow_total_VOIP_gate_facebook_Audio_TCP_198.52.200.39_10.0.2.15_443_55139.pcap"
-lista_params = ["tcptrace", "-l", "-r", "-W", "-u", "--csv", entrada_arquivo_pcap]
-# Converte a lista para o formato C
-c_array = list_to_c_char_array(lista_params)
-for i in range(100):
-    # Chama a função
-    # O ctypes.c_char_p automaticamente converte o retorno de char* para bytes do Python
-    print(f"passando {len(lista_params)} {lista_params}")
-    resultado_bytes = lib_tcptrace.main2(len(lista_params), c_array)
-    resultado=""
-    if resultado_bytes:
-        # Converte de bytes para string (UTF-8)
-        resultado = resultado_bytes.decode('utf-8')
-        # print(f'printando resultado:\n{resultado}')
-
-        colunas, resultados = resultado.split(';')
-        # print(f'colunas: {colunas}')
-        # print(f'resultados: {resultados}')
-    else:
-        print("A função retornou NULL")
-
-    print(resultado)
-    lib_tcptrace.reset_argv_parser()
-# fechar(lib_tcptrace)
-    # unload_library(lib_tcptrace)
-    # lib_tcptrace = load_library()
     
-    # cabe, vals = tratar_tcptrace(resultado)
-    # print(f'cab{cabe}')# - len vals{len(vals)}')
+    lista_colunas, lista_resultados = saida_tcptrace.split(";") 
+    lista_colunas = lista_colunas.split(",")
+    lista_resultados = lista_resultados.replace("NA", "0")
+    lista_resultados = lista_resultados.replace("Y", "1")
+    lista_resultados = lista_resultados.replace("N", "0")
+    lista_resultados = lista_resultados.split(",")
+    qtd_colunas = len(lista_colunas)
+    qtd_resultados = len(lista_resultados)
+
+    if qtd_colunas != qtd_resultados:
+        print(f"Erro: o número de colunas ({len(lista_colunas)}) não corresponde ao número de resultados ({len(lista_resultados)}).")
+        return ([], [])
+    
+    if qtd_colunas < 2 or qtd_resultados < 2:
+        print("Erro: listas vazias ")
+        return ([], [])
+    
+    # lista_colunas.pop(-1) #remover o ultimo , e os dois primeiros hosts ip address
+    # lista_resultados.pop(-1)
+    # lista_resultados.pop()
+    lista_colunas = lista_colunas[2:qtd_colunas-1]
+    lista_resultados = lista_resultados[2:qtd_resultados-1]
+
+    # print(f"saida tcptrace: {lista_colunas}")
+    
+    
+    # [a2b_syn_fin_pkts_sent]=0/0
+    index = lista_colunas.index("a2b_syn_fin_pkts_sent")
+    aux = lista_resultados[index].split("/")
+    lista_colunas.pop(index)
+    lista_colunas.append("a2b_syn_pkts_sent")
+    lista_colunas.append("a2b_fin_pkts_sent")
+    lista_resultados.pop(index)
+    lista_resultados.append(aux[0])
+    lista_resultados.append(aux[1])
+    
+    # [b2a_syn_fin_pkts_sent]=0/0
+    index = lista_colunas.index("b2a_syn_fin_pkts_sent")
+    aux = lista_resultados[index].split("/")
+    lista_colunas.pop(index)
+    lista_colunas.append("b2a_syn_pkts_sent")
+    lista_colunas.append("b2a_fin_pkts_sent")
+    lista_resultados.pop(index)
+    lista_resultados.append(aux[0])
+    lista_resultados.append(aux[1])
+    
+    # [a2b_req_1323_ws_ts]=N/Y
+    index = lista_colunas.index("a2b_req_1323_ws_ts")
+    aux = lista_resultados[index].split("/")
+    lista_colunas.pop(index)
+    lista_colunas.append("a2b_req_1323_ws")
+    lista_colunas.append("a2b_req_1323_ts")
+    lista_resultados.pop(index)
+    lista_resultados.append(0 if aux[0] == "N" else 1)
+    lista_resultados.append(0 if aux[1] == "N" else 1)
+    
+    # [b2a_req_1323_ws_ts]=N/Y
+    index = lista_colunas.index("b2a_req_1323_ws_ts")
+    aux = lista_resultados[index].split("/")
+    lista_colunas.pop(index)
+    lista_colunas.append("b2a_req_1323_ws") 
+    lista_colunas.append("b2a_req_1323_ts")
+    lista_resultados.pop(index)
+    lista_resultados.append(0 if aux[0] == "N" else 1)
+    lista_resultados.append(0 if aux[1] == "N" else 1)
+
+    # for col, val in zip(lista_colunas, lista_resultados):
+    #     print(f"[{col}]={val}")
+    
+    return lista_colunas, lista_resultados
+
+def ler_folder(folder):
+    listaa = os.listdir(folder)
+    listaa.sort()
+    return [file for file in listaa if '.pcap' in file]
+
+def dividir_e_filtrar_rajadas(lista, tamanho, parametros, idle_timeout=2.0):
+    """
+    Agrupa pacotes em blocos de 'tamanho'.
+    Se qualquer intervalo entre pacotes consecutivos for > idle_timeout,
+    descarta o que foi acumulado e recomeça a partir do pacote atual.
+    """
+    TIPO_BLOCOS = 0
+    bloco_atual = []
+    
+    for i in range(len(lista)):
+        pacote_atual = lista[i] # (timestamp, dados)
+        
+        if not bloco_atual:
+            bloco_atual.append(pacote_atual)
+            continue
+        
+        # Calcula o intervalo entre o pacote atual e o anterior
+        ts_anterior = bloco_atual[-1][0]
+        ts_atual = pacote_atual[0]
+        intervalo = ts_atual - ts_anterior
+        
+        if intervalo <= idle_timeout:
+            bloco_atual.append(pacote_atual)
+            
+            # Se atingimos o tamanho desejado, entregamos o bloco e limpamos
+            if len(bloco_atual) == tamanho:
+                yield (parametros, bloco_atual)
+                if TIPO_BLOCOS==0:
+                    bloco_atual = []
+                else:
+                    bloco_atual.pop(0)
+                #outra abordagem bloco_atual.pop() -> porem caracteristicas muito semelhantes -> entradas muito parecidas na db
+        else:
+            # QUEBRA DE IDLE: O pacote atual demorou demais.
+            # O que tínhamos acumulado é descartado e o atual vira o novo 'primeiro'
+            bloco_atual = [pacote_atual]
+
+def teste3(folder, block_size, folder_output):
+    files = ler_folder(folder)
+    for file in files:
+        lista_ts_raw_pkts, linktype = opcap.ler_binario_direto(os.path.join(folder, file), 2000)
+        processar_blocos(folder_output, block_size, get_file_name(file), lista_ts_raw_pkts, linktype)
+    return
+
+
+def processar_blocos(folder, block_size, file_name, lista_ts_raw_pkts, linktype):
+
+    lista_parametros_e_ts_pkts = list(dividir_e_filtrar_rajadas(lista_ts_raw_pkts, block_size,parametros={}, idle_timeout=2))
+
+    for i,l in enumerate(lista_parametros_e_ts_pkts):
+            
+            # ctx = multiprocessing.get_context('spawn')
+            resultados_valores = []
+
+            # Criamos um Pool onde cada worker processa 1 tarefas e depois morre (limpa a RAM)
+            # with multiprocessing.Pool(processes=1, maxtasksperchild=1) as pool:
+            #     # O chunksize faz com que o Python envie blocos em grupos, reduzindo a comunicação
+            #     bufferr = tcptrace_api.preparar_buffer_pcap_sem_header(lista_ts_raw_pkts, linktype)        
+            #     resultados_valores=(pool.map(tcptrace_api.processar_em_memoria, [bufferr]))
+
+            bufferr = tcptrace_api.preparar_buffer_pcap_sem_header(l[1], linktype)
+            resultados_valores = tcptrace_api.processar_em_memoria(bufferr)
+
+            col, val = tratar_tcptrace(resultados_valores)
+
+            if col == [] or val ==[]:
+                print(f'file: {file_name} - bloco vazio')
+                continue
+            escreverArquivo(folder,  f'blocks{block_size}_{file_name}.csv', modelar_dados_csv(val))
+
+            # print(f"[run{i}]: {resultados_valores}")
+
+def teste2(lista_ts_raw_pkts, linktype):
+
+    lista_parametros_e_ts_pkts = list(dividir_e_filtrar_rajadas(lista_ts_raw_pkts, 10,parametros={}, idle_timeout=2))
+
+    for i,l in enumerate(lista_parametros_e_ts_pkts):
+            
+            # ctx = multiprocessing.get_context('spawn')
+            resultados_valores = []
+
+            # Criamos um Pool onde cada worker processa 1 tarefas e depois morre (limpa a RAM)
+            # with multiprocessing.Pool(processes=1, maxtasksperchild=1) as pool:
+            #     # O chunksize faz com que o Python envie blocos em grupos, reduzindo a comunicação
+            #     bufferr = tcptrace_api.preparar_buffer_pcap_sem_header(lista_ts_raw_pkts, linktype)        
+            #     resultados_valores=(pool.map(tcptrace_api.processar_em_memoria, [bufferr]))
+
+            bufferr = tcptrace_api.preparar_buffer_pcap_sem_header(l[1], linktype)
+            resultados_valores = tcptrace_api.processar_em_memoria(bufferr)
+
+            # result=tcptrace_api.processar_em_memoria(bufferr)
+
+            print(f"[run{i}]: {resultados_valores}")
+
+
+def teste1(lista_ts_raw_pkts, linktype):
+    for i in range(100):
+        
+        # ctx = multiprocessing.get_context('spawn')
+        resultados_valores = []
+
+        # Criamos um Pool onde cada worker processa 1 tarefas e depois morre (limpa a RAM)
+        # with multiprocessing.Pool(processes=1, maxtasksperchild=1) as pool:
+        #     # O chunksize faz com que o Python envie blocos em grupos, reduzindo a comunicação
+        #     bufferr = tcptrace_api.preparar_buffer_pcap_sem_header(lista_ts_raw_pkts, linktype)        
+        #     resultados_valores=(pool.map(tcptrace_api.processar_em_memoria, [bufferr]))
+
+        bufferr = tcptrace_api.preparar_buffer_pcap_sem_header(lista_ts_raw_pkts, linktype)
+        resultados_valores = tcptrace_api.processar_em_memoria(bufferr)
+
+        # result=tcptrace_api.processar_em_memoria(bufferr)
+
+        print(f"[run{i}]: {resultados_valores}")
 
 
 
+
+
+
+
+teste3("/mnt/usb-JMicron_Tech_DD564198838E0-0:0-part4/Data_lake/VPN-PCAPS-01/qos/vpn_facebook_audio", 30, 'saida_tcptrace')
 
 

@@ -234,9 +234,9 @@ PrintTrace(
      */ 
 
    if(csv || tsv || (sv != NULL)) {
-       fprintf(stdout,"%s%s%s%s%s%s%s%s",
-	       ptp->a_hostname, sp, ptp->b_hostname, sp,
-	       ptp->a_portname, sp, ptp->b_portname, sp);
+    //    fprintf(stdout,"%s%s%s%s%s%s%s%s",
+	//        ptp->a_hostname, sp, ptp->b_hostname, sp,
+	//        ptp->a_portname, sp, ptp->b_portname, sp);
         
         escrever_resultados_str("host_a", ptp->a_hostname);
         escrever_resultados_str("host_b", ptp->b_hostname);
@@ -247,9 +247,9 @@ PrintTrace(
        /* Print the start and end times. In other words,
 	* print the time of the first and the last packet
 	*/ 
-       fprintf(stdout,"%ld.%ld %s %ld.%ld %s",
-	       (long)ptp->first_time.tv_sec, (long)ptp->first_time.tv_usec, sp,
-	       (long)ptp->last_time.tv_sec, (long)ptp->last_time.tv_usec, sp);
+    //    fprintf(stdout,"%ld.%ld %s %ld.%ld %s",
+	//        (long)ptp->first_time.tv_sec, (long)ptp->first_time.tv_usec, sp,
+	//        (long)ptp->last_time.tv_sec, (long)ptp->last_time.tv_usec, sp);
        sv_print_count += 2;
        
        snprintf(outroBuffer, sizeof(outroBuffer), "%ld.%ld",(long)ptp->first_time.tv_sec, (long)ptp->first_time.tv_usec);
@@ -258,219 +258,229 @@ PrintTrace(
         escrever_resultados_str("last_time", outroBuffer);
     }
     else {
-       fprintf(stdout,"\thost %-4s      %s\n",
-	       (snprintf(bufl,sizeof(bufl),"%s:", host1),bufl), ptp->a_endpoint);
+    //    fprintf(stdout,"\thost %-4s      %s\n",
+	//        (snprintf(bufl,sizeof(bufl),"%s:", host1),bufl), ptp->a_endpoint);
+        snprintf(bufl,sizeof(bufl),"%s:", host1);
         escrever_resultados_str("a_endpoint", ptp->a_endpoint);
         
-       fprintf(stdout,"\thost %-4s      %s\n",
-	       (snprintf(bufl,sizeof(bufl),"%s:", host2),bufl), ptp->b_endpoint);
+    //    fprintf(stdout,"\thost %-4s      %s\n",
+	//        (snprintf(bufl,sizeof(bufl),"%s:", host2),bufl), ptp->b_endpoint);
+        snprintf(bufl,sizeof(bufl),"%s:", host2);
         escrever_resultados_str("b_endpoint", ptp->b_endpoint);
 
-       fprintf(stdout,"\tcomplete conn: %s",
-	       ConnReset(ptp)?"RESET":(
-				       ConnComplete(ptp)?"yes":"no"));
+    //    fprintf(stdout,"\tcomplete conn: %s",
+	//        ConnReset(ptp)?"RESET":(
+	// 			       ConnComplete(ptp)?"yes":"no"));
         escrever_resultados_str("complete_conn", ConnReset(ptp)?"RESET":(ConnComplete(ptp)?"yes":"no"));
 
        if (ConnComplete(ptp)){
-	 fprintf(stdout,"\n");
+	//  fprintf(stdout,"\n");
     
        }else{
-	 fprintf(stdout,"\t(SYNs: %u)  (FINs: %u)\n",
-		 SynCount(ptp), FinCount(ptp));
+	//  fprintf(stdout,"\t(SYNs: %u)  (FINs: %u)\n",
+	// 	 SynCount(ptp), FinCount(ptp));
        escrever_resultados_int("syn_count", SynCount(ptp));
     escrever_resultados_int("fin_count", FinCount(ptp));
      }
        
-       fprintf(stdout,"\tfirst packet:  %s\n", ts2ascii(&ptp->first_time));
+    //    fprintf(stdout,"\tfirst packet:  %s\n", ts2ascii(&ptp->first_time));
     escrever_resultados_str("first_packet", ts2ascii(&ptp->first_time));
 
-       fprintf(stdout,"\tlast packet:   %s\n", ts2ascii(&ptp->last_time));
+    //    fprintf(stdout,"\tlast packet:   %s\n", ts2ascii(&ptp->last_time));
        escrever_resultados_str("last_packet", ts2ascii(&ptp->last_time));
 
-       fprintf(stdout,"\telapsed time:  %s\n", elapsed2str(etime));
+    //    fprintf(stdout,"\telapsed time:  %s\n", elapsed2str(etime));
     escrever_resultados_str("elapsed_time", elapsed2str(etime));
        
-       fprintf(stdout,"\ttotal packets: %" FS_ULL "\n", ptp->packets);
+    //    fprintf(stdout,"\ttotal packets: %" FS_ULL "\n", ptp->packets);
        escrever_resultados_int("total_packets", ptp->packets);
        
-       fprintf(stdout,"\tfilename:      %s\n", ptp->filename);
+    //    fprintf(stdout,"\tfilename:      %s\n", ptp->filename);
        escrever_resultados_str("filename", ptp->filename);
        
-       fprintf(stdout,"   %s->%s:			      %s->%s:\n",
-	       host1,host2,host2,host1);
+    //    fprintf(stdout,"   %s->%s:			      %s->%s:\n",
+	//        host1,host2,host2,host1);
          escrever_resultados_str("direction_a2b", host1);
             escrever_resultados_str("direction_b2a", host2);
     }
    
-    StatLineI("total packets","", pab->packets, pba->packets);
+    // StatLineI("total packets","", pab->packets, pba->packets);
         escrever_resultados_int("a2b_total_packets", pab->packets);
     escrever_resultados_int("b2a_total_packets", pba->packets);
     escrever_resultados_int("total_packets", pab->packets + pba->packets);
 
     if (pab->reset_count || pba->reset_count || csv || tsv || (sv != NULL))
-	StatLineI("resets sent","", pab->reset_count, pba->reset_count);
+	// StatLineI("resets sent","", pab->reset_count, pba->reset_count);
     escrever_resultados_int("a2b_resets_sent", pab->reset_count);
     escrever_resultados_int("b2a_resets_sent", pba->reset_count);
     escrever_resultados_int("total_resets_sent", pab->reset_count + pba->reset_count);
 
-    StatLineI("ack pkts sent","", pab->ack_pkts, pba->ack_pkts);
+    // StatLineI("ack pkts sent","", pab->ack_pkts, pba->ack_pkts);
         escrever_resultados_int("a2b_ack_pkts_sent", pab->ack_pkts);
     escrever_resultados_int("b2a_ack_pkts_sent", pba->ack_pkts);
     escrever_resultados_int("total_ack_pkts_sent", pab->ack_pkts + pba->ack_pkts);
 
-    StatLineI("pure acks sent","", pab->pureack_pkts, pba->pureack_pkts);
+    // StatLineI("pure acks sent","", pab->pureack_pkts, pba->pureack_pkts);
     escrever_resultados_int("a2b_pure_acks_sent", pab->pureack_pkts);
     escrever_resultados_int("b2a_pure_acks_sent", pba->pureack_pkts);
     escrever_resultados_int("total_pure_acks_sent", pab->pureack_pkts + pba->pureack_pkts);
 
-    StatLineI("sack pkts sent","", pab->num_sacks, pba->num_sacks);
+    // StatLineI("sack pkts sent","", pab->num_sacks, pba->num_sacks);
     escrever_resultados_int("a2b_sack_pkts_sent", pab->num_sacks);
         escrever_resultados_int("b2a_sack_pkts_sent", pba->num_sacks);
         escrever_resultados_int("total_sack_pkts_sent", pab->num_sacks + pba->num_sacks);
 
-    StatLineI("dsack pkts sent","", pab->num_dsacks, pba->num_dsacks);
+    // StatLineI("dsack pkts sent","", pab->num_dsacks, pba->num_dsacks);
     escrever_resultados_int("a2b_dsack_pkts_sent", pab->num_dsacks);
         escrever_resultados_int("b2a_dsack_pkts_sent", pba->num_dsacks);
         escrever_resultados_int("total_dsack_pkts_sent", pab->num_dsacks + pba->num_dsacks);
 
-    StatLineI("max sack blks/ack","", pab->max_sack_blocks, pba->max_sack_blocks);
+    // StatLineI("max sack blks/ack","", pab->max_sack_blocks, pba->max_sack_blocks);
     escrever_resultados_int("a2b_max_sack_blocks", pab->max_sack_blocks);
     escrever_resultados_int("b2a_max_sack_blocks", pba->max_sack_blocks);
     escrever_resultados_int("total_max_sack_blocks", pab->max_sack_blocks + pba->max_sack_blocks);
 
-    StatLineI("unique bytes sent","",
-	      pab->unique_bytes, pba->unique_bytes);
+    // StatLineI("unique bytes sent","",
+	//       pab->unique_bytes, pba->unique_bytes);
     escrever_resultados_int("a2b_unique_bytes_sent", pab->unique_bytes);
     escrever_resultados_int("b2a_unique_bytes_sent", pba->unique_bytes);
     escrever_resultados_int("total_unique_bytes_sent", pab->unique_bytes + pba->unique_bytes);
 
-    StatLineI("actual data pkts","", pab->data_pkts, pba->data_pkts);
+    // StatLineI("actual data pkts","", pab->data_pkts, pba->data_pkts);
     escrever_resultados_int("a2b_actual_data_pkts", pab->data_pkts);
     escrever_resultados_int("b2a_actual_data_pkts", pba->data_pkts);
     escrever_resultados_int("total_actual_data_pkts", pab->data_pkts + pba->data_pkts);
 
-    StatLineI("actual data bytes","", pab->data_bytes, pba->data_bytes);
+    // StatLineI("actual data bytes","", pab->data_bytes, pba->data_bytes);
     escrever_resultados_int("a2b_actual_data_bytes", pab->data_bytes);
     escrever_resultados_int("b2a_actual_data_bytes", pba->data_bytes);
     escrever_resultados_int("total_actual_data_bytes", pab->data_bytes + pba->data_bytes);
 
-    StatLineI("rexmt data pkts","", pab->rexmit_pkts, pba->rexmit_pkts);
+    // StatLineI("rexmt data pkts","", pab->rexmit_pkts, pba->rexmit_pkts);
     escrever_resultados_int("a2b_rexmt_data_pkts", pab->rexmit_pkts);
     escrever_resultados_int("b2a_rexmt_data_pkts", pba->rexmit_pkts);
     escrever_resultados_int("total_rexmt_data_pkts", pab->rexmit_pkts + pba->rexmit_pkts);
 
-    StatLineI("rexmt data bytes","",
-	      pab->rexmit_bytes, pba->rexmit_bytes);
+    // StatLineI("rexmt data bytes","",
+	//       pab->rexmit_bytes, pba->rexmit_bytes);
     escrever_resultados_int("a2b_rexmt_data_bytes", pab->rexmit_bytes);
           escrever_resultados_int("b2a_rexmt_data_bytes", pba->rexmit_bytes);
           escrever_resultados_int("total_rexmt_data_bytes", pab->rexmit_bytes + pba->rexmit_bytes);
 
-    StatLineI("zwnd probe pkts","", 
-		  pab->num_zwnd_probes, pba->num_zwnd_probes);
+    // StatLineI("zwnd probe pkts","", 
+	// 	  pab->num_zwnd_probes, pba->num_zwnd_probes);
     escrever_resultados_int("a2b_zwnd_probe_pkts", pab->num_zwnd_probes);
     escrever_resultados_int("b2a_zwnd_probe_pkts", pba->num_zwnd_probes);
     escrever_resultados_int("total_zwnd_probe_pkts", pab->num_zwnd_probes + pba->num_zwnd_probes);
 
-    StatLineI("zwnd probe bytes","",
-	      pab->zwnd_probe_bytes, pba->zwnd_probe_bytes);
+    // StatLineI("zwnd probe bytes","",
+	//       pab->zwnd_probe_bytes, pba->zwnd_probe_bytes);
     escrever_resultados_int("a2b_zwnd_probe_bytes", pab->zwnd_probe_bytes);
     escrever_resultados_int("b2a_zwnd_probe_bytes", pba->zwnd_probe_bytes);
     escrever_resultados_int("total_zwnd_probe_bytes", pab->zwnd_probe_bytes + pba->zwnd_probe_bytes);
 
-    StatLineI("outoforder pkts","",
-	      pab->out_order_pkts, pba->out_order_pkts);
+    // StatLineI("outoforder pkts","",
+	//       pab->out_order_pkts, pba->out_order_pkts);
     escrever_resultados_int("a2b_outoforder_pkts", pab->out_order_pkts);
     escrever_resultados_int("b2a_outoforder_pkts", pba->out_order_pkts);
     escrever_resultados_int("total_outoforder_pkts", pab->out_order_pkts + pba->out_order_pkts);
 
-    StatLineI("pushed data pkts","", pab->data_pkts_push, pba->data_pkts_push);
+    // StatLineI("pushed data pkts","", pab->data_pkts_push, pba->data_pkts_push);
     escrever_resultados_int("a2b_pushed_data_pkts", pab->data_pkts_push);
     escrever_resultados_int("b2a_pushed_data_pkts", pba->data_pkts_push);
     escrever_resultados_int("total_pushed_data_pkts", pab->data_pkts_push + pba->data_pkts_push);
 
-    StatLineP("SYN/FIN pkts sent","","%s",
-	      (snprintf(bufl,sizeof(bufl),"%d/%d",
-		       pab->syn_count, pab->fin_count),bufl),
-	      (snprintf(bufr,sizeof(bufr),"%d/%d",
-		       pba->syn_count, pba->fin_count),bufr));
-      escrever_resultados_str("a2b_syn_fin_pkts_sent", bufl);
+    // StatLineP("SYN/FIN pkts sent","","%s",
+	//       (snprintf(bufl,sizeof(bufl),"%d/%d",
+	// 	       pab->syn_count, pab->fin_count),bufl),
+    snprintf(bufl,sizeof(bufl),"%d/%d",
+		       pab->syn_count, pab->fin_count);
+    escrever_resultados_str("a2b_syn_fin_pkts_sent", bufl);
+	//       (snprintf(bufr,sizeof(bufr),"%d/%d",
+	// 	       pba->syn_count, pba->fin_count),bufr));
+    snprintf(bufr,sizeof(bufr),"%d/%d",
+		       pba->syn_count, pba->fin_count);
     escrever_resultados_str("b2a_syn_fin_pkts_sent", bufr);
 
     if (pab->f1323_ws || pba->f1323_ws || pab->f1323_ts || pba->f1323_ts || csv || tsv || (sv != NULL)) {
-	StatLineP("req 1323 ws/ts","","%s",
-		  (snprintf(bufl,sizeof(bufl),"%c/%c",
-		      pab->f1323_ws?'Y':'N',pab->f1323_ts?'Y':'N'),bufl),
-		  (snprintf(bufr,sizeof(bufr),"%c/%c",
-		      pba->f1323_ws?'Y':'N',pba->f1323_ts?'Y':'N'),bufr));
+	// StatLineP("req 1323 ws/ts","","%s",
+	// 	  (snprintf(bufl,sizeof(bufl),"%c/%c",
+	// 	      pab->f1323_ws?'Y':'N',pab->f1323_ts?'Y':'N'),bufl),
+	// 	  (snprintf(bufr,sizeof(bufr),"%c/%c",
+	// 	      pba->f1323_ws?'Y':'N',pba->f1323_ts?'Y':'N'),bufr));
+    snprintf(bufl,sizeof(bufl),"%c/%c",
+		      pab->f1323_ws?'Y':'N',pab->f1323_ts?'Y':'N');
      escrever_resultados_str("a2b_req_1323_ws_ts", bufl);
+     snprintf(bufr,sizeof(bufr),"%c/%c",
+		      pba->f1323_ws?'Y':'N',pba->f1323_ts?'Y':'N');
     escrever_resultados_str("b2a_req_1323_ws_ts", bufr);
 
     }
     if (pab->f1323_ws || pba->f1323_ws || csv || tsv || (sv != NULL)) {
-	StatLineI("adv wind scale","",
-		  (u_long)pab->window_scale, (u_long)pba->window_scale);
+	// StatLineI("adv wind scale","",
+	// 	  (u_long)pab->window_scale, (u_long)pba->window_scale);
     escrever_resultados_int("a2b_adv_window_scale", (u_long)pab->window_scale);
     escrever_resultados_int("b2a_adv_window_scale", (u_long)pba->window_scale);
     }
     if (pab->fsack_req || pba->fsack_req || csv || tsv || (sv != NULL)) {
-	StatLineP("req sack","","%s",
-		  pab->fsack_req?"Y":"N",
-		  pba->fsack_req?"Y":"N");
+	// StatLineP("req sack","","%s",
+	// 	  pab->fsack_req?"Y":"N",
+	// 	  pba->fsack_req?"Y":"N");
     escrever_resultados_str("a2b_req_sack", pab->fsack_req?"Y":"N");
     escrever_resultados_str("b2a_req_sack", pba->fsack_req?"Y":"N");
-	StatLineI("sacks sent","",
-		  pab->sacks_sent,
-		  pba->sacks_sent);
+	// StatLineI("sacks sent","",
+	// 	  pab->sacks_sent,
+	// 	  pba->sacks_sent);
     escrever_resultados_int("a2b_sacks_sent", pab->sacks_sent);
     escrever_resultados_int("b2a_sacks_sent", pba->sacks_sent);
     escrever_resultados_int("total_sacks_sent", pab->sacks_sent + pba->sacks_sent);
     }
-    StatLineI("urgent data pkts", "pkts",
-	      pab->urg_data_pkts,
-	      pba->urg_data_pkts);
+    // StatLineI("urgent data pkts", "pkts",
+	//       pab->urg_data_pkts,
+	//       pba->urg_data_pkts);
 escrever_resultados_int("a2b_urg_data_pkts", pab->urg_data_pkts);
     escrever_resultados_int("b2a_urg_data_pkts", pba->urg_data_pkts);
     escrever_resultados_int("total_urg_data_pkts", pab->urg_data_pkts + pba->urg_data_pkts);
     
-    StatLineI("urgent data bytes", "bytes",
-	      pab->urg_data_bytes,
-	      pba->urg_data_bytes);
+    // StatLineI("urgent data bytes", "bytes",
+	//       pab->urg_data_bytes,
+	//       pba->urg_data_bytes);
     escrever_resultados_int("a2b_urg_data_bytes", pab->urg_data_bytes);
     escrever_resultados_int("b2a_urg_data_bytes", pba->urg_data_bytes);
     escrever_resultados_int("total_urg_data_bytes", pab->urg_data_bytes + pba->urg_data_bytes);
 
-    StatLineI("mss requested","bytes", pab->mss, pba->mss);
+    // StatLineI("mss requested","bytes", pab->mss, pba->mss);
     escrever_resultados_int("a2b_mss_requested", pab->mss);
     escrever_resultados_int("b2a_mss_requested", pba->mss);
 
-    StatLineI("max segm size","bytes",
-	      pab->max_seg_size,
-	      pba->max_seg_size);
+    // StatLineI("max segm size","bytes",
+	//       pab->max_seg_size,
+	//       pba->max_seg_size);
     escrever_resultados_int("a2b_max_seg_size", pab->max_seg_size);
     escrever_resultados_int("b2a_max_seg_size", pba->max_seg_size);
 
-    StatLineI("min segm size","bytes",
-	      pab->min_seg_size,
-	      pba->min_seg_size);
+    // StatLineI("min segm size","bytes",
+	//       pab->min_seg_size,
+	//       pba->min_seg_size);
     escrever_resultados_int("a2b_min_seg_size", pab->min_seg_size);
     escrever_resultados_int("b2a_min_seg_size", pba->min_seg_size);
 
-    StatLineI("avg segm size","bytes",
-	      (int)((double)pab->data_bytes / ((double)pab->data_pkts+.001)),
-	      (int)((double)pba->data_bytes / ((double)pba->data_pkts+.001)));
+    // StatLineI("avg segm size","bytes",
+	//       (int)((double)pab->data_bytes / ((double)pab->data_pkts+.001)),
+	//       (int)((double)pba->data_bytes / ((double)pba->data_pkts+.001)));
     escrever_resultados_int("a2b_avg_seg_size", (int)((double)pab->data_bytes / ((double)pab->data_pkts+.001)));
     escrever_resultados_int("b2a_avg_seg_size", (int)((double)pba->data_bytes / ((double)pba->data_pkts+.001)));
     
-    StatLineI("max win adv","bytes", pab->win_max, pba->win_max);
+    // StatLineI("max win adv","bytes", pab->win_max, pba->win_max);
     escrever_resultados_int("a2b_max_win_adv", pab->win_max);
     escrever_resultados_int("b2a_max_win_adv", pba->win_max);
 
-    StatLineI("min win adv","bytes", pab->win_min, pba->win_min);
+    // StatLineI("min win adv","bytes", pab->win_min, pba->win_min);
     escrever_resultados_int("a2b_min_win_adv", pab->win_min);
     escrever_resultados_int("b2a_min_win_adv", pba->win_min);
 
-    StatLineI("zero win adv","times",
-	      pab->win_zero_ct, pba->win_zero_ct);
+    // StatLineI("zero win adv","times",
+	//       pab->win_zero_ct, pba->win_zero_ct);
     escrever_resultados_int("a2b_zero_win_adv_times", pab->win_zero_ct);
     escrever_resultados_int("b2a_zero_win_adv_times", pba->win_zero_ct);
     // Average window advertisement is calculated only for window scaled pkts
@@ -480,53 +490,54 @@ escrever_resultados_int("a2b_urg_data_pkts", pab->urg_data_pkts);
      
     if (pab->window_stats_updated_for_scaling &&
 	pba->window_stats_updated_for_scaling){
-	  StatLineI("avg win adv","bytes",
-		    pab->win_scaled_pkts==0?0:
-		    (pab->win_tot/pab->win_scaled_pkts),
-		    pba->win_scaled_pkts==0?0:
-		    (pba->win_tot/pba->win_scaled_pkts));
+	//   StatLineI("avg win adv","bytes",
+	// 	    pab->win_scaled_pkts==0?0:
+	// 	    (pab->win_tot/pab->win_scaled_pkts),
+	// 	    pba->win_scaled_pkts==0?0:
+	// 	    (pba->win_tot/pba->win_scaled_pkts));
           escrever_resultados_int("a2b_avg_win_adv", pab->win_scaled_pkts==0?0:(pab->win_tot/pab->win_scaled_pkts));
         escrever_resultados_int("b2a_avg_win_adv", pba->win_scaled_pkts==0?0:(pba->win_tot/pba->win_scaled_pkts));
 
-    }else
-	  StatLineI("avg win adv","bytes",
-		    pab->packets==0?0:pab->win_tot/pab->packets,
-		    pba->packets==0?0:pba->win_tot/pba->packets);
-    escrever_resultados_int("a2b_avg_win_adv", pab->packets==0?0:pab->win_tot/pab->packets);
+    }else{
+	//   StatLineI("avg win adv","bytes",
+	// 	    pab->packets==0?0:pab->win_tot/pab->packets,
+	// 	    pba->packets==0?0:pba->win_tot/pba->packets);
+        escrever_resultados_int("a2b_avg_win_adv", pab->packets==0?0:pab->win_tot/pab->packets);
         escrever_resultados_int("b2a_avg_win_adv", pba->packets==0?0:pba->win_tot/pba->packets);
+      }
     if (print_owin) {
-	StatLineI("max owin","bytes", pab->owin_max, pba->owin_max);
+	// StatLineI("max owin","bytes", pab->owin_max, pba->owin_max);
     escrever_resultados_int("a2b_max_owin", pab->owin_max);
     escrever_resultados_int("b2a_max_owin", pba->owin_max);
 
-	StatLineI("min non-zero owin","bytes", pab->owin_min, pba->owin_min);
+	// StatLineI("min non-zero owin","bytes", pab->owin_min, pba->owin_min);
     escrever_resultados_int("a2b_min_non_zero_owin", pab->owin_min);
     escrever_resultados_int("b2a_min_non_zero_owin", pba->owin_min);
 
-	StatLineI("avg owin","bytes",
-		  pab->owin_count==0?0:pab->owin_tot/pab->owin_count,
-		  pba->owin_count==0?0:pba->owin_tot/pba->owin_count);
+	// StatLineI("avg owin","bytes",
+	// 	  pab->owin_count==0?0:pab->owin_tot/pab->owin_count,
+	// 	  pba->owin_count==0?0:pba->owin_tot/pba->owin_count);
     escrever_resultados_int("a2b_avg_owin", pab->owin_count==0?0:pab->owin_tot/pab->owin_count);
     escrever_resultados_int("b2a_avg_owin", pba->owin_count==0?0:pba->owin_tot/pba->owin_count);
 	if (etime == 0.0) {
-		StatLineP("wavg owin", "", "%s", "NA", "NA");
+		// StatLineP("wavg owin", "", "%s", "NA", "NA");
         escrever_resultados_str("wavg_owin", "NA");	
 	}
 	else {
-		StatLineI("wavg owin","bytes", 
-			  (u_llong)(pab->owin_wavg/((double)etime/1000000)), 
-		  	  (u_llong)(pba->owin_wavg/((double)etime/1000000)));
+		// StatLineI("wavg owin","bytes", 
+		// 	  (u_llong)(pab->owin_wavg/((double)etime/1000000)), 
+		//   	  (u_llong)(pba->owin_wavg/((double)etime/1000000)));
         escrever_resultados_int("a2b_wavg_owin", (u_llong)(pab->owin_wavg/((double)etime/1000000)));
         escrever_resultados_int("b2a_wavg_owin", (u_llong)(pba->owin_wavg/((double)etime/1000000)));
    	} 
     }
-    StatLineI("initial window","bytes",
-	      pab->initialwin_bytes, pba->initialwin_bytes);
+    // StatLineI("initial window","bytes",
+	//       pab->initialwin_bytes, pba->initialwin_bytes);
     escrever_resultados_int("a2b_initial_window_bytes", pab->initialwin_bytes);
     escrever_resultados_int("b2a_initial_window_bytes", pba->initialwin_bytes);
 
-    StatLineI("initial window","pkts",
-	      pab->initialwin_segs, pba->initialwin_segs);
+    // StatLineI("initial window","pkts",
+	//       pab->initialwin_segs, pba->initialwin_segs);
         escrever_resultados_int("a2b_initial_window_pkts", pab->initialwin_segs);
     escrever_resultados_int("b2a_initial_window_pkts", pba->initialwin_segs);
 
@@ -588,50 +599,50 @@ escrever_resultados_int("a2b_urg_data_pkts", pab->urg_data_pkts);
     /* print out values */
     if ((pab->fin_count > 0) && (pab->syn_count > 0)) {
 	char *format = "%8" FS_ULL;
-	StatLineFieldL("ttl stream length", "bytes", format, stream_length_pab, 0);
+	// StatLineFieldL("ttl stream length", "bytes", format, stream_length_pab, 0);
     escrever_resultados_int("a2b_ttl_stream_length_bytes", stream_length_pab);
     }
     else {
-	StatLineField("ttl stream length", "", "%s", (u_long)"NA", 0);
+	// StatLineField("ttl stream length", "", "%s", (u_long)"NA", 0);
     escrever_resultados_str("a2b_ttl_stream_length_bytes", "NA");
 
     }
     if ((pba->fin_count > 0) && (pba->syn_count > 0)) {
 	char *format = "%8" FS_ULL;
-	StatLineFieldL("ttl stream length", "bytes", format, stream_length_pba, 1);
+	// StatLineFieldL("ttl stream length", "bytes", format, stream_length_pba, 1);
     escrever_resultados_int("b2a_ttl_stream_length_bytes", stream_length_pba);
     }
     else {
-	StatLineField("ttl stream length", "", "%s", (u_long)"NA", 1);
+	// StatLineField("ttl stream length", "", "%s", (u_long)"NA", 1);
     escrever_resultados_str("b2a_ttl_stream_length_bytes", "NA");
     }
 
     if ((pab->fin_count > 0) && (pab->syn_count > 0)) {
 	char *format = "%8" FS_ULL;
-	StatLineFieldL("missed data", "bytes", format, (stream_length_pab - pab->unique_bytes), 0);
+	// StatLineFieldL("missed data", "bytes", format, (stream_length_pab - pab->unique_bytes), 0);
     escrever_resultados_int("a2b_missed_data_bytes", (stream_length_pab - pab->unique_bytes));
     }
     else {
-	StatLineField("missed data", "", "%s", (u_long)"NA", 0);
+	// StatLineField("missed data", "", "%s", (u_long)"NA", 0);
     escrever_resultados_str("a2b_missed_data_bytes", "NA");
     }
     if ((pba->fin_count > 0) && (pba->syn_count > 0)) {
 	char *format = "%8" FS_ULL;
-	StatLineFieldL("missed data", "bytes", format, (stream_length_pba - pba->unique_bytes), 1);
+	// StatLineFieldL("missed data", "bytes", format, (stream_length_pba - pba->unique_bytes), 1);
     escrever_resultados_int("b2a_missed_data_bytes", (stream_length_pba - pba->unique_bytes));
     }
     else {
-	StatLineField("missed data", "", "%s", (u_long)"NA", 1);
+	// StatLineField("missed data", "", "%s", (u_long)"NA", 1);
     escrever_resultados_str("b2a_missed_data_bytes", "NA");
     }
     
     /* tell how much data was NOT captured in the files */
-    StatLineI("truncated data","bytes",
-	      pab->trunc_bytes, pba->trunc_bytes);
+    // StatLineI("truncated data","bytes",
+	//       pab->trunc_bytes, pba->trunc_bytes);
     escrever_resultados_int("a2b_truncated_data_bytes", pab->trunc_bytes);
     escrever_resultados_int("b2a_truncated_data_bytes", pba->trunc_bytes);
-    StatLineI("truncated packets","pkts",
-	      pab->trunc_segs, pba->trunc_segs);
+    // StatLineI("truncated packets","pkts",
+	//       pab->trunc_segs, pba->trunc_segs);
     escrever_resultados_int("a2b_truncated_packets", pab->trunc_segs);
     escrever_resultados_int("b2a_truncated_packets", pba->trunc_segs);
 
@@ -641,24 +652,26 @@ escrever_resultados_int("a2b_urg_data_pkts", pab->urg_data_pkts);
     etime_data2 = elapsed(pba->first_data_time,
 			  pba->last_data_time); /* in usecs */
     /* fix from Rob Austein */
-    StatLineF("data xmit time","secs","%7.3f",
-	      etime_data1 / 1000000.0,
-	      etime_data2 / 1000000.0);
+    // StatLineF("data xmit time","secs","%7.3f",
+	//       etime_data1 / 1000000.0,
+	//       etime_data2 / 1000000.0);
     escrever_resultados_float("a2b_data_xmit_time_secs", etime_data1 / 1000000.0);
     escrever_resultados_float("b2a_data_xmit_time_secs", etime_data2 / 1000000.0);
 
-    StatLineP("idletime max","ms","%s",
-	      ZERO_TIME(&pab->last_time)?"NA":
-	      (snprintf(bufl,sizeof(bufl),"%8.1f",(double)pab->idle_max/1000.0),bufl),
-	      ZERO_TIME(&pba->last_time)?"NA":
-	      (snprintf(bufr,sizeof(bufr),"%8.1f",(double)pba->idle_max/1000.0),bufr));
+    // StatLineP("idletime max","ms","%s",
+	//       ZERO_TIME(&pab->last_time)?"NA":
+	//       (snprintf(bufl,sizeof(bufl),"%8.1f",(double)pab->idle_max/1000.0),bufl),
+	//       ZERO_TIME(&pba->last_time)?"NA":
+	//       (snprintf(bufr,sizeof(bufr),"%8.1f",(double)pba->idle_max/1000.0),bufr));
+    snprintf(bufl,sizeof(bufl),"%8.1f",(double)pab->idle_max/1000.0);
+    snprintf(bufr,sizeof(bufr),"%8.1f",(double)pba->idle_max/1000.0);
       escrever_resultados_str("a2b_idletime_max_ms", ZERO_TIME(&pab->last_time)?"NA":bufl);
     escrever_resultados_str("b2a_idletime_max_ms", ZERO_TIME(&pba->last_time)?"NA":bufr);
 
 
     if ((pab->num_hardware_dups != 0) || (pba->num_hardware_dups != 0)  || csv || tsv || (sv != NULL)) {
-	StatLineI("hardware dups","segs",
-		  pab->num_hardware_dups, pba->num_hardware_dups);
+	// StatLineI("hardware dups","segs",
+	// 	  pab->num_hardware_dups, pba->num_hardware_dups);
            escrever_resultados_int("a2b_hardware_dups_segs", pab->num_hardware_dups);
     escrever_resultados_int("b2a_hardware_dups_segs", pba->num_hardware_dups);
 
@@ -671,91 +684,91 @@ escrever_resultados_int("a2b_urg_data_pkts", pab->urg_data_pkts);
     /* do the throughput calcs */
     etime /= 1000000.0;  /* convert to seconds */
     if (etime == 0.0){
-	StatLineP("throughput","","%s","NA","NA");
+	// StatLineP("throughput","","%s","NA","NA");
 escrever_resultados_str("throughput", "NA");
 
     }else{
-	StatLineF("throughput","Bps","%8.0f",
-		  (double) (pab->unique_bytes) / etime,
-		  (double) (pba->unique_bytes) / etime);
+	// StatLineF("throughput","Bps","%8.0f",
+	// 	  (double) (pab->unique_bytes) / etime,
+	// 	  (double) (pba->unique_bytes) / etime);
     escrever_resultados_float("a2b_throughput_Bps", (double) (pab->unique_bytes) / etime);
     escrever_resultados_float("b2a_throughput_Bps", (double) (pba->unique_bytes) / etime);
     }
     if (print_rtt) {
         if(!(csv || tsv || (sv != NULL)))
 	  fprintf(stdout,"\n");
-	StatLineI("RTT samples","", pab->rtt_count, pba->rtt_count);
+	// StatLineI("RTT samples","", pab->rtt_count, pba->rtt_count);
     escrever_resultados_int("a2b_rtt_samples", pab->rtt_count);
     escrever_resultados_int("b2a_rtt_samples", pba->rtt_count);
 
-	StatLineF("RTT min","ms","%8.1f",
-		  (double)pab->rtt_min/1000.0,
-		  (double)pba->rtt_min/1000.0);
+	// StatLineF("RTT min","ms","%8.1f",
+	// 	  (double)pab->rtt_min/1000.0,
+	// 	  (double)pba->rtt_min/1000.0);
     escrever_resultados_float("a2b_rtt_min_ms", (double)pab->rtt_min/1000.0);
     escrever_resultados_float("b2a_rtt_min_ms", (double)pba->rtt_min/1000.0);
 
 
-	StatLineF("RTT max","ms","%8.1f",
-		  (double)pab->rtt_max/1000.0,
-		  (double)pba->rtt_max/1000.0);
+	// StatLineF("RTT max","ms","%8.1f",
+	// 	  (double)pab->rtt_max/1000.0,
+	// 	  (double)pba->rtt_max/1000.0);
     escrever_resultados_float("a2b_rtt_max_ms", (double)pab->rtt_max/1000.0);
     escrever_resultados_float("b2a_rtt_max_ms", (double)pba->rtt_max/1000.0);
 
-	StatLineF("RTT avg","ms","%8.1f",
-		  Average(pab->rtt_sum, pab->rtt_count) / 1000.0,
-		  Average(pba->rtt_sum, pba->rtt_count) / 1000.0);
+	// StatLineF("RTT avg","ms","%8.1f",
+	// 	  Average(pab->rtt_sum, pab->rtt_count) / 1000.0,
+	// 	  Average(pba->rtt_sum, pba->rtt_count) / 1000.0);
     escrever_resultados_float("a2b_rtt_avg_ms", Average(pab->rtt_sum, pab->rtt_count) / 1000.0);
     escrever_resultados_float("b2a_rtt_avg_ms", Average(pba->rtt_sum, pba->rtt_count) / 1000.0);
 
-	StatLineF("RTT stdev","ms","%8.1f",
-		  Stdev(pab->rtt_sum, pab->rtt_sum2, pab->rtt_count) / 1000.0,
-		  Stdev(pba->rtt_sum, pba->rtt_sum2, pba->rtt_count) / 1000.0);
+	// StatLineF("RTT stdev","ms","%8.1f",
+	// 	  Stdev(pab->rtt_sum, pab->rtt_sum2, pab->rtt_count) / 1000.0,
+	// 	  Stdev(pba->rtt_sum, pba->rtt_sum2, pba->rtt_count) / 1000.0);
     escrever_resultados_float("a2b_rtt_stdev_ms", Stdev(pab->rtt_sum, pab->rtt_sum2, pab->rtt_count) / 1000.0);
     escrever_resultados_float("b2a_rtt_stdev_ms", Stdev(pba->rtt_sum, pba->rtt_sum2, pba->rtt_count) /1000.0);
 
         if(!(csv || tsv || (sv != NULL)))
 	  fprintf(stdout,"\n");
-	StatLineF("RTT from 3WHS","ms","%8.1f",
-		  (double)pab->rtt_3WHS/1000.0,
-		  (double)pba->rtt_3WHS/1000.0);
+	// StatLineF("RTT from 3WHS","ms","%8.1f",
+	// 	  (double)pab->rtt_3WHS/1000.0,
+	// 	  (double)pba->rtt_3WHS/1000.0);
     escrever_resultados_float("a2b_rtt_3WHS_ms", (double)pab->rtt_3WHS/1000.0);
     escrever_resultados_float("b2a_rtt_3WHS_ms", (double)pba->rtt_3WHS/1000.0);
 
         if(!(csv || tsv || (sv != NULL)))
 	  fprintf(stdout,"\n");
-	StatLineI("RTT full_sz smpls","", 
-		  pab->rtt_full_count, pba->rtt_full_count);
+	// StatLineI("RTT full_sz smpls","", 
+	// 	  pab->rtt_full_count, pba->rtt_full_count);
     escrever_resultados_int("a2b_rtt_full_sz_samples", pab->rtt_full_count);
     escrever_resultados_int("b2a_rtt_full_sz_samples", pba->rtt_full_count);
 
-	StatLineF("RTT full_sz min","ms","%8.1f",
-		  (double)pab->rtt_full_min/1000.0,
-		  (double)pba->rtt_full_min/1000.0);
+	// StatLineF("RTT full_sz min","ms","%8.1f",
+	// 	  (double)pab->rtt_full_min/1000.0,
+	// 	  (double)pba->rtt_full_min/1000.0);
     escrever_resultados_float("a2b_rtt_full_sz_min_ms", (double)pab->rtt_full_min/1000.0);
     escrever_resultados_float("b2a_rtt_full_sz_min_ms", (double)pba->rtt_full_min/1000.0);
 
-	StatLineF("RTT full_sz max","ms","%8.1f",
-		  (double)pab->rtt_full_max/1000.0,
-		  (double)pba->rtt_full_max/1000.0);
+	// StatLineF("RTT full_sz max","ms","%8.1f",
+	// 	  (double)pab->rtt_full_max/1000.0,
+	// 	  (double)pba->rtt_full_max/1000.0);
     escrever_resultados_float("a2b_rtt_full_sz_max_ms", (double)pab->rtt_full_max/1000.0);
     escrever_resultados_float("b2a_rtt_full_sz_max_ms", (double)pba->rtt_full_max/1000.0);
 
-	StatLineF("RTT full_sz avg","ms","%8.1f",
-		  Average(pab->rtt_full_sum, pab->rtt_full_count) / 1000.0,
-		  Average(pba->rtt_full_sum, pba->rtt_full_count) / 1000.0);
+	// StatLineF("RTT full_sz avg","ms","%8.1f",
+	// 	  Average(pab->rtt_full_sum, pab->rtt_full_count) / 1000.0,
+	// 	  Average(pba->rtt_full_sum, pba->rtt_full_count) / 1000.0);
     escrever_resultados_float("a2b_rtt_full_sz_avg_ms", Average(pab->rtt_full_sum, pab->rtt_full_count) / 1000.0);
     escrever_resultados_float("b2a_rtt_full_sz_avg_ms", Average(pba->rtt_full_sum, pba->rtt_full_count) / 1000.0);
 
-	StatLineF("RTT full_sz stdev","ms","%8.1f",
-		  Stdev(pab->rtt_full_sum, pab->rtt_full_sum2, pab->rtt_full_count) / 1000.0,
-		  Stdev(pba->rtt_full_sum, pba->rtt_full_sum2, pba->rtt_full_count) / 1000.0);
+	// StatLineF("RTT full_sz stdev","ms","%8.1f",
+	// 	  Stdev(pab->rtt_full_sum, pab->rtt_full_sum2, pab->rtt_full_count) / 1000.0,
+	// 	  Stdev(pba->rtt_full_sum, pba->rtt_full_sum2, pba->rtt_full_count) / 1000.0);
     escrever_resultados_float("a2b_rtt_full_sz_stdev_ms", Stdev(pab->rtt_full_sum, pab->rtt_full_sum2, pab->rtt_full_count) / 1000.0);
     escrever_resultados_float("b2a_rtt_full_sz_stdev_ms", Stdev(pba->rtt_full_sum, pba->rtt_full_sum2, pba->rtt_full_count) / 1000.0);
 
         if(!(csv || tsv || (sv != NULL)))
 	  fprintf(stdout,"\n");
-	StatLineI("post-loss acks","",
-		  pab->rtt_nosample, pba->rtt_nosample);
+	// StatLineI("post-loss acks","",
+	// 	  pab->rtt_nosample, pba->rtt_nosample);
        escrever_resultados_int("a2b_rtt_post_loss_acks", pab->rtt_nosample);
     escrever_resultados_int("b2a_rtt_post_loss_acks", pba->rtt_nosample);
     
@@ -768,85 +781,86 @@ escrever_resultados_str("throughput", "NA");
 \t  considered.  Times are taken from the last instance\n\
 \t  of a segment.\n\
 ");
-	    StatLineI("ambiguous acks","",
-		      pab->rtt_amback, pba->rtt_amback);
+	    // StatLineI("ambiguous acks","",
+		//       pab->rtt_amback, pba->rtt_amback);
         escrever_resultados_int("a2b_rtt_ambiguous_acks", pab->rtt_amback);
         escrever_resultados_int("b2a_rtt_ambiguous_acks", pba->rtt_amback);
 
-	    StatLineF("RTT min (last)","ms","%8.1f",
-		      (double)pab->rtt_min_last/1000.0,
-		      (double)pba->rtt_min_last/1000.0);
+	    // StatLineF("RTT min (last)","ms","%8.1f",
+		//       (double)pab->rtt_min_last/1000.0,
+		//       (double)pba->rtt_min_last/1000.0);
         escrever_resultados_float("a2b_rtt_min_last_ms", (double)pab->rtt_min_last/1000.0);
         escrever_resultados_float("b2a_rtt_min_last_ms", (double)pba->rtt_min_last/1000.0);
 
-	    StatLineF("RTT max (last)","ms","%8.1f",
-		      (double)pab->rtt_max_last/1000.0,
-		      (double)pba->rtt_max_last/1000.0);
-        escrever_resultados_float("a2b_rtt_max_last_ms", (double)pab->rtt_max_last/1000.0);
+	    // StatLineF("RTT max (last)","ms","%8.1f",
+		//       (double)pab->rtt_max_last/1000.0,
+		//       (double)pba->rtt_max_last/1000.0);
+        // escrever_resultados_float("a2b_rtt_max_last_ms", (double)pab->rtt_max_last/1000.0);
         escrever_resultados_float("b2a_rtt_max_last_ms", (double)pba->rtt_max_last/1000.0);
 
-	    StatLineF("RTT avg (last)","ms","%8.1f",
-		      Average(pab->rtt_sum_last, pab->rtt_count_last) / 1000.0,
-		      Average(pba->rtt_sum_last, pba->rtt_count_last) / 1000.0);
+	    // StatLineF("RTT avg (last)","ms","%8.1f",
+		//       Average(pab->rtt_sum_last, pab->rtt_count_last) / 1000.0,
+		//       Average(pba->rtt_sum_last, pba->rtt_count_last) / 1000.0);
         escrever_resultados_float("a2b_rtt_avg_last_ms", Average(pab->rtt_sum_last, pab->rtt_count_last) / 1000.0);
         escrever_resultados_float("b2a_rtt_avg_last_ms", Average(pba->rtt_sum_last, pba->rtt_count_last) / 1000.0);
 
-	    StatLineF("RTT sdv (last)","ms","%8.1f",
-		      Stdev(pab->rtt_sum_last, pab->rtt_sum2_last, pab->rtt_count_last) / 1000.0,
-		      Stdev(pba->rtt_sum_last, pba->rtt_sum2_last, pba->rtt_count_last) / 1000.0);
+	    // StatLineF("RTT sdv (last)","ms","%8.1f",
+		//       Stdev(pab->rtt_sum_last, pab->rtt_sum2_last, pab->rtt_count_last) / 1000.0,
+		//       Stdev(pba->rtt_sum_last, pba->rtt_sum2_last, pba->rtt_count_last) / 1000.0);
         escrever_resultados_float("a2b_rtt_stdev_last_ms", Stdev(pab->rtt_sum_last, pab->rtt_sum2_last, pab->rtt_count_last) / 1000.0);
         escrever_resultados_float("b2a_rtt_stdev_last_ms", Stdev(pba->rtt_sum_last, pba->rtt_sum2_last, pba->rtt_count_last) / 1000.0);
 
 	}
-	StatLineI("segs cum acked","",
-		  pab->rtt_cumack, pba->rtt_cumack);
+	// StatLineI("segs cum acked","",
+	// 	  pab->rtt_cumack, pba->rtt_cumack);
     escrever_resultados_int("a2b_rtt_cumack_segs", pab->rtt_cumack);
     escrever_resultados_int("b2a_rtt_cumack_segs", pba->rtt_cumack);
 
-	StatLineI("duplicate acks","",
-		  pab->rtt_dupack, pba->rtt_dupack);
+	// StatLineI("duplicate acks","",
+	// 	  pab->rtt_dupack, pba->rtt_dupack);
     escrever_resultados_int("a2b_rtt_dupack", pab->rtt_dupack);
     escrever_resultados_int("b2a_rtt_dupack", pba->rtt_dupack);
 
-	StatLineI("triple dupacks","",
-		  pab->rtt_triple_dupack, pba->rtt_triple_dupack);
+	// StatLineI("triple dupacks","",
+	// 	  pab->rtt_triple_dupack, pba->rtt_triple_dupack);
         escrever_resultados_int("a2b_rtt_triple_dupack", pab->rtt_triple_dupack);
     escrever_resultados_int("b2a_rtt_triple_dupack", pba->rtt_triple_dupack);
     
-	if (debug)
-	    StatLineI("unknown acks:","",
-		      pab->rtt_unkack, pba->rtt_unkack);
+	if (debug){
+	    // StatLineI("unknown acks:","",
+		//       pab->rtt_unkack, pba->rtt_unkack);
         escrever_resultados_int("a2b_rtt_unknown_acks", pab->rtt_unkack);
         escrever_resultados_int("b2a_rtt_unknown_acks", pba->rtt_unkack);
+        }
 
-	StatLineI("max # retrans","",
-		  pab->retr_max, pba->retr_max);
+	// StatLineI("max # retrans","",
+	// 	  pab->retr_max, pba->retr_max);
     escrever_resultados_int("a2b_max_retransmissions", pab->retr_max);
     escrever_resultados_int("b2a_max_retransmissions", pba->retr_max);
 
-	StatLineF("min retr time","ms","%8.1f",
-		  (double)((double)pab->retr_min_tm/1000.0),
-		  (double)((double)pba->retr_min_tm/1000.0));
+	// StatLineF("min retr time","ms","%8.1f",
+	// 	  (double)((double)pab->retr_min_tm/1000.0),
+	// 	  (double)((double)pba->retr_min_tm/1000.0));
     escrever_resultados_float("a2b_min_retr_time_ms", (double)((double)pab->retr_min_tm/1000.0));
     escrever_resultados_float("b2a_min_retr_time_ms", (double)((double)pba->retr_min_tm/1000.0));
 
-	StatLineF("max retr time","ms","%8.1f",
-		  (double)((double)pab->retr_max_tm/1000.0),
-		  (double)((double)pba->retr_max_tm/1000.0));
+	// StatLineF("max retr time","ms","%8.1f",
+	// 	  (double)((double)pab->retr_max_tm/1000.0),
+	// 	  (double)((double)pba->retr_max_tm/1000.0));
     escrever_resultados_float("a2b_max_retr_time_ms", (double)((double)pab->retr_max_tm/1000.0));
     escrever_resultados_float("b2a_max_retr_time_ms", (double)((double)pba->retr_max_tm/1000.0));
 
-	StatLineF("avg retr time","ms","%8.1f",
-		  Average(pab->retr_tm_sum, pab->retr_tm_count) / 1000.0,
-		  Average(pba->retr_tm_sum, pba->retr_tm_count) / 1000.0);
+	// StatLineF("avg retr time","ms","%8.1f",
+	// 	  Average(pab->retr_tm_sum, pab->retr_tm_count) / 1000.0,
+	// 	  Average(pba->retr_tm_sum, pba->retr_tm_count) / 1000.0);
     escrever_resultados_float("a2b_avg_retr_time_ms", Average(pab->retr_tm_sum, pab->retr_tm_count) / 1000.0);
     escrever_resultados_float("b2a_avg_retr_time_ms", Average(pba->retr_tm_sum, pba->retr_tm_count) / 1000.0);
 
-	StatLineF("sdv retr time","ms","%8.1f",
-		  Stdev(pab->retr_tm_sum, pab->retr_tm_sum2,
-			pab->retr_tm_count) / 1000.0,
-		  Stdev(pba->retr_tm_sum, pba->retr_tm_sum2,
-			pba->retr_tm_count) / 1000.0);
+	// StatLineF("sdv retr time","ms","%8.1f",
+	// 	  Stdev(pab->retr_tm_sum, pab->retr_tm_sum2,
+	// 		pab->retr_tm_count) / 1000.0,
+	// 	  Stdev(pba->retr_tm_sum, pba->retr_tm_sum2,
+	// 		pba->retr_tm_count) / 1000.0);
     escrever_resultados_float("a2b_stdev_retr_time_ms", Stdev(pab->retr_tm_sum, pab->retr_tm_sum2, pab->retr_tm_count) / 1000.0);
     escrever_resultados_float("b2a_stdev_retr_time_ms", Stdev(pba->retr_tm_sum, pba->retr_tm_sum2, pba->retr_tm_count) / 1000.0);
     }
@@ -856,12 +870,12 @@ escrever_resultados_str("throughput", "NA");
       /* Error checking: print an error message if the count of printed fields
        * doesn't correspond to the actual fields expected.
        */
-      if(sv_print_count != sv_expected_count) {
-	fprintf(stderr, "output.c: Count of printed fields does not correspond to count of header fields for long output with comma/tab/<SP>-separated values.\n");
-	fprintf(stderr,"sv_print_count=%u, sv_expected_count=%u\n",
-		sv_print_count, sv_expected_count);
-	exit(-1);
-      }
+    //   if(sv_print_count != sv_expected_count) {
+	// fprintf(stderr, "output.c: Count of printed fields does not correspond to count of header fields for long output with comma/tab/<SP>-separated values.\n");
+	// fprintf(stderr,"sv_print_count=%u, sv_expected_count=%u\n",
+	// 	sv_print_count, sv_expected_count);
+	// exit(-1);
+    //   }
    }
 
 }

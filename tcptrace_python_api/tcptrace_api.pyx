@@ -1,3 +1,4 @@
+import cython
 # Importa a assinatura do seu arquivo .h
 cdef extern from *:
     """
@@ -61,11 +62,11 @@ def preparar_buffer_pcap(global_header, lista_ts_pkts):
     return buffer_pcap
 
 
-def preparar_buffer_pcap_sem_header(lista_ts_pkts, linktype):
+def preparar_buffer_pcap_sem_header(lista_ts_pkts, linktype=1):
     #o dummy eth eh adicionado em caso de nao ter cabecalho eth na captura, o que pode ocorrer - pode dar problema para alguns casos
     # Forçamos o Header Global do PCAP Clássico (24 bytes)
     # Magic: 0xa1b2c3d4, Ver: 2.4, Snaplen: 65535, Network: 1 (Ethernet)
-    global_header = struct.pack("<IHHIIII", 0xa1b2c3d4, 2, 4, 0, 0, 65535, 1) # ultimo eh o linktype
+    global_header = struct.pack("<IHHIIII", 0xa1b2c3d4, 2, 4, 0, 0, 65535, linktype) # ultimo eh o linktype
     
     buffer_pcap = bytearray(global_header)
 
@@ -73,21 +74,23 @@ def preparar_buffer_pcap_sem_header(lista_ts_pkts, linktype):
         ts_sec = int(ts)
         ts_usec = int((ts % 1) * 1000000)
         caplen = len(pkt)
-        if linktype != 1: # dummy eth
-            caplen += 14
+        # if linktype != 1: # dummy eth
+        #     caplen += 14
 
         # Header de Pacote Clássico (16 bytes)
         pkt_header = struct.pack("<IIII", ts_sec, ts_usec, caplen, caplen)
         
         buffer_pcap.extend(pkt_header)
-        if linktype !=1: #dummy eth
-            buffer_pcap.extend(b'\x00'*12 + b'\x08\x00' + pkt)
-        else:
-            buffer_pcap.extend( pkt)
+        # if linktype !=1: #dummy eth
+        #     buffer_pcap.extend(b'\x00'*12 + b'\x08\x00' + pkt)
+        # else:
+        #     
+        buffer_pcap.extend( pkt)
         
     return buffer_pcap
 
-
+@cython.boundscheck(False)
+@cython.wraparound(False)
 def processar_em_memoria(unsigned char[:] pcap_data):
     """
     Recebe um buffer bytes/numpy contendo o PCAP completo (Header + Pacotes)
