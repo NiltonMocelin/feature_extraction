@@ -17,11 +17,8 @@ sys.path.append(f'{os.getcwd()}/src')
 import operador_pypcap as opcap
 
 # from filelock import FileLock
-<<<<<<< HEAD
 
 from feature_extractor import process_bloco_pypcap
-=======
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
 
 # from ConexaoDB_pgadmin import ConexaoDB
 from conexaoDB_mongodb import MongoCli as ConexaoDB
@@ -178,24 +175,15 @@ def dividir_e_filtrar_deslizante(lista, tamanho, outros_parametros, idle_timeout
             # BLOCO INVÁLIDO: Anda apenas 1 posição para tentar achar um bloco válido
             i += 1
 
-<<<<<<< HEAD
 def dividir_e_filtrar_rajadas(lista, tamanho, idle_timeout=2.0):
-=======
-def dividir_e_filtrar_rajadas(lista, tamanho, parametros, idle_timeout=2.0):
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
     """
     Agrupa pacotes em blocos de 'tamanho'.
     Se qualquer intervalo entre pacotes consecutivos for > idle_timeout,
     descarta o que foi acumulado e recomeça a partir do pacote atual.
-<<<<<<< HEAD
     Yields {'id': contador_sequencial, 'packets': [(ts, pkt), ...]}.
     """
     bloco_atual = []
     contador = 0
-=======
-    """
-    bloco_atual = []
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
     
     for i in range(len(lista)):
         pacote_atual = lista[i] # (timestamp, dados)
@@ -214,20 +202,12 @@ def dividir_e_filtrar_rajadas(lista, tamanho, parametros, idle_timeout=2.0):
             
             # Se atingimos o tamanho desejado, entregamos o bloco e limpamos
             if len(bloco_atual) == tamanho:
-<<<<<<< HEAD
                 contador += 1
                 yield {'id': contador, 'packets': bloco_atual}
-=======
-                yield (parametros, bloco_atual)
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
                 if TIPO_BLOCOS==0:
                     bloco_atual = []
                 else:
                     bloco_atual.pop(0)
-<<<<<<< HEAD
-=======
-                #outra abordagem bloco_atual.pop() -> porem caracteristicas muito semelhantes -> entradas muito parecidas na db
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
         else:
             # QUEBRA DE IDLE: O pacote atual demorou demais.
             # O que tínhamos acumulado é descartado e o atual vira o novo 'primeiro'
@@ -252,7 +232,6 @@ def gerar_blocos_processar_otimizado2(host_a, host_b,host_a_port, host_b_port, l
     tempo_ini = time.time()
 
     print(f'Opening {file_path} sz: {qtd_pacotes_pcap} tam_bloco: {block_size} tabela: {tabela_db}...')
-<<<<<<< HEAD
     
     parametros = {'linktype':linktype,'host_a':host_a,'host_b':host_b,
         'port_a':host_a_port,
@@ -291,38 +270,6 @@ def gerar_blocos_processar_otimizado2(host_a, host_b,host_a_port, host_b_port, l
     for _, vals in resultados_brutos:
         linha_csv = format_csv_line(vals)
         escreverArquivo(tabela_db, filename_out, linha_csv)
-=======
-    
-    parametros = {'linktype':linktype,'host_a':host_a,'host_b':host_b,
-        'port_a':host_a_port,
-        'port_b':host_b_port,
-        'proto':proto,
-        'service_class':service_class,
-        'app_class':app_class,
-        'is_two_way':is_two_way,
-        'is_tcptrace':is_tcptrace,
-        'filepath': file_path}
-
-    lista_parametros_e_ts_pkts = list(dividir_e_filtrar_rajadas(lista_ts_raw_pkts, block_size, parametros, idle_timeout))
-
-    resultados_valores = []
-    ctx = multiprocessing.get_context('spawn')
-    with ctx.Pool(processes=multiprocessing.cpu_count()) as pool:
-    #     # O chunksize faz com que o Python envie blocos em grupos, reduzindo a comunicação
-        resultados_valores.append(pool.map(feature_extractor.process_bloco_pypcap, lista_parametros_e_ts_pkts))
-
-    if resultados_valores == []:
-        print(f'sem resultados validos')
-        return
-    
-    # resultados_valores = [",".join(map(str, ress)) for ress in resultados_valores]
-    # resultados_valores = [modelar_dados_csv(ress) for ress in resultados_valores]
-    # print(f"res { resultados_valores}")
-    print("Escrevendo resultados")
-    for res in resultados_valores:
-        escreverArquivo(tabela_db, f"{tabela_db}_{app_class}_{pid}.csv", res)
-    resultados_valores.clear()
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
 
     print(f"File {file_path} terminou: {time.time()-tempo_ini}")
     return         
@@ -385,13 +332,8 @@ def run(args):
                 else:
                     lista_ts_raw_pkts_ba.append((ts,pkt))
         else:
-<<<<<<< HEAD
             print("ERRO um pacote mal formado foi encontrado, pulando:")
             continue
-=======
-            print("ERRO um pacote mal formado foi encontrado:")
-            return
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
 
     # if not is_somente_blocos:
     #     # Calcular o fluxo total    ################################################################
@@ -407,19 +349,11 @@ def run(args):
     # 10 pacotes IAT 2s         ##################################################################
     # ab
     if lista_ts_raw_pkts_ab != []:
-<<<<<<< HEAD
         gerar_blocos_processar_otimizado2(host_a=host_a, host_b=host_b, host_a_port=host_a_port, host_b_port=host_b_port, lista_ts_raw_pkts = lista_ts_raw_pkts_ab, linktype=linktype, block_size=tam_bloco, file_path=file_name, tabela_db=f'features_ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
     # exit(0)
     # ba
     if lista_ts_raw_pkts_ba != []:
         gerar_blocos_processar_otimizado2(host_a=host_a, host_b=host_b, host_a_port=host_a_port, host_b_port=host_b_port,lista_ts_raw_pkts = lista_ts_raw_pkts_ba, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'features_ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
-=======
-        gerar_blocos_processar_otimizado2(host_a=host_a, host_b=host_b, host_a_port=host_a_port, host_b_port=host_b_port, lista_ts_raw_pkts = lista_ts_raw_pkts_ab, linktype=linktype, block_size=tam_bloco, file_path=file_name, tabela_db=f'ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
-    # exit(0)
-    # ba
-    if lista_ts_raw_pkts_ba != []:
-        gerar_blocos_processar_otimizado2(host_a=host_a, host_b=host_b, host_a_port=host_a_port, host_b_port=host_b_port,lista_ts_raw_pkts = lista_ts_raw_pkts_ba, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False, is_tcptrace=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
     
     # proto = 'XX'
     # alem disso, criar as bases específicas para TCP
@@ -430,26 +364,15 @@ def run(args):
         #     #  two ways
         #     gerar_blocos_processar_otimizado2(folder_name="", file_name= file_name, tabela_db='fluxo_total_two_ways', proto=proto, service_class = service_class, app_class= app_class)  #two_way= True, block_size =None, idle_timeout=None) # talvez utilizar esses depois
         print(f'\ncalculando ab_tcp_{tam_bloco}pkts_2s')
-<<<<<<< HEAD
         gerar_blocos_processar_otimizado2(host_a=host_a, host_b=host_b, host_a_port=host_a_port, host_b_port=host_b_port,lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'features_twoways_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2)  #two_way= True, block_size =None, idle_timeout=None) # talvez utilizar esses depois
-=======
-        gerar_blocos_processar_otimizado2(host_a=host_a, host_b=host_b, host_a_port=host_a_port, host_b_port=host_b_port,lista_ts_raw_pkts = lista_ts_raw_pkts, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'twoways_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2)  #two_way= True, block_size =None, idle_timeout=None) # talvez utilizar esses depois
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
         # exit(0)
         # 10 pkts
         # ab
         if lista_ts_raw_pkts_ab != []:
-<<<<<<< HEAD
             gerar_blocos_processar_otimizado2(host_a=host_a, host_b=host_b, host_a_port=host_a_port, host_b_port=host_b_port,lista_ts_raw_pkts = lista_ts_raw_pkts_ab, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'features_ab_tcp_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
         # ba
         if lista_ts_raw_pkts_ba != []:
             gerar_blocos_processar_otimizado2(host_a=host_a, host_b=host_b, host_a_port=host_a_port, host_b_port=host_b_port,lista_ts_raw_pkts = lista_ts_raw_pkts_ba, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'features_ab_tcp_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
-=======
-            gerar_blocos_processar_otimizado2(host_a=host_a, host_b=host_b, host_a_port=host_a_port, host_b_port=host_b_port,lista_ts_raw_pkts = lista_ts_raw_pkts_ab, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_tcp_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
-        # ba
-        if lista_ts_raw_pkts_ba != []:
-            gerar_blocos_processar_otimizado2(host_a=host_a, host_b=host_b, host_a_port=host_a_port, host_b_port=host_b_port,lista_ts_raw_pkts = lista_ts_raw_pkts_ba, linktype=linktype, block_size=tam_bloco, file_path= file_name, tabela_db=f'ab_tcp_{tam_bloco}pkts_2s', proto=proto, service_class = service_class, app_class= app_class, idle_timeout=2, is_two_way=False)  #two_way= True, block_size =None, idle_timeout=None) # talvez u
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
 
         # removerArquivosTemporarios(file_name)
     print(f"---------------- [FIM-{time.time()-ts}] ----------------")
