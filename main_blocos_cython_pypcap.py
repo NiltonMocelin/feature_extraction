@@ -1,7 +1,4 @@
 # Algoritmo para ler um arquivo pcap de um fluxo e extrair blocos para processar suas features.
-
-
-
 import argparse
 import os
 import time
