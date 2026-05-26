@@ -1,8 +1,14 @@
+rm *.lock
 rm src/*
 rm -rf __pycache__/
 
+cd tcptrace
+make clean
+make
+cd ..
+
 # compilar api tcptrace:
-cd tcptrace_python_api
+cd tcptrace_api
 rm -rf build/ *.so cython_debug/ __pycache__/
 make clean
 cd ..

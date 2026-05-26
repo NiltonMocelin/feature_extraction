@@ -95,9 +95,9 @@ def process_pcap(file_name):
     # linktype dos pcap são importantes para serem interpretados pelo tcptrace (aparentemente linktype 228 não tem suporte no tcptrace)
     for key in dict_fluxos:
         print('escrevendo em: ', caminho_saida)
-        pyshark_filter_to_file(file_name, key, caminho_saida+dict_fluxos[key])
-        # saida = subprocess.run(["tshark", "-r", file_name, "-Y", key, "-w", caminho_saida + dict_fluxos[key]], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        # print(saida.stdout, ' err? :', saida.stderr)
+        # pyshark_filter_to_file(file_name, key, caminho_saida+dict_fluxos[key])
+        saida = subprocess.run(["tshark", "-r", file_name, "-Y", key, "-w", caminho_saida + dict_fluxos[key]], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        print(saida.stdout, ' err? :', saida.stderr)
 
 if __name__ == '__main__':
     print("Extrator de fluxos: proto, ip_src, ip_dst, sport, dport")
