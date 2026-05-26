@@ -13,10 +13,14 @@
 
 from TIME_features_cython import calcular_estatisticas_raw as calcular_time_features
 from PKT_features_cython import calcular_estatisticas_raw as calcular_pkt_features
+<<<<<<< HEAD
 import os
 import sys
 sys.path.append(f'{os.getcwd()}/src')
 from tcptrace_api import TcptraceAnalyzer
+=======
+import tcptrace_api #import processar_em_memoria, preparar_buffer_pcap_sem_header
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
 
 
 import sys
@@ -100,6 +104,7 @@ def tratar_tcptrace(saida_tcptrace):
     
     return lista_colunas, lista_resultados
 
+<<<<<<< HEAD
 def process_bloco_pypcap(job):
     parametros = job['parametros']
     id_bloco = job['id_bloco']
@@ -120,25 +125,64 @@ def process_bloco_pypcap(job):
 
     offset = 0
     if linktype == 1:
+=======
+def process_bloco_pypcap(tupla_param):
+    # print(lista_ts_raw_pkts[0])
+    parametros= tupla_param[0]
+    filepath=         parametros['filepath']
+    lista_ts_raw_pkts = tupla_param[1]
+    linktype=         parametros['linktype']
+    id_bloco=         0
+    host_a=           parametros['host_a']
+    host_b=           parametros['host_b']
+    port_a=           parametros['port_a']
+    port_b=           parametros['port_b']
+    proto=            parametros['proto']
+    service_class=    parametros['service_class']
+    app_class=        parametros['app_class']
+    is_two_way=       parametros['is_two_way']
+    is_tcptrace=      parametros['is_tcptrace']
+    # print(f"a")
+    if lista_ts_raw_pkts == []:
+        print(f"[lista_pkts vazia] {len(lista_ts_raw_pkts)}")
+        return []
+        # return ([],[])
+    
+    offset = 0 # linktype 101
+    if linktype == 1: #eth
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
         offset = 14
     elif linktype == 113:
         offset = 16
 
     filename = filepath.split('/')[-1]
 
+<<<<<<< HEAD
     host_a = None
     host_b = None
 
+=======
+    # aqui que eu vou decidir quem eh a e quem eh b
+
+    host_a = None
+    host_b = None
+        
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
     lista_ts_raw_pkts_ab = []
     lista_ts_raw_pkts_ba = []
 
     for ts, pkt in lista_ts_raw_pkts:
         pkt_dict = opcap.montar_pkt_to_dict(pkt, linktype)
+<<<<<<< HEAD
         if pkt_dict is not None:
+=======
+        if pkt_dict!= None:
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
             if 'ipv4' in pkt_dict:
                 if not host_a:
                     host_a = pkt_dict['ipv4']['src_ip']
                     host_b = pkt_dict['ipv4']['dst_ip']
+<<<<<<< HEAD
                 if pkt_dict['ipv4']['src_ip'] == host_a:
                     lista_ts_raw_pkts_ab.append((ts, pkt))
                 else:
@@ -211,6 +255,76 @@ def escreverArquivo(folder_name, file_name, resultados_str):
 
     file_path = os.path.join(folder_name, file_name)
     
+=======
+                    
+                if  pkt_dict['ipv4']['src_ip'] == host_a:
+                    lista_ts_raw_pkts_ab.append((ts,pkt))
+                else:
+                    lista_ts_raw_pkts_ba.append((ts,pkt))
+            else:
+                print("Erro ao processar bloco: sem cabecalho ipv4")
+                return []
+                # return ([],[])
+        else:
+            print("Erro ao processar bloco: erro ao montar pkt_dict")
+            return []
+        
+    resultados_saida = [filepath, service_class, app_class, host_a, host_b, port_a, port_b, id_bloco, 0 if proto=='tcp' else 1, 0, 0, 0, 0]
+    # colunas_saida = ['filename', 'service_class', 'app_class', 'host_a', 'host_b', 'a_port', 'b_port', 'id_bloco', 'proto', 'bandwidth', 'delay', 'jitter', 'loss']
+
+    # print(f"b")
+    res = calcular_time_features(lista_ts_raw_pkts_ab, "ab_", proto, offset)
+    # print(f"res calcular_time_features: {res}")
+    # colunas_saida.extend(res[0])
+    resultados_saida.extend(res[1])
+    res = calcular_pkt_features(lista_ts_raw_pkts_ab, "ab_", proto, offset)
+    # colunas_saida.extend(res[0])
+    # print(f"res calcular_pkt_features: {res}")
+    resultados_saida.extend(res[1])
+    lista_ts_raw_pkts_ab.clear()
+    # print(f"c")
+    if is_two_way:
+        res = calcular_time_features(lista_ts_raw_pkts_ba, "ba_", proto, offset)
+        # colunas_saida.extend(res[0])
+        resultados_saida.extend(res[1])
+        res = calcular_time_features(lista_ts_raw_pkts, "total_", proto, offset)
+        # colunas_saida.extend(res[0])
+        resultados_saida.extend(res[1])
+    lista_ts_raw_pkts_ba.clear()
+    # print(f"d")
+    if is_tcptrace:
+
+        bufferr = tcptrace_api.preparar_buffer_pcap_sem_header(lista_ts_raw_pkts, linktype)
+
+        resultados_valores=tcptrace_api.processar_em_memoria(bufferr) # nao precisamos utilizar multiprocessing pq agora ele usa fork
+
+        colunas_tcptrace, resultados_tcptrace = tratar_tcptrace(resultados_valores)
+        if colunas_tcptrace == [] or resultados_tcptrace == []:
+            # opcap.criar_pcap_com_header_proprio(f'erro_tcptrace_{filename}', lista_ts_raw_pkts, linktype=linktype) # esse abre no tcptrace
+            escreverArquivo('', f"erro_tcptrace_{filename}", bufferr) # analisar pq o tcptrace nao retorna nada com esse arquivo!
+            print(f"error: tcptrace retornou {resultados_valores} : {filepath} len lista_raw_pkts {len(lista_ts_raw_pkts)}")
+
+        resultados_saida.extend(resultados_tcptrace)
+    
+    # return (colunas_saida, resultados_saida)
+    return modelar_dados_csv(resultados_saida)
+
+def modelar_dados_csv(valores):
+    resultados_str = ""
+    contador = 0 
+    for val in valores:
+        if contador < 5: # os cinco primeiros campos sao str 
+            contador +=1
+            resultados_str+= f',"{val}"'
+        else:
+            resultados_str+= f',{val}'
+    return resultados_str.replace(',',"",1)
+
+def escreverArquivo(folder_name, file_name, resultados_str):
+
+    file_path = os.path.join(folder_name, file_name)
+    
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
     with open(file_path, 'wb') as file:
         file.write(resultados_str)
         

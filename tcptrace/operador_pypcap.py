@@ -5,11 +5,10 @@ import sys
 import binascii
 import os
 
-
 def get_pcap_global_header(caminho_arquivo): # header permite manter a consistencia do arquivo pcap quando copiado seus pacotes
     with open(caminho_arquivo, "rb") as f:
         raw_header = f.read(24) # O Global Header tem sempre 24 bytes
-
+        
         if len(raw_header) < 24:
             return None
 
@@ -18,7 +17,7 @@ def get_pcap_global_header(caminho_arquivo): # header permite manter a consisten
 
 def pcap_header_to_dict(header_bytes):
     header = struct.unpack('<IHHIIII', header_bytes)
-
+    
     return {
             "magic_number": hex(header[0]), # 0xa1b2c3d4 significa que o arquivo está ok
             "version_major": header[1],
@@ -36,7 +35,7 @@ def gerar_global_header_proprio(snaplen=65535, network=1):
     network: Tipo de rede (1 para Ethernet).
     """
     return struct.pack(
-        "<IHHIIII",
+        "<IHHIIII", 
         0xa1b2c3d4,  # Magic Number (Little Endian)
         2, 4,        # Version Major (2) e Minor (4)
         0,           # Timezone offset (sempre 0)
@@ -52,7 +51,7 @@ def ler_binario_direto(arquivo_pcap, max_pacotes):
 
     # OBTENDO O LINKTYPE AQUI
     link_type = sniffer.datalink()
-
+    
     # print(f"Lendo pacotes de: {arquivo_pcap}")
     # print("-" * 50)
     lista_ = []
@@ -68,7 +67,7 @@ def ler_binario_direto(arquivo_pcap, max_pacotes):
         # hex_data = binascii.hexlify(pkt).decode('utf-8')
         # Formata para mostrar pares de hex (ex: 00 1a 2b...)
         # hex_formatado = ' '.join(hex_data[i:i+2] for i in range(0, len(hex_data), 2))
-
+        
         # print(f"Conteúdo Hexadecimal:\n{hex_formatado}")
         # print(montar_pkt(pkt))
         # print("-" * 50)
@@ -84,11 +83,11 @@ def criar_pcap_com_header_original(global_header, arquivo_destino, lista_de_paco
     arquivo_destino: Novo arquivo PCAP
     lista_de_pacotes: Lista de tuplas [(timestamp, dados_brutos), ...]
     """
-
+        
     with open(arquivo_destino, "wb") as f_dest:
         # 2. Escreve o Global Header no novo arquivo
         f_dest.write(global_header)
-
+        
         print(f"Escrevendo {len(lista_de_pacotes)} pacotes...")
 
         for ts, pkt in lista_de_pacotes:
@@ -96,13 +95,13 @@ def criar_pcap_com_header_original(global_header, arquivo_destino, lista_de_paco
             # Separamos o timestamp float em segundos e microsegundos
             ts_sec = int(ts)
             ts_usec = int((ts % 1) * 1000000)
-
+            
             caplen = len(pkt)
             origlen = caplen
-
+            
             # Formato <IIII (Little Endian: sec, usec, caplen, origlen)
             pkt_header = struct.pack("<IIII", ts_sec, ts_usec, caplen, origlen)
-
+            
             # 4. Escrever Header + Dados
             f_dest.write(pkt_header)
             f_dest.write(pkt)
@@ -110,88 +109,34 @@ def criar_pcap_com_header_original(global_header, arquivo_destino, lista_de_paco
     print("Arquivo PCAP consistente gerado com sucesso.")
 
 
-def criar_pcap_com_header_proprio(nome_arquivo, lista_de_pacotes, linktype = 1):
+def criar_pcap_com_header_proprio(nome_arquivo, lista_de_pacotes):
     """
     lista_de_pacotes: [(timestamp, dados_brutos), ...]
     """
     with open(nome_arquivo, "wb") as f:
         # 1. Escreve o cabeçalho que acabamos de criar
-        f.write(gerar_global_header_proprio(network=linktype))
-<<<<<<< HEAD
-
-=======
+        f.write(gerar_global_header_proprio())
         
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
         # 2. Escreve cada pacote da lista
         for ts, pkt in lista_de_pacotes:
             ts_sec = int(ts)
             ts_usec = int((ts % 1) * 1000000)
             caplen = len(pkt)
             origlen = caplen
-
+            
             # Packet Header (16 bytes)
             pkt_header = struct.pack("<IIII", ts_sec, ts_usec, caplen, origlen)
-
+            
             f.write(pkt_header)
             f.write(pkt)
-
-def preparar_buffer_pcap_compativel_dummy_eth(lista_ts_pkts, linktype_original):
-    # IMPORTANTE: Forçamos o Network para 1 (Ethernet) no Global Header
-    # porque a lógica abaixo transforma qualquer pacote em Ethernet.
-    # Se mantivermos o linktype original aqui, o Wireshark não entenderá o Dummy Eth.
-    LINKTYPE_ETHERNET = 1
-    global_header = struct.pack("<IHHIIII", 0xa1b2c3d4, 2, 4, 0, 0, 65535, LINKTYPE_ETHERNET)
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
-    buffer_pcap = bytearray(global_header)
-
-    for ts, pkt in lista_ts_pkts:
-        ts_sec = int(ts)
-        ts_usec = int((ts % 1) * 1000000)
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
-        # Se não for Ethernet, adicionamos 14 bytes (12 zero + 0x0800)
-        if linktype_original != LINKTYPE_ETHERNET:
-            # Verifica se o pacote é IPv4 (começa com 0x45) para garantir o Ethertype 0800
-            # Se for IPv6, o Ethertype correto seria 0x86DD
-            eth_header = b'\x00' * 12 + b'\x08\x00'
-            pacote_final = eth_header + pkt
-        else:
-            pacote_final = pkt
-
-        caplen = len(pacote_final)
-<<<<<<< HEAD
-
-        # Header de Pacote (16 bytes)
-        pkt_header = struct.pack("<IIII", ts_sec, ts_usec, caplen, caplen)
-
-        buffer_pcap.extend(pkt_header)
-        buffer_pcap.extend(pacote_final)
-
-=======
-        
-        # Header de Pacote (16 bytes)
-        pkt_header = struct.pack("<IIII", ts_sec, ts_usec, caplen, caplen)
-        
-        buffer_pcap.extend(pkt_header)
-        buffer_pcap.extend(pacote_final)
-        
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
-    return buffer_pcap
 
 def contar_pacotes_pcap(caminho_arquivo):
     sniffer = pcap.pcap(name=caminho_arquivo)
     count = 0
-
+    
     for ts, pkt in sniffer:
         count += 1
-
+        
     return count
 
 def contar_pacotes_pcap_ver_binario_rapido(caminho_arquivo):
@@ -199,21 +144,21 @@ def contar_pacotes_pcap_ver_binario_rapido(caminho_arquivo):
         # Pula o Global Header (24 bytes)
         f.seek(24)
         count = 0
-
+        
         while True:
             # Lê apenas o header do pacote (16 bytes)
             header = f.read(16)
             if not header or len(header) < 16:
                 break
-
+            
             # O campo 'caplen' (bytes capturados) está nos bytes 8-12 do header
             # Formato <IIII (ts_sec, ts_usec, caplen, origlen)
             _, _, caplen, _ = struct.unpack('<IIII', header)
-
+            
             # Pula o corpo do pacote para ir direto para o próximo header
             f.seek(caplen, os.SEEK_CUR)
             count += 1
-
+            
     return count
 
 
@@ -232,53 +177,45 @@ def pkt_is_tcp(pkt_bytes):
     # --- 2. VERIFICAR O PROTOCOLO NO CABEÇALHO IP ---
     # O campo 'Protocol' no cabeçalho IPv4 fica no offset 23 (byte 23)
     # O valor para TCP é 6. Para UDP é 17.
-    protocolo_ip = pkt_bytes[23]
+    protocolo_ip = pkt_bytes[23] 
     if protocolo_ip == 6:
         return True
     return False
-
+    
 def pkt_is_udp(pkt_bytes):
     # --- 2. VERIFICAR O PROTOCOLO NO CABEÇALHO IP ---
     # O campo 'Protocol' no cabeçalho IPv4 fica no offset 23 (byte 23)
     # O valor para TCP é 6. Para UDP é 17.
-    protocolo_ip = pkt_bytes[23]
+    protocolo_ip = pkt_bytes[23] 
     if protocolo_ip == 17:
         return True
     return False
 
-def get_tcp_header_to_dict(pkt_bytes, tcp_start, ip_total_len, ip_header_len):
-
-    """
-    Extrai os campos do cabeçalho TCP e identifica o início/fim do payload.
-    tcp_start: Posição exata onde o cabeçalho TCP começa (next_layer_start do IP).
-    """
-    # 1. Extrair os primeiros 20 bytes do cabeçalho TCP (tamanho fixo obrigatório)
+def get_tcp_header_to_dict(pkt_bytes, offset):
+    ihl = (pkt_bytes[offset] & 0x0F) * 4
+    tcp_start = offset + ihl
+    
     tcp_data = pkt_bytes[tcp_start : tcp_start + 20]
     if len(tcp_data) < 20:
         return None
 
-    # Formato: !HHIIHHHH
+    # Formato corrigido: !HHIIHHHH
+    # fields[4] conterá os 16 bits de controle (Offset + Reservado + Flags)
     fields = struct.unpack('!HHIIHHHH', tcp_data)
 
-    # 2. Tratamento de campos de controle (16 bits)
+    # 3. Tratamento de campos de controle (16 bits)
     control_field = fields[4]
-
-    # O Data Offset são os 4 bits mais significativos dos 16 bits de controle
-    tcp_header_len = (control_field >> 12) * 4
-
+    
+    # O Data Offset são os 4 bits mais significativos (dos 16 bits)
+    tcp_header_len = (control_field >> 12) * 4  
+    
     # As Flags são os 9 bits menos significativos (NS até FIN)
-    flags = control_field & 0x1FF
-
-    # 3. Delimitar o payload real usando o tamanho total do IP
+    # 0x1FF = 0000 0001 1111 1111 em binário
+    flags = control_field & 0x1FF 
+    
     payload_start = tcp_start + tcp_header_len
+    payload = pkt_bytes[payload_start:]
     
-    # Tamanho total do IP menos os headers (IP + TCP) nos dá o tamanho exato dos dados TCP
-    tcp_payload_len = ip_total_len - ip_header_len - tcp_header_len
-    payload_end = payload_start + tcp_payload_len
-    
-    # Captura apenas os bytes válidos, ignorando trailers/padding da Ethernet
-    payload = pkt_bytes[payload_start:payload_end]
-
     header = {
         "src_port":    fields[0],
         "dst_port":    fields[1],
@@ -286,7 +223,7 @@ def get_tcp_header_to_dict(pkt_bytes, tcp_start, ip_total_len, ip_header_len):
         "ack_num":     fields[3],
         "header_len":  tcp_header_len,
         "flags": {
-            "ns":  bool(flags & 0x100),
+            "ns":  bool(flags & 0x100), 
             "cwr": bool(flags & 0x80),
             "ece": bool(flags & 0x40),
             "urg": bool(flags & 0x20),
@@ -296,49 +233,50 @@ def get_tcp_header_to_dict(pkt_bytes, tcp_start, ip_total_len, ip_header_len):
             "syn": bool(flags & 0x02),
             "fin": bool(flags & 0x01)
         },
-        "window":      fields[5], 
-        "checksum":    fields[6], 
-        "urgent_ptr":  fields[7], 
+        "window":      fields[5], # No unpack HHIIHHHH, Window é o índice 5
+        "checksum":    fields[6], # Checksum é o índice 6
+        "urgent_ptr":  fields[7], # Urgent Ptr é o índice 7
         "payload_start": payload_start,
-        "payload": payload,
-        "payload_size": len(payload)
+        "payload": payload
     }
-
+    
     return header
 
-
-def get_udp_header_to_dict(pkt_bytes, udp_start):
+def get_udp_header_to_dict(pkt_bytes, offset):
     """
     Extrai os campos do cabeçalho UDP e identifica o início do payload.
     Assume que o pacote já foi validado como IPv4 e Protocolo 17 (UDP).
     """
-
+    # 1. Calcular onde o IP termina (IHL)
+    # Byte 14: Versão (4 bits) + IHL (4 bits)
+    ihl = (pkt_bytes[offset] & 0x0F) * 4
+    udp_start = offset + ihl
+    
+    # 2. Extrair os 8 bytes do cabeçalho UDP
+    # Estrutura: !HHHH (4 unsigned shorts em Network Byte Order)
     udp_data = pkt_bytes[udp_start : udp_start + 8]
-
+    
     if len(udp_data) < 8:
         return None
-    
-    # Desempacotando os campos (Porta Origem, Porta Destino, Comprimento, Checksum)
+
+    # Desempacotando os campos
     fields = struct.unpack('!HHHH', udp_data)
+    payload = pkt_bytes[(udp_start + 8):]
+    payload_size = len(payload)
     
-    udp_length = fields[2] # Tamanho total do UDP (Header + Payload) especificado no cabeçalho
-    udp_payload_len = udp_length - 8
-
-    # 2. Extrair o payload limitando ao tamanho real (evita padding da Ethernet)
-    payload_end = udp_start + udp_length
-    payload = pkt_bytes[(udp_start + 8) : payload_end]
-
     header = {
-        "src_port": fields[0],
-        "dst_port": fields[1],
-        "length":   udp_length,
-        "checksum": fields[3],
+        "src_port": fields[0],      # Porta de Origem
+        "dst_port": fields[1],      # Porta de Destino
+        "length":   fields[2],      # Tamanho (Header + Payload)
+        "checksum": fields[3],      # Checksum (opcional em IPv4)
         "payload_start": udp_start + 8,
         "payload" : payload,
-        "payload_size": len(payload) # Agora reflete o tamanho real dos dados UDP
+        "payload_size": len(payload)
     }
-
+    
     return header
+
+import struct
 
 def get_ipv4_header_to_dict(pkt_bytes, offset):
     """
@@ -347,12 +285,12 @@ def get_ipv4_header_to_dict(pkt_bytes, offset):
     """
     # O cabeçalho IP começa após os 14 bytes da Ethernet
     ip_start = offset
-
+    
     # Extraímos os primeiros 20 bytes (tamanho fixo padrão)
     # Formato: !BBHHHBBHII
     # B=1byte, H=2bytes, I=4bytes
     ip_data = pkt_bytes[ip_start : ip_start + 20]
-
+    
     if len(ip_data) < 20:
         return None
 
@@ -367,7 +305,7 @@ def get_ipv4_header_to_dict(pkt_bytes, offset):
     tos = fields[1]
     total_len = fields[2]
     identification = fields[3]
-
+    
     flags_fragment = fields[4]
     flags = flags_fragment >> 13
     fragment_offset = flags_fragment & 0x1FFF
@@ -386,7 +324,7 @@ def get_ipv4_header_to_dict(pkt_bytes, offset):
         protocol_name = "udp"
     elif protocol == 6:
          protocol_name = "tcp"
-
+         
     header = {
         "version": version,
         "header_len": ihl,
@@ -403,11 +341,11 @@ def get_ipv4_header_to_dict(pkt_bytes, offset):
         "dst_ip": format_ip(fields[9]),
         "next_layer_start": ip_start + ihl
     }
-
+    
     return header
 
 def get_eth_header_to_dict(pkt_bytes, linktype):
-
+    
     # def gerar_ethernet_falso():
     #     """
     #     Gera 14 bytes de um cabeçalho Ethernet fake.
@@ -419,15 +357,15 @@ def get_eth_header_to_dict(pkt_bytes, linktype):
     #     # ! indica Network Byte Order (Big Endian)
     #     # return # Retornamos (MAC_DST, MAC_SRC, ETHER_TYPE)
     #     return (b'\x00'*6, b'\x00'*6, 0x0800)
-
+    
     eth_data = pkt_bytes[:14]
     fields = struct.unpack('!6s6sH', eth_data)
-
+    
     if linktype != 1: # se nao for uma captura com cabecalho eth, pode ser 101 (raw pkts=comeca na ip) ou 113: linux SSL, ou 12: loopback
         fields = (b'\x00'*6, b'\x00'*6, 0x0800) # dummy eth
-
+    
     eth_type = fields[2]
-
+    
     offset = 14
     if eth_type == 0x8100: # VLAN detectada
         offset = 18
@@ -449,26 +387,26 @@ def get_eth_header_to_dict(pkt_bytes, linktype):
 def get_payload_data(pkt_bytes, offset):
     # 1. Extrair informações do IP de forma relativa ao offset
     ihl = (pkt_bytes[offset] & 0x0F) * 4
-
+    
     # Total Length do IP (bytes 2 e 3 do cabeçalho IP)
     # Serve para ignorar o padding da Ethernet no final
     ip_total_len = struct.unpack('!H', pkt_bytes[offset+2 : offset+4])[0]
-
+    
     # Protocolo IP está no byte 9 após o início do IP
-    protocolo_ip = pkt_bytes[offset + 9]
-
+    protocolo_ip = pkt_bytes[offset + 9] 
+    
     transport_start = offset + ihl
     # Onde o pacote IP realmente termina (ignora lixo de preenchimento da rede)
     ip_end = offset + ip_total_len
-
+    
     payload = b""
-
+    
     if protocolo_ip == 17: # UDP
         udp_header_len = 8
         payload_start = transport_start + udp_header_len
         # Cortamos do início do payload até o fim real do IP
         payload = pkt_bytes[payload_start : ip_end]
-
+        
         # print(f"UDP Payload ({len(payload)} bytes): {payload.hex()}")
 
     elif protocolo_ip == 6: # TCP
@@ -481,65 +419,54 @@ def get_payload_data(pkt_bytes, offset):
         payload = pkt_bytes[payload_start : ip_end]
 
         # print(f"TCP Payload ({len(payload)} bytes): {payload.hex()}")
-
+        
     return len(payload) #, payload
 
 def montar_pkt_to_dict(pkt_bytes, linktype):
     pkt_dict = {}
     pkt_dict['eth'] = get_eth_header_to_dict(pkt_bytes, linktype)
-
+    
     if pkt_dict["eth"] == None:
         print("[mnt-pkt] no eth")
         return None
-
+    
     offset=0 # Assume Raw IP se não for Ethernet/Cooked
     if linktype == 1: # tem camada eth
         offset = 14
     elif linktype == 113: # linux ssl
         offset = 16
-
+    
     pkt_dict["ipv4"] = get_ipv4_header_to_dict(pkt_bytes, offset)
     if pkt_dict['ipv4'] == None:
         print("[mnt-pkt] no ipv4")
         return None
     
-    # CORREÇÃO: Passar o ponteiro exato gerado pelo IP ('next_layer_start')
-    next_layer = pkt_dict['ipv4']['next_layer_start']
-
+    # print(f"[mnt-pkt] proto: {pkt_dict['ipv4']['protocol']}")
+    # print(f"pkt:{pkt_dict}")
     if pkt_dict['ipv4']['transport_proto'] == 'tcp':
-        # Certifique-se de atualizar a função get_tcp_header_to_dict para receber 'next_layer' diretamente
-        pkt_dict['tcp'] = get_tcp_header_to_dict(pkt_bytes, next_layer,
-                                                 ip_total_len=pkt_dict['ipv4']['total_len'],
-                                                 ip_header_len=pkt_dict['ipv4']['header_len'])
+        pkt_dict['tcp'] = get_tcp_header_to_dict(pkt_bytes, offset)
         return pkt_dict
-
+    
     if pkt_dict['ipv4']['transport_proto'] == 'udp':
-<<<<<<< HEAD
-        pkt_dict['udp'] = get_udp_header_to_dict(
-            pkt_bytes, 
-            udp_start=next_layer
-        )
-=======
         pkt_dict['udp'] = get_udp_header_to_dict(pkt_bytes, offset)
->>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
         return pkt_dict
-
+    
     print("[mnt-pkt] pkt failed")
     return None
 
 def clonar_pcap(arquivo_origem, arquivo_destino):
     # 1. Abrir o arquivo original com pypcap
     sniffer = pcap.pcap(name=arquivo_origem)
-
+    
     with open(arquivo_destino, "wb") as f:
         # 2. Escrever o Global Header (24 bytes)
         # Pegamos as propriedades direto do objeto pypcap
         # Network 1 = Ethernet, Snaplen geralmente 65535
-        global_header = struct.pack("<IHHIIII",
+        global_header = struct.pack("<IHHIIII", 
                                     0xa1b2c3d4, # Magic Number
                                     2, 4,       # Version 2.4
                                     0, 0,       # Timezone/Sigfigs
-                                    sniffer.snaplen,
+                                    sniffer.snaplen, 
                                     sniffer.datalink())
         f.write(global_header)
 
@@ -550,10 +477,10 @@ def clonar_pcap(arquivo_origem, arquivo_destino):
             ts_usec = int((ts % 1) * 1000000)
             caplen = len(pkt)
             origlen = caplen # No pypcap, pkt já é o dado capturado
-
+            
             # Packet Header (16 bytes)
             pkt_header = struct.pack("<IIII", ts_sec, ts_usec, caplen, origlen)
-
+            
             f.write(pkt_header)
             f.write(pkt)
 
@@ -561,7 +488,7 @@ def capturar_e_salvar(interface, nome_arquivo, total_pacotes=10):
     # 1. Iniciar o Sniffer na interface desejada
     # promisc=True permite capturar tráfego não destinado apenas ao seu PC
     sniffer = pcap.pcap(name=interface, promisc=True, immediate=True)
-
+    
     print(f"Capturando na interface {interface}...")
 
     with open(nome_arquivo, "wb") as f:
@@ -580,20 +507,20 @@ def capturar_e_salvar(interface, nome_arquivo, total_pacotes=10):
                 # O 'ts' retornado pelo pypcap é o tempo real do Kernel (fidelidade máxima)
                 ts_sec = int(ts)
                 ts_usec = int((ts % 1) * 1000000)
-
+                
                 caplen = len(pkt)
                 origlen = caplen
-
+                
                 # 4. ESCREVER O PACKET HEADER (16 bytes)
                 pkt_header = struct.pack("<IIII", ts_sec, ts_usec, caplen, origlen)
-
+                
                 f.write(pkt_header)
                 f.write(pkt)
                 f.flush() # Mantém o arquivo consistente mesmo se o script cair
-
+                
                 cont += 1
                 print(f"Pacote {cont} salvo ({caplen} bytes)", end="\r")
-
+                
                 if cont >= total_pacotes:
                     break
         except KeyboardInterrupt:

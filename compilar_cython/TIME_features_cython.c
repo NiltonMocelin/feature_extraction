@@ -20916,7 +20916,11 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  *             payload_len = len(bloco[i][1]) - offset - ihl - 8 # UDP header  fixo de 8 bytes             # <<<<<<<<<<<<<<
  * 
  *         if payload_len < 1:
+<<<<<<< HEAD
 */
+=======
+ */
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
       if (unlikely(__pyx_v_bloco == Py_None)) {
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
         __PYX_ERR(0, 170, __pyx_L1_error)
@@ -20967,7 +20971,11 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
         __PYX_ERR(0, 174, __pyx_L1_error)
       }
+<<<<<<< HEAD
       __pyx_t_3 = __Pyx_GetItemInt(__Pyx_PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_SharedReference); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
+=======
+      __pyx_t_3 = __Pyx_GetItemInt(PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF_SET(__pyx_v_prev_time, __pyx_t_3);
       __pyx_t_3 = 0;
@@ -21069,7 +21077,11 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
         __PYX_ERR(0, 184, __pyx_L1_error)
       }
+<<<<<<< HEAD
       __pyx_t_3 = __Pyx_GetItemInt(__Pyx_PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_SharedReference); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 184, __pyx_L1_error)
+=======
+      __pyx_t_3 = __Pyx_GetItemInt(PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 184, __pyx_L1_error)
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_10 = PyNumber_Subtract(__pyx_t_3, __pyx_v_prev_time); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 184, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
@@ -21091,7 +21103,11 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
         PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
         __PYX_ERR(0, 185, __pyx_L1_error)
       }
+<<<<<<< HEAD
       __pyx_t_3 = __Pyx_GetItemInt(__Pyx_PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyLong_From_long, 0, 0, 0, 1, __Pyx_ReferenceSharing_SharedReference); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
+=======
+      __pyx_t_3 = __Pyx_GetItemInt(PyList_GET_ITEM(__pyx_v_bloco, __pyx_v_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF_SET(__pyx_v_prev_time, __pyx_t_3);
       __pyx_t_3 = 0;
@@ -21115,15 +21131,26 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
  * @cython.boundscheck(False)
 */
   __Pyx_XDECREF(__pyx_r);
+<<<<<<< HEAD
   __pyx_t_3 = __Pyx_PyLong_From_int(__pyx_v_contador_bulk); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 187, __pyx_L1_error)
+=======
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_contador_bulk); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 187, __pyx_L1_error)
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_GIVEREF(__pyx_t_3);
+<<<<<<< HEAD
   if (__Pyx_PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_3) != (0)) __PYX_ERR(0, 187, __pyx_L1_error);
   __Pyx_INCREF(__pyx_v_time_spent_bulk_mode);
   __Pyx_GIVEREF(__pyx_v_time_spent_bulk_mode);
   if (__Pyx_PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_v_time_spent_bulk_mode) != (0)) __PYX_ERR(0, 187, __pyx_L1_error);
+=======
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_3)) __PYX_ERR(0, 187, __pyx_L1_error);
+  __Pyx_INCREF(__pyx_v_time_spent_bulk_mode);
+  __Pyx_GIVEREF(__pyx_v_time_spent_bulk_mode);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_v_time_spent_bulk_mode)) __PYX_ERR(0, 187, __pyx_L1_error);
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
   __pyx_t_3 = 0;
   __pyx_r = ((PyObject*)__pyx_t_10);
   __pyx_t_10 = 0;
@@ -21151,10 +21178,15 @@ static PyObject *__pyx_f_20TIME_features_cython_No_transitions_bulk_raw(PyObject
   return __pyx_r;
 }
 
+<<<<<<< HEAD
 /* "TIME_features_cython.pyx":189
  *     return (contador_bulk, time_spent_bulk_mode)
  * 
  * @cython.boundscheck(False)             # <<<<<<<<<<<<<<
+=======
+/* "TIME_features_cython.pyx":191
+ * @cython.boundscheck(False)
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
  * @cython.wraparound(False)
  * cdef double Time_spent_idle_raw(double[:] iats):
 */
@@ -21231,10 +21263,15 @@ static double __pyx_f_20TIME_features_cython_Time_spent_idle_raw(__Pyx_memviewsl
   __pyx_r = __pyx_v_idle;
   goto __pyx_L0;
 
+<<<<<<< HEAD
   /* "TIME_features_cython.pyx":189
  *     return (contador_bulk, time_spent_bulk_mode)
  * 
  * @cython.boundscheck(False)             # <<<<<<<<<<<<<<
+=======
+  /* "TIME_features_cython.pyx":191
+ * @cython.boundscheck(False)
+>>>>>>> 86f18337963adc76f3ea0534400b0dd84b3447de
  * @cython.wraparound(False)
  * cdef double Time_spent_idle_raw(double[:] iats):
 */
